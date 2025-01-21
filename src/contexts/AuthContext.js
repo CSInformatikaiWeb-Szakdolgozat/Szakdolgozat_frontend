@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
       //await getUser();
       //elmegyünk  a kezdőlapra
       getUser()
-      navigate("/");
+      navigate("/admin");
       
     } catch (error) {
       console.log(error);
