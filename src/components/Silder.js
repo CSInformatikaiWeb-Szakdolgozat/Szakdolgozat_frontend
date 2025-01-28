@@ -1,25 +1,25 @@
-import { Carousel } from 'react-bootstrap'
-import React from 'react'
+import { Carousel } from "react-bootstrap";
+import React from "react";
 
 function Silder() {
   return (
     <Carousel>
       <Carousel.Item>
-        <ExampleCarouselImage text="First slide" />
+        <img src="../kepek/tesztkep.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
         <Carousel.Caption>
           <h3>First slide label</h3>
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <ExampleCarouselImage text="Second slide" />
+        <img src="../kepek/tesztkep.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
         <Carousel.Caption>
           <h3>Second slide label</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <ExampleCarouselImage text="Third slide" />
+        <img src="../kepek/tesztkep.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
         <Carousel.Caption>
           <h3>Third slide label</h3>
           <p>
@@ -28,7 +28,7 @@ function Silder() {
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
-  )
+  );
 }
 
-export default Silder
+export default Silder;
