@@ -1,21 +1,36 @@
 import { Route, Routes } from "react-router-dom";
-import AdminLayout from "./layouts/AdminLayout";
-import Bejelentkezes from "./pages/admin/Bejelentkezes";
-import Kezdolap from "./pages/public/Kezdolap";
-import VendegLayOut from "./layouts/VendegLayOut";
+import Kezdolap from "./pages/vendeg/Kezdolap";
+import VendegLayout from "./layouts/VendegLayout";
+import Bejelentkezes from "./pages/Bejelentkezes";
 import NoPage from "./pages/NoPage";
+import AdminLayout from "./layouts/AdminLayout";
+import useAuthContext from "./contexts/AuthContext";
+import AdminKezdolap from "./pages/admin/AdminKezdolap";
 
 function App() {
+  const { user } = useAuthContext();
+
   return (
     <Routes>
-      <Route path="/bejelentkezes" element={<Bejelentkezes />} />
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="*" element={<NoPage />} />
-      </Route>
-      <Route path="/" element={<VendegLayOut />}>
-        <Route index element={<Kezdolap />} />
-        <Route path="*" element={<NoPage />} />
-      </Route>
+      <Route path="*" element={<NoPage />} />
+
+      <Route path="admin" element={<Bejelentkezes />}/>
+
+      {/* Vendég layout */}
+      {!user && (
+                    <Route element={<VendegLayout />}>
+                        <Route path="/" element={<Kezdolap />} />
+                    </Route>
+      )}
+
+       {/* Admin és User ugyanazon útvonalon */}
+       {user && (
+                    <Route element={<AdminLayout />}>
+                        <Route path="/" element={<AdminKezdolap />} />
+
+                    </Route>
+      )}
+
     </Routes>
   );
 }

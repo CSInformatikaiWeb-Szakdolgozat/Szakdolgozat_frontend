@@ -1,14 +1,14 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+
+import { Navigate, Outlet } from "react-router-dom";
+
+import useAuthContext from "../contexts/AuthContext";
 import AdminNavigacio from "../pages/admin/AdminNavigacio";
 
-function AdminLayout() {
-  return (
-    <>
-      <AdminNavigacio />
-      <Outlet />
-    </>
-  );
-}
 
-export default AdminLayout;
+export default function AdminLayout() {
+    const { user } = useAuthContext();
+    return user && user.role===1  ? <>  <AdminNavigacio /> <Outlet /> </> : <Navigate to="/bejelentkezes" />;
+
+
+}
