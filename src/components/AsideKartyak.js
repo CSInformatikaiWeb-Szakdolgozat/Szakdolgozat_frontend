@@ -1,17 +1,16 @@
 import {  } from "react-bootstrap";
 import React from "react";
-import Kartya from "./Kartya";
 
-function Kartyak() {
+function AsideKartyak() {
   return (
     <div className="container mt-3">
-    <div className="row d-flex justify-content-around g-4">
-      {lista.map((kep, index) => {
+    
+      {asideLista.map((kep, index) => {
+        <></>
         return <Kartya kep={kep} key={index} />;
       })}
-    </div>
   </div>
   )
 }
 
-export default Kartyak;
+export default AsideKartyak;

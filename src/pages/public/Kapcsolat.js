@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Bemutato() {
+function Kapcsolat() {
   return (
     <div>
       
@@ -8,4 +8,4 @@ function Bemutato() {
   )
 }
 
-export default Bemutato
+export default Kapcsolat
