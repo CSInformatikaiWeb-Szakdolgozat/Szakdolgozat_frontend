@@ -1,15 +1,21 @@
+import AsideKartyak from "../../components/AsideKartyak";
+import Kartyak from "../../components/Kartyak";
+
 import KezdoOldal from "./KezdoOldal";
+
+import Footer from "../../components/Footer";
 
 function Kezdolap() {
   return (
     <main className="row">
       <article className="col-lg-9 row text-center">
         <KezdoOldal />
+        <Kartyak />
       </article>
       <aside className="col-lg-3 p-4 row gap-3">
-        <p>Itt lesznek az aside kártyái</p>
+        <AsideKartyak />
       </aside>
-      <footer className="col-lg-12 text-center">Tar Gergő & Szabó-Mester Alex</footer>
+      <Footer />
     </main>
   );
 }

@@ -5,21 +5,21 @@ function Silder() {
   return (
     <Carousel>
       <Carousel.Item>
-        <img src="../kepek/tesztkep.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
+        <img src="../kepek/AI22.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
         <Carousel.Caption>
           <h3>First slide label</h3>
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <img src="../kepek/tesztkep.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
+        <img src="../kepek/teszt2.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
         <Carousel.Caption>
           <h3>Second slide label</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <img src="../kepek/tesztkep.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
+        <img src="../kepek/IBM_villany.jpg" alt="egy teszt kép" className="d-block w-100 img-fluid" />
         <Carousel.Caption>
           <h3>Third slide label</h3>
           <p>

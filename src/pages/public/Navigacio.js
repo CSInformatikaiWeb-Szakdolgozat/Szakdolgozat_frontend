@@ -33,12 +33,12 @@ export default function Navigacio() {
             <NavDropdown.Item as="button">Alkalmazás virtualizáció</NavDropdown.Item>
           </NavDropdown>
           <li className="navbar-item">
-            <Link className="nav-link" to="/">
+            <Link className="nav-link" to="/letöltesek">
               Letöltések
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/">
+            <Link className="nav-link" to="/kapcsolat">
               Kapcsolat
             </Link>
           </li>

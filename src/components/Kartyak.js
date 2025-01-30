@@ -1,17 +1,28 @@
-import {  } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import React from "react";
 import Kartya from "./Kartya";
 
 function Kartyak() {
   return (
-    <div className="container mt-3">
-    <div className="row d-flex justify-content-around g-4">
-      {lista.map((kep, index) => {
-        return <Kartya kep={kep} key={index} />;
-      })}
-    </div>
-  </div>
-  )
+    <Container>
+    <Row className="p-4">
+    <Col><Kartya /></Col>
+    <Col><Kartya /></Col>
+    </Row>
+    <Row className="p-4">
+    <Col><Kartya /></Col>
+    <Col><Kartya /></Col>
+    </Row>
+    <Row className="p-4">
+    <Col><Kartya /></Col>
+    <Col><Kartya /></Col>
+    </Row>
+    <Row className="p-4">
+    <Col><Kartya /></Col>
+    <Col><Kartya /></Col>
+    </Row>
+    </Container>
+  );
 }
 
 export default Kartyak;
