@@ -14,22 +14,28 @@ function Footer() {
             </a>
           </Col>
           <Col>
-            <a href=""><Image src="./kepek/partnerek/logo2.png" rounded fluid /></a>
+            <a href="">
+              <Image src="./kepek/partnerek/logo2.png" rounded fluid />
+            </a>
           </Col>
           <Col>
-          <a href=""> <Image src="./kepek/partnerek/logo3.jpg" rounded fluid /></a>
+            <a href="">
+              {" "}
+              <Image src="./kepek/partnerek/logo3.jpg" rounded fluid />
+            </a>
           </Col>
           <Col>
-          <a href=""><Image src="./kepek/partnerek/logo4.png" rounded fluid /></a>
+            <a href="">
+              <Image src="./kepek/partnerek/logo4.png" rounded fluid />
+            </a>
           </Col>
           <Col>
-          <a href=""><Image src="./kepek/partnerek/logo5.png" rounded fluid /></a>
+            <a href="">
+              <Image src="./kepek/partnerek/logo5.png" rounded fluid />
+            </a>
           </Col>
         </Row>
         <Row className="p-2 m-3 align-items-center">
-          <a href="#" class="text-black col-lg-3 p-2">
-            Rendezvények
-          </a>
           <a href="#" class="text-black col-lg-3 p-2">
             Referenciák
           </a>

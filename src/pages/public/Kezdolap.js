@@ -10,7 +10,7 @@ function Kezdolap() {
     <main className="row">
       <article className="col-lg-9 row text-center">
         <KezdoOldal />
-        <Kartyak />
+        
       </article>
       <aside className="col-lg-3 p-4 row gap-3">
         <AsideKartyak />

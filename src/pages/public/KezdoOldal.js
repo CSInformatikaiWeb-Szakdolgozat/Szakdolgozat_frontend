@@ -1,10 +1,14 @@
-import React from 'react'
-import Silder from '../../components/Silder'
+import React from "react";
+import Silder from "../../components/Silder";
+import Kartyak from "../../components/Kartyak";
 
 function KezdoOldal() {
   return (
-    <Silder />
-  )
+    <>
+      <Silder />
+      <Kartyak />
+    </>
+  );
 }
 
-export default KezdoOldal
+export default KezdoOldal;

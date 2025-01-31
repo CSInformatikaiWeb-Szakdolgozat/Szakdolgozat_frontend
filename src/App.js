@@ -8,6 +8,7 @@ import useAuthContext from "./contexts/AuthContext";
 import AdminKezdolap from "./pages/admin/AdminKezdolap";
 import Kapcsolat from "./pages/public/Kapcsolat";
 import Letoltes from "./pages/public/Letoltes";
+import "./App.css";
 function App() {
   const { user } = useAuthContext();
 
