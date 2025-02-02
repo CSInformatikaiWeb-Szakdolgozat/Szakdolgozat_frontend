@@ -9,6 +9,7 @@ import AdminKezdolap from "./pages/admin/AdminKezdolap";
 import Kapcsolat from "./pages/public/Kapcsolat";
 import Letoltes from "./pages/public/Letoltes";
 import "./App.css";
+import Virtulazitacio from "./pages/public/Virtualizacio";
 function App() {
   const { user } = useAuthContext();
 
@@ -24,6 +25,8 @@ function App() {
           <Route path="/" element={<Kezdolap />} />
           <Route path="/kapcsolat" element={<Kapcsolat />} />
           <Route path="/letöltesek" element={<Letoltes />} />
+          <Route path="/kapcsolat" element={<Kapcsolat />} />
+          <Route path="/virtualizáció" element={<Virtulazitacio />} />
         </Route>
       )}
 

@@ -31,3 +31,10 @@
   background-color: #f1f1f1;
   padding: 20px;
 }
+.background{
+  background-repeat: no-repeat;
+  background-size: cover;
+  max-width: 100%;
+  height: auto;
+  background-image: url(/public/kepek/nabBGI.jpg);
+}
