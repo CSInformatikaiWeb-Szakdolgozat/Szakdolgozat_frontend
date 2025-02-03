@@ -23,11 +23,12 @@ export default function Navigacio() {
             <Nav.Link className="text-white" href="/virtualizáció">
               Virtulizáció
             </Nav.Link>
-            <Nav.Link className="text-white" href="#pricing">
+            <Nav.Link className="text-white" href="/tároló">
               Tároló Konszolidáció
             </Nav.Link>
+            <Nav.Link className="text-white" href="/szerverkonszolidáció">Szerverkonszolidáció</Nav.Link>
             <NavDropdown
-              title="Szerverkonszolidáció"
+              title="Szolgáltatások"
               id="collapsible-nav-dropdown"
             >
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
