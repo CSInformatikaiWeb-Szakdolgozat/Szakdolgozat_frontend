@@ -1,5 +1,5 @@
 import AsideKartyak from "../../components/AsideKartyak";
-import Kartyak from "../../components/Kartyak";
+
 
 import KezdoOldal from "./KezdoOldal";
 

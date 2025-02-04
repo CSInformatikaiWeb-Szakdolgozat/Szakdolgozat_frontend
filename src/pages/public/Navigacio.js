@@ -1,6 +1,5 @@
-import { Container, Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function Navigacio() {
   return (
@@ -26,11 +25,10 @@ export default function Navigacio() {
             <Nav.Link className="text-white" href="/tároló">
               Tároló Konszolidáció
             </Nav.Link>
-            <Nav.Link className="text-white" href="/szerverkonszolidáció">Szerverkonszolidáció</Nav.Link>
-            <NavDropdown
-              title="Szolgáltatások"
-              id="collapsible-nav-dropdown"
-            >
+            <Nav.Link className="text-white" href="/szerverkonszolidáció">
+              Szerverkonszolidáció
+            </Nav.Link>
+            <NavDropdown title="Szolgáltatások" id="collapsible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
