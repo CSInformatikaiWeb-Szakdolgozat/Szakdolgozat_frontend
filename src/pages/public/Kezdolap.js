@@ -8,7 +8,7 @@ function Kezdolap() {
       <article className="col-lg-9 row text-center">
         <KezdoOldal />
       </article>
-      <aside className="col-lg-3 p-4 row gap-3">
+      <aside className="col-lg-3 p-4 flex-column">
         <AsideKartyak />
       </aside>
       <Footer />
