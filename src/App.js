@@ -11,6 +11,8 @@ import Letoltes from "./pages/public/Letoltes";
 import "./App.css";
 import Virtulazitacio from "./pages/public/Virtualizacio";
 import Szerverkonszolidacio from "./pages/public/Szerverkonszolidacio";
+import Cegbemutato from "./pages/public/Cegbemutato";
+
 function App() {
   const { user } = useAuthContext();
 
@@ -24,11 +26,12 @@ function App() {
       {!user && (
         <Route element={<VendegLayout />}>
           <Route path="/" element={<Kezdolap />} />
+          <Route path="/bemutato" element={<Cegbemutato />} />
           <Route path="/kapcsolat" element={<Kapcsolat />} />
-          <Route path="/letöltesek" element={<Letoltes />} />
+          <Route path="/letoltesek" element={<Letoltes />} />
           <Route path="/kapcsolat" element={<Kapcsolat />} />
-          <Route path="/virtualizáció" element={<Virtulazitacio />} />
-          <Route path="/szerverkonszolidáció" element={<Szerverkonszolidacio/>}/>
+          <Route path="/virtualizacio" element={<Virtulazitacio />} />
+          <Route path="/szerverkonszolidacio" element={<Szerverkonszolidacio/>}/>
         </Route>
       )}
 

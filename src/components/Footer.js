@@ -9,29 +9,28 @@ function Footer() {
       <Container>
         <Row className="m-3 text-center align-items-center">
           <Col>
-            <a href="">
-              <Image src="./kepek/partnerek/logo1.jpg" rounded fluid />
+            <a href="#">
+              <Image src="./kepek/partnerek/logo1.jpg" fluid />
             </a>
           </Col>
           <Col>
-            <a href="">
-              <Image src="./kepek/partnerek/logo2.png" rounded fluid />
+            <a href="#">
+              <Image src="./kepek/partnerek/logo2.png" fluid />
             </a>
           </Col>
           <Col>
-            <a href="">
-              {" "}
-              <Image src="./kepek/partnerek/logo3.jpg" rounded fluid />
+            <a href="#">
+              <Image src="./kepek/partnerek/logo3.jpg" fluid />
             </a>
           </Col>
           <Col>
-            <a href="">
-              <Image src="./kepek/partnerek/logo4.png" rounded fluid />
+            <a href="#">
+              <Image src="./kepek/partnerek/logo4.png" fluid />
             </a>
           </Col>
           <Col>
-            <a href="">
-              <Image src="./kepek/partnerek/logo5.png" rounded fluid />
+            <a href="#">
+              <Image src="./kepek/partnerek/logo5.png" fluid />
             </a>
           </Col>
         </Row>
