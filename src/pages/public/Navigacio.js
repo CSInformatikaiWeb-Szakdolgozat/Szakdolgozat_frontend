@@ -8,7 +8,7 @@ export default function Navigacio() {
       expand="lg"
       className="bg-body-tertiary sticky-top background"
     >
-      <Container>
+      <Container fluid>
         <Navbar.Brand href="/">
           <img
             src="./kepek/test_logo.png"
@@ -18,13 +18,13 @@ export default function Navigacio() {
           ></img>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+        <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+          <Nav>
             <Nav.Link className="text-white text-uppercase" href="/bemutato">
               Cégbemutató
             </Nav.Link>
             <Nav.Link className="text-white text-uppercase" href="/virtualizácio">
-              Virtulizáció
+              Virtualizáció
             </Nav.Link>
             <Nav.Link className="text-white text-uppercase" href="/tarolo">
               Tároló Konszolidáció
@@ -46,9 +46,6 @@ export default function Navigacio() {
             </Nav.Link>
             <Nav.Link className="text-white text-uppercase" href="/letoltesek">
               Letöltések
-            </Nav.Link>
-            <Nav.Link className="text-white text-uppercase" href="/kapcsolat">
-              Kapcsolat
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
