@@ -8,5 +8,5 @@ import NavJobbOldal from "../pages/public/NavJobbOldal";
 
 export default function VendegLayout() {
     const { user } = useAuthContext(); 
-      return !user ? <>  <Navigacio /> {/* <NavJobbOldal/> */} <Outlet /> </>  : <Navigate to="/" />;
+      return !user ? <>  <Navigacio /> <NavJobbOldal/> <Outlet /> </>  : <Navigate to="/" />;
 }

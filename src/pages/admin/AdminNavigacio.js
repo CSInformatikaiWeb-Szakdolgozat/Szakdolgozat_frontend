@@ -10,32 +10,27 @@ export default function AdminNavigacio() {
       <div className="container-fluid">
         <ul className="navbar-nav">
           <li className="navbar-item">
-            <Link className="nav-link" to="/admin">
-              Kezdőlap
-            </Link>
-          </li>
-          <li className="navbar-item">
-            <Link className="nav-link" to="/oldalak">
+            <Link className="nav-link" to="/AdminOldalak">
               Oldalak
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/esemenyek">
+            <Link className="nav-link" to="/AdminEsemenyek">
               Események
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/rovatok">
+            <Link className="nav-link" to="/AdminRovatok">
               Rovatok
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/cikkek">
+            <Link className="nav-link" to="/AdminCikk">
               Cikkek
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/partnerek">
+            <Link className="nav-link" to="/AdminPartner">
               Partnerek
             </Link>
           </li>
