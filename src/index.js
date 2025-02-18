@@ -5,13 +5,16 @@ import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { AdatokProvider } from "./contexts/AdatokContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <AdatokProvider>
+          <App />
+        </AdatokProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

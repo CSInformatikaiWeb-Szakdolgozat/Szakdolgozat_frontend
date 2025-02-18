@@ -1,9 +1,8 @@
 import React from "react";
 import { Button, Table } from "react-bootstrap";
-import AdminRovatokTablaSor from "./AdminRovatokTablaSor";
-import AdminCikkTablaSor from "./AdminCikkTablaSor";
+import EditorCikkTablaSor from "./EditorCikkTablaSor";
 
-function AdminCikk() {
+function EditorCikk() {
   const teszt = [
     {
       nev: "Cikk név",
@@ -50,7 +49,7 @@ function AdminCikk() {
           <>
             {teszt.map((elem, index) => {
               return (
-                <AdminCikkTablaSor elem={elem} key={index} index={index} />
+                <EditorCikkTablaSor elem={elem} key={index} index={index} />
               );
             })}
           </>
@@ -60,4 +59,4 @@ function AdminCikk() {
   );
 }
 
-export default AdminCikk;
+export default EditorCikk;

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SuperAdminNav() {
+function EditorMenuk() {
   return (
     <div>
       
@@ -8,4 +8,4 @@ function SuperAdminNav() {
   )
 }
 
-export default SuperAdminNav
+export default EditorMenuk

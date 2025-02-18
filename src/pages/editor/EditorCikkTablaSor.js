@@ -1,7 +1,7 @@
-import { Button, } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useState } from "react";
 
-function AdminCikkTablaSor(props) {
+function EditorCikkTablaSor(props) {
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -14,7 +14,10 @@ function AdminCikkTablaSor(props) {
       <td className="text-center">{props.elem.partner}</td>
       <td className="text-center">
         <div>
-          <Button variant={isOn ? "success" : "outline-danger"} onClick={toggleSwitch}>
+          <Button
+            variant={isOn ? "success" : "outline-danger"}
+            onClick={toggleSwitch}
+          >
             {isOn ? "Megjelenítve" : "Nincs Megjelenítve"}
           </Button>
         </div>
@@ -29,4 +32,4 @@ function AdminCikkTablaSor(props) {
   );
 }
 
-export default AdminCikkTablaSor;
+export default EditorCikkTablaSor;
