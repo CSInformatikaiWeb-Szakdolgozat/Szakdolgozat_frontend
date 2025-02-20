@@ -1,7 +1,7 @@
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useState } from "react";
 
-function EditorCikkTablaSor(props) {
+function CikkTablaSor(props) {
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -12,6 +12,9 @@ function EditorCikkTablaSor(props) {
       <td className="text-center">{props.elem.nev}</td>
       <td className="text-center">{props.elem.leiras}</td>
       <td className="text-center">{props.elem.partner}</td>
+      <td className="text-center">{props.elem.classification}</td>
+      <td className="text-center">{props.elem.visibility_status}</td>
+      <td className="text-center">{props.elem.page_link}</td>
       <td className="text-center">
         <div>
           <Button
@@ -32,4 +35,4 @@ function EditorCikkTablaSor(props) {
   );
 }
 
-export default EditorCikkTablaSor;
+export default CikkTablaSor;

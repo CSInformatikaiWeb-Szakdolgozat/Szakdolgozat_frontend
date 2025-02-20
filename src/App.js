@@ -13,6 +13,8 @@ import Szerverkonszolidacio from "./pages/public/Szerverkonszolidacio";
 import Cegbemutato from "./pages/public/Cegbemutato";
 import EditorKezdolap from "./pages/editor/EditorKezdolap";
 import EditorLayout from "./layouts/EditorLayout";
+import CikkTable from "./components/CikkTable";
+import MenuTable from "./components/MenuTable";
 
 function App() {
   const { user } = useAuthContext();
@@ -43,6 +45,8 @@ function App() {
       {user && (
         <Route element={<EditorLayout />}>
           <Route path="/" element={<EditorKezdolap />} />
+          <Route path="/cikkoldal" element={<CikkTable />} />
+          <Route path="/menuoldal" element={<MenuTable />} />
         </Route>
       )}
     </Routes>

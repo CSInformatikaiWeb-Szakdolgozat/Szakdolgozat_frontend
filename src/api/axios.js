@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const myAxios = axios.create({
   // alap backend api kiszolgáló elérési útjának beállítása
-  baseURL: "http://localhost:8000",
+  baseURL: "http://localhost:8000/api",
 
   //beállítjuk, hogy  a kérések azonosítása coockie-k segítségével történik.
   withCredentials: true,

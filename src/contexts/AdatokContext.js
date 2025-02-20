@@ -36,6 +36,16 @@ export const AdatokProvider = ({ children }) => {
       console.log("Hiba történt az adat küldéskor!", err);
     }
   };
+
+const patchAdat= async(vegpont,id)=>{
+  try {
+    const response = await myAxios.patch(vegpont + "/" + id);
+    console.log("adat:", response.data);
+  } catch (err) {
+    console.log("Hiba történt az adat küldéskor!", err);
+  }
+}
+
   const deletAdat = async (vegpont, id) => {
     try {
       const response = await myAxios.delete(vegpont + "/" + id);
@@ -57,6 +67,7 @@ export const AdatokProvider = ({ children }) => {
     <AdatokContext.Provider
       value={{
         postAdat,
+        patchAdat,
         deletAdat,
         cikkLista,
         menuLista,

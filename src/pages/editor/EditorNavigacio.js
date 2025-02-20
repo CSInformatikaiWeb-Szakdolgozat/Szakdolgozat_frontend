@@ -10,12 +10,12 @@ export default function EditorNavigacio() {
       <div className="container-fluid">
         <ul className="navbar-nav">
           <li className="navbar-item">
-            <Link className="nav-link" to="/">
+            <Link className="nav-link" to="/cikkoldal">
               Cikkek
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/Esemenyek">
+            <Link className="nav-link" to="/esemenyek">
               Események
             </Link>
           </li>
@@ -25,12 +25,12 @@ export default function EditorNavigacio() {
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/Cikk">
+            <Link className="nav-link" to="/menuoldal">
               Menük
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/Partner">
+            <Link className="nav-link" to="/partner">
               Partnerek
             </Link>
           </li>
