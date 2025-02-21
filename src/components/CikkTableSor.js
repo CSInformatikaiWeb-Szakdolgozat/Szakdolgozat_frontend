@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
+import AdatokContext from "../contexts/AdatokContext";
 
-function CikkTablaSor(props) {
+function CikkTablaSor(props) { 
+  const { patchAdat, deletAdat } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
   const toggleSwitch = () => {
     setIsOn(!isOn);

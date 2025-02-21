@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
-import useAdatokContext from "../contexts/AdatokContext";
+import AdatokContext from "../contexts/AdatokContext";
 
 function MenuTableSor(props) {
-  const [patchAdat, deletAdat] = useAdatokContext;
+  const { patchAdat, deletAdat } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.status);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -17,7 +17,7 @@ function MenuTableSor(props) {
       <td className="text-center">
         <div>
           <Button
-            variant={isOn ? "success" : "outline-danger"}
+            variant={isOn ? "outline-success" : "outline-danger"}
             onClick={toggleSwitch}
           >
             {isOn ? "Megjelenítve" : "Nincs Megjelenítve"}
