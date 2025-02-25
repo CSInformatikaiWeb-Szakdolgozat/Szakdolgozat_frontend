@@ -27,8 +27,9 @@ function MenuTableSor(props) {
       </td>
       <td className="text-center">
         <Button
+        //nem mükszik még!
           onClick={() => {
-            patchAdat("/menu", props.elem.id);
+            patchAdat("/menu/", props.elem.id);
           }}
           variant="warning"
         >
@@ -38,7 +39,7 @@ function MenuTableSor(props) {
       <td className="text-center">
         <Button
           onClick={() => {
-            deletAdat("/menu", props.elem.id);
+            deletAdat("/api/menu", props.elem.id);
           }}
           variant="danger"
         >
