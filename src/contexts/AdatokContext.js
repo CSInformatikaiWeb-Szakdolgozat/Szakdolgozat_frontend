@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import useApi from "./useApi"; // Importáljuk a useApi hookot
+import useApi from "../api/useApi"; // Importáljuk a useApi hookot
 
 const AdatokContext = createContext();
 

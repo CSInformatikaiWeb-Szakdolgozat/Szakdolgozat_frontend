@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-import useApi from "../hooks/useApi";  // Feltételezve, hogy van useApi hook
+import useApi from "../api/useApi";  // Feltételezve, hogy van useApi hook
 
 const AltalanosForm = ({ apiEndpoint, formTitle, onFormSubmit }) => {
   const { getAdat, postAdat, patchAdat, loading, error } = useApi();
