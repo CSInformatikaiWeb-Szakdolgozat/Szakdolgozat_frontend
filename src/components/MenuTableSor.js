@@ -29,7 +29,7 @@ function MenuTableSor(props) {
         <Button
         //nem mükszik még!
           onClick={() => {
-            patchAdat("/menu/", props.elem.id);
+            patchAdat("/api/menu", props.elem.id);
           }}
           variant="warning"
         >
