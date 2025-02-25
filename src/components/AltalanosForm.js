@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-import useApi from "../api/useApi";  // Feltételezve, hogy van useApi hook
+import AdatokContext from "../contexts/AdatokContext"; // Feltételezve, hogy van useApi hook
 
 const AltalanosForm = ({ apiEndpoint, formTitle, onFormSubmit }) => {
-  const { getAdat, postAdat, patchAdat, loading, error } = useApi();
-  
+  const { getAdat, postAdat, patchAdat, loading, error } = AdatokContext();
+
   const [formData, setFormData] = useState({});
   const [isEditMode, setIsEditMode] = useState(false);
-  
+
   useEffect(() => {
     if (apiEndpoint && !isEditMode) {
       // Ha a form editálás módban van, akkor nem töltjük újra az adatokat
@@ -16,7 +16,7 @@ const AltalanosForm = ({ apiEndpoint, formTitle, onFormSubmit }) => {
       });
     }
   }, [apiEndpoint, isEditMode, getAdat]);
-  
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -26,12 +26,12 @@ const AltalanosForm = ({ apiEndpoint, formTitle, onFormSubmit }) => {
 
     if (isEditMode) {
       // Ha editálás mód van, frissítjük az adatot
-      await patchAdat(apiEndpoint, formData.id, formData); 
+      await patchAdat(apiEndpoint, formData.id, formData);
     } else {
       // Ha új adat, akkor POST-tal küldjük el
       await postAdat(apiEndpoint, formData);
     }
-    
+
     if (onFormSubmit) onFormSubmit();
   };
 

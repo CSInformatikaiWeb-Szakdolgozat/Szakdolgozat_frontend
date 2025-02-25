@@ -39,6 +39,7 @@ function MenuTable() {
       <Table striped bordered hover>
         <thead className="text-center">
           <tr>
+            <tr>Id</tr>
             <th>Név</th>
             <th>Fő menü</th>
             <th>Link</th>
