@@ -4,7 +4,7 @@ import CikkTablaSor from "./CikkTableSor";
 import { Button, Table } from "react-bootstrap";
 
 function CikkTable() {
-  const { cikkLista, postAdat, deletAdat } = useContext(useAdatokContext);
+  const { cikkLista } = useContext(useAdatokContext);
   return (
     <div>
       <div className="text-end">
@@ -20,6 +20,7 @@ function CikkTable() {
             <th>Besorolás</th>
             <th>Megjelenít</th>
             <th>Link</th>
+            <th>Modosít</th>
             <th>Törlés</th>
           </tr>
         </thead>

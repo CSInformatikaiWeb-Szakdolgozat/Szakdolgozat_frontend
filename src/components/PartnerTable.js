@@ -33,7 +33,7 @@ function PartnerTable() {
           </thead>
           <tbody>
             <>
-              {menuLista.map((elem, index) => {
+              {partnerLista.map((elem, index) => {
                 console.log("belépet a ciklusba");
                 return <PartnerTableSor elem={elem} key={index} index={index} />;
               })}

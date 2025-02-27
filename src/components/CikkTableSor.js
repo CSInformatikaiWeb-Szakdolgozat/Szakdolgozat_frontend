@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 
-function CikkTablaSor(props) { 
+function CikkTablaSor(props) {
   const { patchAdat, deletAdat } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
   const toggleSwitch = () => {
@@ -11,8 +11,8 @@ function CikkTablaSor(props) {
 
   return (
     <tr>
-      <td className="text-center">{props.elem.nev}</td>
-      <td className="text-center">{props.elem.leiras}</td>
+      <td className="text-center">{props.elem.name}</td>
+      <td className="text-center">{props.elem.description}</td>
       <td className="text-center">{props.elem.partner}</td>
       <td className="text-center">{props.elem.classification}</td>
       <td className="text-center">{props.elem.visibility_status}</td>
@@ -28,10 +28,25 @@ function CikkTablaSor(props) {
         </div>
       </td>
       <td className="text-center">
-        <Button variant="warning">Szerkesztés</Button>
+        <Button
+          //nem mükszik még!
+          onClick={() => {
+            patchAdat("/api/menu", props.elem.id);
+          }}
+          variant="warning"
+        >
+          Szerkesztés
+        </Button>
       </td>
       <td className="text-center">
-        <Button variant="danger">Törlés</Button>
+        <Button
+          onClick={() => {
+            deletAdat("/api/menu", props.elem.id);
+          }}
+          variant="danger"
+        >
+          Törlés
+        </Button>
       </td>
     </tr>
   );
