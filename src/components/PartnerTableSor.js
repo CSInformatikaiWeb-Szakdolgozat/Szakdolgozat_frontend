@@ -12,7 +12,6 @@ function PartnerTableSor(props) {
   return (
     <tr>
       <td className="text-center">{props.elem.name}</td>
-      <td className="text-center">{props.elem.status}</td>
       <td className="text-center">{props.elem.page}</td>
       <td className="text-center">
         <div>

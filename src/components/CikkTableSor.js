@@ -31,7 +31,7 @@ function CikkTablaSor(props) {
         <Button
           //nem mükszik még!
           onClick={() => {
-            patchAdat("/api/menu", props.elem.id);
+            patchAdat("/api/article", props.elem.id);
           }}
           variant="warning"
         >
@@ -41,7 +41,7 @@ function CikkTablaSor(props) {
       <td className="text-center">
         <Button
           onClick={() => {
-            deletAdat("/api/menu", props.elem.id);
+            deletAdat("/api/article", props.elem.id);
           }}
           variant="danger"
         >

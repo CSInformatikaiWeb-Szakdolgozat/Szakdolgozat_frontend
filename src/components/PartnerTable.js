@@ -25,8 +25,8 @@ function PartnerTable() {
           <thead className="text-center">
             <tr>
               <th>Név</th>
-              <th>Megjelenít</th>
               <th>Oldal</th>
+              <th>Megjelenítés</th>
               <th>Modosít</th>
               <th>Törlés</th>
             </tr>

@@ -25,7 +25,7 @@ function MenuTable() {
       <Table striped bordered hover>
         <thead className="text-center">
           <tr>
-            <th>Id</th>
+            <th>Menü id</th>
             <th>Név</th>
             <th>Fő menü</th>
             <th>Link</th>
