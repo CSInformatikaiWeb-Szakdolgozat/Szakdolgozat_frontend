@@ -15,12 +15,12 @@ export default function EditorNavigacio() {
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/esemenyek">
+            <Link className="nav-link" to="/esemenyekoldal">
               Események
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/Rovatok">
+            <Link className="nav-link" to="/besorolasoldal">
               Besorolások
             </Link>
           </li>
@@ -30,7 +30,7 @@ export default function EditorNavigacio() {
             </Link>
           </li>
           <li className="navbar-item">
-            <Link className="nav-link" to="/partner">
+            <Link className="nav-link" to="/partneroldal">
               Partnerek
             </Link>
           </li>

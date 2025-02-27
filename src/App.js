@@ -15,6 +15,7 @@ import EditorKezdolap from "./pages/editor/EditorKezdolap";
 import EditorLayout from "./layouts/EditorLayout";
 import CikkTable from "./components/CikkTable";
 import MenuTable from "./components/MenuTable";
+import PartnerTable from "./components/PartnerTable";
 
 function App() {
   const { user } = useAuthContext();
@@ -47,6 +48,9 @@ function App() {
           <Route path="/" element={<EditorKezdolap />} />
           <Route path="/cikkoldal" element={<CikkTable />} />
           <Route path="/menuoldal" element={<MenuTable />} />
+          <Route path="/esemenyekoldal" element={<MenuTable />} />
+          <Route path="/besorolasoldal" element={<MenuTable />} />
+          <Route path="/partneroldal" element={<PartnerTable />} />
         </Route>
       )}
     </Routes>
