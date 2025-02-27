@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import BesorolasTableSor from "./BesorolasTableSor";
 

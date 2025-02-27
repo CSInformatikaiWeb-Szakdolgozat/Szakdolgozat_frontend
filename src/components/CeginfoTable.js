@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import AdatokContext from "../contexts/AdatokContext";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
+import CeginfoTableSor from "./CeginfoTableSor";
 
 function CeginfoTable() {
   const { companyInfoLista } = useContext(AdatokContext);
@@ -42,11 +43,9 @@ function CeginfoTable() {
         </thead>
         <tbody>
           <>
-            {classLista.map((elem, index) => {
+            {companyInfoLista.map((elem, index) => {
               console.log("belépet a ciklusba");
-              return (
-                <BesorolasTableSor elem={elem} key={index} index={index} />
-              );
+              return <CeginfoTableSor elem={elem} key={index} index={index} />;
             })}
           </>
         </tbody>
