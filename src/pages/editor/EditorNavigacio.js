@@ -35,6 +35,11 @@ export default function EditorNavigacio() {
             </Link>
           </li>
           <li className="navbar-item">
+            <Link className="nav-link" to="/ceginfooldal">
+              Cég infok
+            </Link>
+          </li>
+          <li className="navbar-item">
             <button className="nav-link" onClick={() => { logout() }}>
                 Kijelentkezés
             </button>

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 
-function PartnerTableSor(props) {
+function BesorolasTableSor(props) {
   const { patchAdat, deletAdat } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.status);
   const toggleSwitch = () => {
@@ -11,9 +11,9 @@ function PartnerTableSor(props) {
 
   return (
     <tr>
+      <td className="text-center">{props.elem.id}</td>
+      <td className="text-center">{props.elem.upper_classification}</td>
       <td className="text-center">{props.elem.name}</td>
-      <td className="text-center">{props.elem.status}</td>
-      <td className="text-center">{props.elem.page}</td>
       <td className="text-center">
         <div>
           <Button
@@ -28,7 +28,7 @@ function PartnerTableSor(props) {
         <Button
           //nem mükszik még!
           onClick={() => {
-            patchAdat("/api/partner", props.elem.id);
+            patchAdat("/api/class", props.elem.id);
           }}
           variant="warning"
         >
@@ -38,7 +38,7 @@ function PartnerTableSor(props) {
       <td className="text-center">
         <Button
           onClick={() => {
-            deletAdat("/api/partner", props.elem.id);
+            deletAdat("/api/class", props.elem.id);
           }}
           variant="danger"
         >
@@ -49,4 +49,4 @@ function PartnerTableSor(props) {
   );
 }
 
-export default PartnerTableSor;
+export default BesorolasTableSor;
