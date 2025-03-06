@@ -7,6 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -17,9 +18,15 @@ export const AuthProvider = ({ children }) => {
 
   //bejelentkezett felhasználó adatainak lekérdezése
   const getUser = async () => {
-    const { data } = await myAxios.get("/api/user");
-    console.log(data);
-    setUser(data);
+    try {
+      const { data } = await myAxios.get("/api/user");
+      console.log(data);
+      setUser(data);
+    } catch (error) {
+      console.log("Hiba történt fecelés közben!", error);
+    } finally {
+      setLoading(false);
+    }
   };
   const logout = async () => {
     await csrf();
@@ -58,7 +65,9 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
   return (
-    <AuthContext.Provider value={{ logout, loginReg, errors, getUser, user }}>
+    <AuthContext.Provider
+      value={{ logout, loginReg, errors, getUser, user, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

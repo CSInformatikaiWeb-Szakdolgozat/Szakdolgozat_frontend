@@ -20,8 +20,14 @@ import CeginfoTable from "./components/CeginfoTable";
 import EsemenyTable from "./components/EsemenyTable";
 
 function App() {
-  const { user } = useAuthContext();
-
+  const { user, loading } = useAuthContext();
+  if (loading) {
+    return (
+      <div className="loading-body">
+        <div className="center-loader">Az oldal be töltödik</div>
+      </div>
+    );
+  }
   return (
     <Routes>
       <Route path="*" element={<NoPage />} />
