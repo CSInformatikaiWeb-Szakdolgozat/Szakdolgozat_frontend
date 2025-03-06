@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 
 function CeginfoTableSor(props) {
-  const { patchAdat } = useContext(AdatokContext);
+  const { patchAdat,setCompanyInfoLista,getAdat } = useContext(AdatokContext);
 
   return (
     <tr>
@@ -27,6 +27,7 @@ function CeginfoTableSor(props) {
           //nem mükszik még!
           onClick={() => {
             patchAdat("/api/companyinfo", props.elem.id);
+            getAdat("/api/companyinfos", setCompanyInfoLista);
           }}
           variant="warning"
         >

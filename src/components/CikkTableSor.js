@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 
 function CikkTablaSor(props) {
-  const { patchAdat, deletAdat } = useContext(AdatokContext);
+  const { patchAdat, deletAdat,getAdat,setArticleLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -41,6 +41,7 @@ function CikkTablaSor(props) {
         <Button
           onClick={() => {
             deletAdat("/api/article", props.elem.id);
+            getAdat("/api/articles", setArticleLista);
           }}
           variant="danger"
         >

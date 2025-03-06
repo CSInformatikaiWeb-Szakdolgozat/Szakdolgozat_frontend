@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 
 function PartnerTableSor(props) {
-  const { patchAdat, deletAdat } = useContext(AdatokContext);
+  const { patchAdat, deletAdat,getAdat,setPartnerLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.status);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -38,6 +38,7 @@ function PartnerTableSor(props) {
         <Button
           onClick={() => {
             deletAdat("/api/partner", props.elem.id);
+            getAdat("/api/partners", setPartnerLista);
           }}
           variant="danger"
         >

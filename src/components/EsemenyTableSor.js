@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Button } from 'react-bootstrap';
 
 function EsemenyTableSor() {
-    const { patchAdat, deletAdat } = useContext(AdatokContext);
+    const { patchAdat, deletAdat,getAdat,setEsemenyLista } = useContext(AdatokContext);
     const [isOn, setIsOn] = useState(props.elem.megjelenit);
     const toggleSwitch = () => {
       setIsOn(!isOn);
@@ -37,6 +37,7 @@ function EsemenyTableSor() {
           <Button
             onClick={() => {
               deletAdat("/api/event", props.elem.id);
+              getAdat("/api/events", setEsemenyLista);
             }}
             variant="danger"
           >

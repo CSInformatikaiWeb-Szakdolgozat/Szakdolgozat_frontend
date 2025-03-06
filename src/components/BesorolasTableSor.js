@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 
 function BesorolasTableSor(props) {
-  const { patchAdat, deletAdat } = useContext(AdatokContext);
+  const { patchAdat, deletAdat,getAdat,setClassesLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.status);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -39,6 +39,7 @@ function BesorolasTableSor(props) {
         <Button
           onClick={() => {
             deletAdat("/api/class", props.elem.id);
+            getAdat("/api/classes", setClassesLista);
           }}
           variant="danger"
         >

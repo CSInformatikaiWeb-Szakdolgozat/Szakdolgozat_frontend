@@ -27,14 +27,10 @@ export const AuthProvider = ({ children }) => {
     myAxios.post("/logout").then((resp) => {
       setUser(null);
       console.log(resp);
+      navigate("/");
     });
   };
 
-  useEffect(() => {
-    if (!user) {
-      getUser();
-    }
-  }, []);
   const loginReg = async ({ ...adat }, vegpont) => {
     //lekérjük a csrf tokent
     await csrf();
@@ -56,7 +52,11 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
-
+  useEffect(() => {
+    if (!user) {
+      getUser();
+    }
+  }, []);
   return (
     <AuthContext.Provider value={{ logout, loginReg, errors, getUser, user }}>
       {children}

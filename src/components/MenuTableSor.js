@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 
 function MenuTableSor(props) {
-  const { patchAdat, deletAdat } = useContext(AdatokContext);
+  const { patchAdat, deletAdat,getAdat,setMenuLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.status);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -40,6 +40,7 @@ function MenuTableSor(props) {
         <Button
           onClick={() => {
             deletAdat("/api/menu", props.elem.id);
+            getAdat("/api/menus", setMenuLista);
           }}
           variant="danger"
         >
