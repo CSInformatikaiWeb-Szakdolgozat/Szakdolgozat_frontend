@@ -10,17 +10,9 @@ function MenuTable() {
   }, []);
   return (
     <div>
-      <div className="">
-        <Button
-          onClick={() => {
-            // postAdat("/menu",);
-            console.log("felvett új menüt");
-          }}
-          variant="success"
-        >
-          Mentés
-        </Button>
-      </div>
+      <div className="text-end">
+          <Button variant="success">Felvesz</Button>
+        </div>
 
       <Table striped bordered hover>
         <thead className="text-center">

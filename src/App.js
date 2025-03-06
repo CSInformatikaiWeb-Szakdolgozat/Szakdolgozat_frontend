@@ -48,7 +48,6 @@ function App() {
       {/* Admin és User ugyanazon útvonalon */}
       {user && (
         <Route element={<EditorLayout />}>
-          <Route path="/" element={<EditorKezdolap />} />
           <Route path="/cikkoldal" element={<CikkTable />} />
           <Route path="/ceginfooldal" element={<CeginfoTable />} />
           <Route path="/menuoldal" element={<MenuTable />} />

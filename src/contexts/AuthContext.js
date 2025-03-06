@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       //await getUser();
       //elmegyünk  a kezdőlapra
       getUser();
-      navigate("/");
+      navigate("/cikkoldal");
     } catch (error) {
       console.log(error);
       if (error.response.status === 422) {

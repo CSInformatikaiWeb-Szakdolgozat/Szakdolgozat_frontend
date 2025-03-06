@@ -4,23 +4,15 @@ import AdatokContext from "../contexts/AdatokContext";
 import BesorolasTableSor from "./BesorolasTableSor";
 
 function BesorolasTable() {
-  const { classLista,setClassLista,getAdat } = useContext(AdatokContext);
+  const { classLista, setClassLista, getAdat } = useContext(AdatokContext);
   useEffect(() => {
     getAdat("/api/classes", setClassLista);
   }, []);
 
   return (
     <div>
-      <div className="">
-        <Button
-          onClick={() => {
-            // postAdat("/menu",);
-            console.log("felvett új menüt");
-          }}
-          variant="success"
-        >
-          Mentés
-        </Button>
+      <div className="text-end">
+        <Button variant="success">Felvesz</Button>
       </div>
 
       <Table striped bordered hover>

@@ -4,15 +4,14 @@ import CikkTablaSor from "./CikkTableSor";
 import { Button, Table } from "react-bootstrap";
 
 function CikkTable() {
-  const { cikkLista,setCikkLista,getAdat } = useContext(useAdatokContext);
+  const { cikkLista, setCikkLista, getAdat } = useContext(useAdatokContext);
   useEffect(() => {
     getAdat("/api/articles", setCikkLista);
-  }, [     
-  ]);
+  }, []);
   return (
     <div>
       <div className="text-end">
-        <Button variant="success">Felfesz</Button>
+        <Button variant="success">Felvesz</Button>
       </div>
 
       <Table striped bordered hover>

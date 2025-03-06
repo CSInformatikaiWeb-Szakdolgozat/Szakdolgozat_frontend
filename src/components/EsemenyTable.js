@@ -1,40 +1,39 @@
-import React, { useContext, useEffect } from 'react'
-import EsemenyTableSor from './EsemenyTableSor';
-import { Button, Table } from 'react-bootstrap';
-import AdatokContext from '../contexts/AdatokContext';
+import React, { useContext, useEffect } from "react";
+import EsemenyTableSor from "./EsemenyTableSor";
+import { Button, Table } from "react-bootstrap";
+import AdatokContext from "../contexts/AdatokContext";
 
 function EsemenyTable() {
-    const { eventLista,setEventLista,getAdat } = useContext(AdatokContext);
-    useEffect(() => {
-      getAdat("/api/events", setEventLista);
-    }, [     
-    ]);
-    return (
-      <div>
-        <div className="text-end">
-          <Button variant="success">Felfesz</Button>
-        </div>
-  
-        <Table striped bordered hover>
-          <thead className="text-center">
-            <tr>
-              <th>Leírás</th>
-              <th>Helyszín</th>
-              <th>Időpont</th>
-              <th>Modosít</th>
-              <th>Törlés</th>
-            </tr>
-          </thead>
-          <tbody>
-            <>
-              {eventLista.map((elem, index) => {
-                return <EsemenyTableSor elem={elem} key={index} index={index} />;
-              })}
-            </>
-          </tbody>
-        </Table>
+  const { eventLista, setEventLista, getAdat } = useContext(AdatokContext);
+  useEffect(() => {
+    getAdat("/api/events", setEventLista);
+  }, []);
+  return (
+    <div>
+      <div className="text-end">
+        <Button variant="success">Felvesz</Button>
       </div>
-    );
+
+      <Table striped bordered hover>
+        <thead className="text-center">
+          <tr>
+            <th>Leírás</th>
+            <th>Helyszín</th>
+            <th>Időpont</th>
+            <th>Modosít</th>
+            <th>Törlés</th>
+          </tr>
+        </thead>
+        <tbody>
+          <>
+            {eventLista.map((elem, index) => {
+              return <EsemenyTableSor elem={elem} key={index} index={index} />;
+            })}
+          </>
+        </tbody>
+      </Table>
+    </div>
+  );
 }
 
-export default EsemenyTable
+export default EsemenyTable;
