@@ -18,6 +18,7 @@ import MenuTable from "./components/MenuTable";
 import PartnerTable from "./components/PartnerTable";
 import BesorolasTable from "./components/BesorolasTable";
 import CeginfoTable from "./components/CeginfoTable";
+import EsemenyTable from "./components/EsemenyTable";
 
 function App() {
   const { user } = useAuthContext();
@@ -51,7 +52,7 @@ function App() {
           <Route path="/cikkoldal" element={<CikkTable />} />
           <Route path="/ceginfooldal" element={<CeginfoTable />} />
           <Route path="/menuoldal" element={<MenuTable />} />
-          <Route path="/esemenyekoldal" element={<MenuTable />} />
+          <Route path="/esemenyekoldal" element={<EsemenyTable />} />
           <Route path="/besorolasoldal" element={<BesorolasTable />} />
           <Route path="/partneroldal" element={<PartnerTable />} />
         </Route>
