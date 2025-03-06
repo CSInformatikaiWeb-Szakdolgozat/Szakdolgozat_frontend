@@ -11,7 +11,6 @@ import "./App.css";
 import Virtulazitacio from "./pages/public/Virtualizacio";
 import Szerverkonszolidacio from "./pages/public/Szerverkonszolidacio";
 import Cegbemutato from "./pages/public/Cegbemutato";
-import EditorKezdolap from "./pages/editor/EditorKezdolap";
 import EditorLayout from "./layouts/EditorLayout";
 import CikkTable from "./components/CikkTable";
 import MenuTable from "./components/MenuTable";
