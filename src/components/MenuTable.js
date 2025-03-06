@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import MenuTableSor from "./MenuTableSor";
 
-
 function MenuTable() {
-  const { menuLista } = useContext(AdatokContext);
-
+  const { menuLista,setMenuLista,getAdat } = useContext(AdatokContext);
+  useEffect(() => {
+    getAdat("/api/menus", setMenuLista);
+  }, []);
   return (
     <div>
       <div className="">
@@ -20,7 +21,6 @@ function MenuTable() {
           Mentés
         </Button>
       </div>
-   
 
       <Table striped bordered hover>
         <thead className="text-center">

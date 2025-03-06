@@ -55,22 +55,21 @@ export const AdatokProvider = ({ children }) => {
       console.log("Hiba történt az adat küldéskor!", err);
     }
   };
-  useEffect(() => {
-    getAdat("/api/articles", setCikkLista);
-    getAdat("/api/partners", setPartnerLista);
-    getAdat("/api/menus", setMenuLista);
-    getAdat("/api/events", setEventLista);
-    getAdat("/api/companyinfos", setCompanyInfoLista);
-    getAdat("/api/classes", setClassLista);
-    getAdat("/api/users", setUserLista);
-  }, []);
 
   return (
     <AdatokContext.Provider
       value={{
+        getAdat,
         deletAdat,
         postAdat,
         patchAdat,
+        setCikkLista,
+        setMenuLista,
+        setPartnerLista,
+        setClassLista,
+        setUserLista,
+        setEventLista,
+        setCompanyInfoLista,
         cikkLista,
         menuLista,
         partnerLista,

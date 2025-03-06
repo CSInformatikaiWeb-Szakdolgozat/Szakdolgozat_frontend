@@ -8,7 +8,6 @@ function CikkTablaSor(props) {
   const toggleSwitch = () => {
     setIsOn(!isOn);
   };
-
   return (
     <tr>
       <td className="text-center">{props.elem.name}</td>

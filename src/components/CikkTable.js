@@ -1,10 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import useAdatokContext from "../contexts/AdatokContext";
 import CikkTablaSor from "./CikkTableSor";
 import { Button, Table } from "react-bootstrap";
 
 function CikkTable() {
-  const { cikkLista } = useContext(useAdatokContext);
+  const { cikkLista,setCikkLista,getAdat } = useContext(useAdatokContext);
+  useEffect(() => {
+    getAdat("/api/articles", setCikkLista);
+  }, [     
+  ]);
   return (
     <div>
       <div className="text-end">

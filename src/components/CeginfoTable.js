@@ -1,11 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import AdatokContext from "../contexts/AdatokContext";
 import { Button, Table } from "react-bootstrap";
 import CeginfoTableSor from "./CeginfoTableSor";
 
 function CeginfoTable() {
-  const { companyInfoLista } = useContext(AdatokContext);
-
+  const { companyInfoLista, setCompanyInfoLista, getAdat } =
+    useContext(AdatokContext);
+  useEffect(() => {
+    getAdat("/api/companyinfos", setCompanyInfoLista);
+  }, []);
   return (
     <div>
       <div className="">

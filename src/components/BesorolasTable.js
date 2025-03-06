@@ -1,10 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import BesorolasTableSor from "./BesorolasTableSor";
 
 function BesorolasTable() {
-  const { classLista } = useContext(AdatokContext);
+  const { classLista,setClassLista,getAdat } = useContext(AdatokContext);
+  useEffect(() => {
+    getAdat("/api/classes", setClassLista);
+  }, []);
 
   return (
     <div>
