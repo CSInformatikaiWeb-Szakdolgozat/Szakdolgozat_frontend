@@ -1,20 +1,31 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import MenuTableSor from "./MenuTableSor";
+import MenuAdd from "../components/forms/add/menuAdd"; // Importáljuk a menuAdd komponenst
 
 function MenuTable() {
-  const { menuLista,setMenuLista,getAdat } = useContext(AdatokContext);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  const { menuLista, setMenuLista, getAdat } = useContext(AdatokContext);
   useEffect(() => {
     getAdat("/api/menus", setMenuLista);
   }, []);
   return (
     <div>
       <div className="text-end">
-          <Button variant="success">Felvesz</Button>
-        </div>
+        {/* Gomb a modal megnyitásához */}
+        <Button variant="success" onClick={handleShowModal}>
+          Hozzáadás
+        </Button>
 
-      <Table striped bordered hover>
+        {/* MenuAdd komponens megjelenítése, átadva a modal vezérlését */}
+        <MenuAdd showModal={showModal} handleCloseModal={handleCloseModal} />
+      </div>
+
+      <Table striped bordered hover responsive>
         <thead className="text-center">
           <tr>
             <th>Menü id</th>
