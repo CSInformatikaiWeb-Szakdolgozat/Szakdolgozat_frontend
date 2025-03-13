@@ -15,7 +15,7 @@ function BesorolasTable() {
         <Button variant="success">Felvesz</Button>
       </div>
 
-      <Table striped bordered hover>
+      <Table striped bordered hover responsive>
         <thead className="text-center">
           <tr>
             <th>Id</th>
