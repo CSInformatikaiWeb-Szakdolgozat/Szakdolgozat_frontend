@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { Button } from 'react-bootstrap';
+import AdatokContext from '../contexts/AdatokContext';
 
-function EsemenyTableSor() {
+function EsemenyTableSor(props) {
     const { patchAdat, deletAdat,getAdat,setEsemenyLista } = useContext(AdatokContext);
+    
     const [isOn, setIsOn] = useState(props.elem.megjelenit);
     const toggleSwitch = () => {
       setIsOn(!isOn);

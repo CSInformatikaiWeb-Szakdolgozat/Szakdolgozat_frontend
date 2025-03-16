@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
-function menuAdd({ showModal, handleCloseModal }) {
+function MenuAdd({ showModal, handleCloseModal }) {
   const { postAdat, menuLista, getAdat, setMenuLista } =
     useContext(AdatokContext);
 
@@ -114,4 +114,4 @@ function menuAdd({ showModal, handleCloseModal }) {
   );
 }
 
-export default menuAdd;
+export default MenuAdd;
