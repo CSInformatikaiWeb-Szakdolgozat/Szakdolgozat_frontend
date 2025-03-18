@@ -3,7 +3,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
 function MenuEdit({ showModal, handleCloseModal, menuId }) {
-  const { menuLista, getAdat, setMenuLista, patchAdat } = useContext(AdatokContext);
+  const { menuLista, getAdat, setMenuLista, patchAdat, postAdat } = useContext(AdatokContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -32,12 +32,11 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
       });
     }
   }, [menuId, getAdat]);
-  
 
   const handleMainMenuChange = (e) => {
     const selectedValue = e.target.value;
     const newMainMenu = selectedValue === "null" ? null : selectedValue;
-  
+
     setFormData((prevData) => ({
       ...prevData,
       main_menu: newMainMenu, // Ha az új főmenüt választja, akkor null lesz
@@ -64,7 +63,7 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-  
+
     // Ha nem történt változás, ne küldjünk adatot
     if (
       formData.name === "" ||
@@ -76,19 +75,34 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
       handleCloseModal();
       return; // Nincs szükség adatküldésre
     }
-  
+
     // Ha módosultak az adatok, akkor elküldjük őket
     console.log("Küldött adat a backend-re:", formData);
-  
+
     // A PATCH kérés a módosításokkal
     patchAdat(`/api/menu/${menuId}`, formData);
-  
+
     // Frissítjük a menülistát a legújabb adatokkal
     getAdat("/api/menus", setMenuLista);
-  
+
     handleCloseModal(); // Bezárja a modal-t a küldés után
   };
-  
+
+  // Klónozás kezelése
+  const handleClone = async () => {
+    const clonedData = { ...formData }; // Klónozzuk a jelenlegi adatokat
+    clonedData.name = `${formData.name} (klónozva)`; // Klónozott elemhez új nevet adunk
+
+    try {
+      // POST kérés a klónozott adat mentéséhez
+      await postAdat("/api/menu", clonedData);
+      // Frissítjük a menülistát, hogy az új rekord is megjelenjen
+      getAdat("/api/menus", setMenuLista);
+      handleCloseModal(); // Bezárja a modált
+    } catch (error) {
+      console.error("Hiba történt a klónozás közben:", error);
+    }
+  };
 
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
@@ -144,11 +158,24 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Módosít
-          </Button>
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        {/* Módosítás gomb */}
+        <Button variant="success" onClick={handleSubmit}>
+          Módosítás
+        </Button>
+
+        {/* Klónozás gomb */}
+        <Button variant="primary" onClick={handleClone}>
+          Klónozás
+        </Button>
+
+        {/* Mégse gomb */}
+        <Button variant="danger" onClick={handleCloseModal}>
+          Mégse
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 }

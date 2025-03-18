@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
+import BesorolasEdit from "../components/forms/edit/besorolasEdit";
+
 
 function BesorolasTableSor(props) {
   const { patchAdat, deletAdat,getAdat,setClassesLista } = useContext(AdatokContext);
@@ -8,6 +10,11 @@ function BesorolasTableSor(props) {
   const toggleSwitch = () => {
     setIsOn(!isOn);
   };
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   return (
     <tr>
@@ -24,17 +31,21 @@ function BesorolasTableSor(props) {
           </Button>
         </div>
       </td>
+      
       <td className="text-center">
-        <Button
-          //nem mükszik még!
-          onClick={() => {
-            patchAdat("/api/class", props.elem.id);
-          }}
-          variant="warning"
-        >
-          Szerkesztés
+        {/* Gomb a modal megnyitásához */}
+        <Button variant="warning" onClick={handleShowModal}>
+          Módosítás
         </Button>
+
+        {/* BesorolasEdit komponens megjelenítése, átadva csak a besorolasId-t */}
+        <BesorolasEdit
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          besorolasId={props.elem.id} // Az elem id-jét adjuk át
+        />
       </td>
+
       <td className="text-center">
         <Button
           onClick={() => {

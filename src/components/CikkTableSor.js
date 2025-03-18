@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
+import CikkEdit from "../components/forms/edit/cikkEdit";
 
 function CikkTablaSor(props) {
   const { patchAdat, deletAdat,getAdat,setArticleLista } = useContext(AdatokContext);
@@ -8,6 +9,13 @@ function CikkTablaSor(props) {
   const toggleSwitch = () => {
     setIsOn(!isOn);
   };
+
+  const [showModal, setShowModal] = useState(false);
+
+  // A modal megjelenítéséhez szükséges funkciók
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   return (
     <tr>
       <td className="text-center">{props.elem.name}</td>
@@ -26,17 +34,21 @@ function CikkTablaSor(props) {
           </Button>
         </div>
       </td>
+
       <td className="text-center">
-        <Button
-          //nem mükszik még!
-          onClick={() => {
-            patchAdat("/api/article", props.elem.id);
-          }}
-          variant="warning"
-        >
-          Szerkesztés
+        {/* Gomb a modal megnyitásához */}
+        <Button variant="warning" onClick={handleShowModal}>
+          Módosítás
         </Button>
+
+        {/* CikkEdit komponens megjelenítése, átadva csak a cikkId-t */}
+        <CikkEdit
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          cikkId={props.elem.id} // Most csak a cikkId-t adjuk át
+        />
       </td>
+
       <td className="text-center">
         <Button
           onClick={() => {
