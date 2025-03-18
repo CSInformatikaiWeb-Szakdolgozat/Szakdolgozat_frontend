@@ -21,7 +21,7 @@ function BesorolasTable() {
             <th>Id</th>
             <th>Felső besorolás</th>
             <th>Neve</th>
-            <th>Modosít</th>
+            <th>Módosít</th>
             <th>Törlés</th>
           </tr>
         </thead>

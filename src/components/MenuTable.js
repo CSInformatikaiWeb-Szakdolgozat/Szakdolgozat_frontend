@@ -33,14 +33,14 @@ function MenuTable() {
             <th>Fő menü</th>
             <th>Link</th>
             <th>Megjelenít</th>
-            <th>Modosít</th>
+            <th>Módosít</th>
             <th>Törlés</th>
           </tr>
         </thead>
         <tbody>
           <>
             {menuLista.map((elem, index) => {
-              console.log("belépet a ciklusba");
+              console.log("Belépett a ciklusba");
               return <MenuTableSor elem={elem} key={index} index={index} />;
             })}
           </>

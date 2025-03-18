@@ -19,9 +19,9 @@ function CeginfoTable() {
         <thead className="text-center">
           <tr>
             <th>Cég neve</th>
-            <th>Cég vezető</th>
-            <th>Cég vezető email</th>
-            <th>Cég vezető telefonszám</th>
+            <th>Cégvezető</th>
+            <th>Cégvezető e-mail</th>
+            <th>Cégvezető telefonszám</th>
             <th>Telephely</th>
             <th>Levelezési cím</th>
             <th>Székhely</th>
@@ -29,11 +29,11 @@ function CeginfoTable() {
             <th>Cégjegyzék</th>
             <th>Elérhetőségi email</th>
             <th>Elérhetőségi telefonszám</th>
-            <th>Hibabejelentési email</th>
+            <th>Hibabejelentési e-mail</th>
             <th>Hibabejelentési telefonszám</th>
             <th>Árajánlatkérés</th>
-            <th>Google maps</th>
-            <th>Modosít</th>
+            <th>Google Maps</th>
+            <th>Módosít</th>
           </tr>
         </thead>
         <tbody>

@@ -23,7 +23,7 @@ function CikkTable() {
             <th>Besorolás</th>
             <th>Megjelenít</th>
             <th>Link</th>
-            <th>Modosít</th>
+            <th>Módosít</th>
             <th>Törlés</th>
           </tr>
         </thead>

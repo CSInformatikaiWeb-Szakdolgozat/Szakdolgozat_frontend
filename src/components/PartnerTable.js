@@ -20,7 +20,7 @@ function PartnerTable() {
             <th>Név</th>
             <th>Oldal</th>
             <th>Megjelenítés</th>
-            <th>Modosít</th>
+            <th>Módosít</th>
             <th>Törlés</th>
           </tr>
         </thead>

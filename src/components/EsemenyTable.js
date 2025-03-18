@@ -20,7 +20,7 @@ function EsemenyTable() {
             <th>Leírás</th>
             <th>Helyszín</th>
             <th>Időpont</th>
-            <th>Modosít</th>
+            <th>Módosít</th>
             <th>Törlés</th>
           </tr>
         </thead>
