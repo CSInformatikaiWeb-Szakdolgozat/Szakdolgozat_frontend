@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
-import menuEdit from "../components/forms/edit/menuEdit";
+import MenuEdit from "../components/forms/edit/menuEdit";
 
 function MenuTableSor(props) {
   const {  deletAdat, getAdat, setMenuLista } =
@@ -32,15 +32,21 @@ function MenuTableSor(props) {
           </Button>
         </div>
       </td>
+
       <td className="text-center">
         {/* Gomb a modal megnyitásához */}
         <Button variant="warning" onClick={handleShowModal}>
           Módosítás
         </Button>
 
-        {/* MenuAdd komponens megjelenítése, átadva a modal vezérlését */}
-        <menuEdit showModal={showModal} handleCloseModal={handleCloseModal} />
+        {/* MenuEdit komponens megjelenítése, átadva csak a menuId-t */}
+        <MenuEdit
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          menuId={props.elem.id} // Most csak a menuId-t adjuk át
+        />
       </td>
+
       <td className="text-center">
         <Button
           onClick={() => {

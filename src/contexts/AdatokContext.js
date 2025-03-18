@@ -38,14 +38,25 @@ export const AdatokProvider = ({ children }) => {
     }
   };
 
-  const patchAdat = async (vegpont, id, adat) => {
+  // const patchAdat = async (vegpont, id, adat) => {
+  //   try {
+  //     const response = await myAxios.patch(vegpont + "/" + id, adat); // Adat küldése az API-nak
+  //     console.log("adat:", response.data);
+  //   } catch (err) {
+  //     console.log("Hiba történt az adat küldéskor!", err);
+  //   }
+  // };
+  const patchAdat = async (vegpont, adat) => {
     try {
-      const response = await myAxios.patch(vegpont + "/" + id, adat); // Adat küldése az API-nak
-      console.log("adat:", response.data);
+      console.log("Küldött adat a PATCH kéréshez:", adat); // Logoljuk, mi kerül ki a backendnek
+      const response = await myAxios.patch(vegpont, adat);
+      console.log("Válasz a backendtől:", response.data); // Válasz kiírása
     } catch (err) {
-      console.log("Hiba történt az adat küldéskor!", err);
+      console.error("Hiba történt a PATCH kérés során:", err);
     }
   };
+  
+  
   
 
   const deletAdat = async (vegpont, id) => {
