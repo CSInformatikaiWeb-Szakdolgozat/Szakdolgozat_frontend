@@ -47,17 +47,26 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
+    if (!menu.id) {
+      console.error("Nincs érvényes menü ID!");
+      return;
+    }
+  
     // Frissített adat küldése
-    patchAdat(`/api/menu`, menuId, menu); // Az API útvonalát illeszd a megfelelőre
+    patchAdat(`/api/menu`, menu.id, menu);  // API végpont és adat küldése
+  
+    // A menü lista frissítése
     setMenuLista((prevMenuLista) => {
       const updatedMenuLista = prevMenuLista.map((item) =>
         item.id === menuId ? { ...item, ...menu } : item
       );
       return updatedMenuLista;
     });
-    handleCloseModal(); // Bezárja a modal-t a módosítás után
+  
+    handleCloseModal(); // Modal bezárása
   };
+  
 
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
