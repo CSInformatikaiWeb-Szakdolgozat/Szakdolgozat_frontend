@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-react": "^9.5.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
+    "ckeditor5": "^44.3.0",
     "cra-template": "1.2.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.7",

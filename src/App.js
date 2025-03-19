@@ -24,7 +24,7 @@ function App() {
   if (loading) {
     return (
       <div className="loading-body">
-        <div className="center-loader">Az oldal be töltödik</div>
+        <div className="center-loader">Az oldal betöltése folyamatban...</div>
       </div>
     );
   }

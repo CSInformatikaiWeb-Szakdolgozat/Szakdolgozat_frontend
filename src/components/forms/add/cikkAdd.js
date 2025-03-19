@@ -2,14 +2,29 @@ import React, { useContext, useState, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
+/* CKEditor-os importok */
+
+/* import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic } from 'ckeditor5';
+
+import 'ckeditor5/ckeditor5.css';*/
+
 function CikkAdd({ showModal, handleCloseModal }) {
-  const { postAdat, getAdat, setArticleLista, partnerLista, setPartnerLista, classLista, setClassLista } =
-    useContext(AdatokContext);
+  const {
+    postAdat,
+    getAdat,
+    setArticleLista,
+    partnerLista,
+    setPartnerLista,
+    classLista,
+    setClassLista,
+  } = useContext(AdatokContext);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [partnerId, setPartnerId] = useState(""); // Partner ID tárolása
   const [classId, setClassId] = useState(""); // Besorolás ID tárolása
+  const [content, setContent] = useState("");
   const [visibilityStatus, setVisibilityStatus] = useState(false);
   const [pageLink, setPageLink] = useState("");
 
@@ -17,9 +32,10 @@ function CikkAdd({ showModal, handleCloseModal }) {
 
   // A partner lista lekérése csak egyszer, ha a modal megjelenik és még nem lett lekérve
   useEffect(() => {
-    if (showModal && !dataLoaded) { // Ha a modal megjelenik és még nem lettek lekérve az adatok
+    if (showModal && !dataLoaded) {
+      // Ha a modal megjelenik és még nem lettek lekérve az adatok
       getAdat("/api/partners", setPartnerLista); // Lekérjük a partnereket
-      getAdat("/api/classes", setClassLista);  // Lekérjük a besorolásokat
+      getAdat("/api/classes", setClassLista); // Lekérjük a besorolásokat
       setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
     }
   }, [showModal, dataLoaded, getAdat, setPartnerLista, setClassLista]); // Csak akkor frissítjük, ha a modal látható és még nem történt meg a lekérés
@@ -38,7 +54,7 @@ function CikkAdd({ showModal, handleCloseModal }) {
       name,
       description,
       partner: partnerId, // Partner ID
-      class: classId, // Besorolás ID
+      classification: classId, // Besorolás ID
       visibility_status: visibilityStatus,
       page_link: pageLink,
     };
@@ -121,6 +137,33 @@ function CikkAdd({ showModal, handleCloseModal }) {
                 <option disabled>Nem található besorolás</option> // Ha nincs besorolás, mutassunk egy üzenetet
               )}
             </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formContent">
+            <Form.Label>Tartalom</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="tartalom"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            {/* A fönti helyett ez lenne a megoldás */}
+
+            {/* <CKEditor
+              editor={ClassicEditor}
+              config={{
+                licenseKey: "<YOUR_LICENSE_KEY>", // Or 'GPL'.
+                plugins: [Essentials, Paragraph, Bold, Italic],
+                toolbar: [
+                  "undo",
+                  "redo",
+                  "|",
+                  "bold",
+                  "italic",
+                ],
+                initialData: "<p>Hello from CKEditor 5 in React!</p>",
+              }}
+            /> */}
           </Form.Group>
 
           <Form.Group controlId="formStatus">
