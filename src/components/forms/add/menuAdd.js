@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
@@ -10,9 +10,18 @@ function MenuAdd({ showModal, handleCloseModal }) {
   const [main_menu, setMainMenu] = useState("");
   const [link, setLink] = useState("");
   const [status, setStatus] = useState("");
+  const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le vannak-e kérve az adatok
 
   // Szűrés, hogy csak azok a menük jelenjenek meg, amelyek main_menu értéke null
   const filteredMenuList = menuLista.filter((menu) => menu.main_menu === null);
+
+  // Menülista lekérése csak akkor, amikor a modal megjelenik és még nem lett lekérve
+  useEffect(() => {
+    if (showModal && !dataLoaded) { // Ha a modal megjelenik és még nem lett lekérve az adat
+      getAdat("/api/menus", setMenuLista); // Menülista lekérése
+      setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
+    }
+  }, [showModal, dataLoaded, getAdat, setMenuLista]); // Csak akkor frissül, amikor a modal látható
 
   // Main menu kiválasztása és automatikusan új főmenü beállítása
   const handleMainMenuChange = (e) => {
@@ -32,6 +41,7 @@ function MenuAdd({ showModal, handleCloseModal }) {
     setLink(newLink);
   };
 
+  // Menü hozzáadásának kezelése
   const kuld = (event) => {
     event.preventDefault();
     let adat = {
@@ -43,9 +53,15 @@ function MenuAdd({ showModal, handleCloseModal }) {
     console.log(adat); // Logoljuk a küldés előtt
 
     // Küldjük az adatokat
-    postAdat("/api/menu", adat);
-    getAdat("/api/menus", setMenuLista);
-    handleCloseModal(); // Bezárja a modal-t a küldés után
+    postAdat("/api/menu", adat)
+      .then(() => {
+        // Hozzáadott menüpont frissítése a listában
+        setMenuLista((prevLista) => [...prevLista, adat]);  // Frissítjük a menüt
+        handleCloseModal(); // Bezárja a modal-t a küldés után
+      })
+      .catch((error) => {
+        console.error("Hiba történt a menü hozzáadásakor:", error);
+      });
   };
 
   return (
@@ -66,7 +82,7 @@ function MenuAdd({ showModal, handleCloseModal }) {
           </Form.Group>
 
           <Form.Group controlId="formMainMenu">
-            <Form.Label>Főmenu pont</Form.Label>
+            <Form.Label>Főmenü pont</Form.Label>
             <Form.Control
               as="select"
               value={main_menu === null ? "null" : main_menu} // Ha null, akkor az új főmenü lesz kiválasztva

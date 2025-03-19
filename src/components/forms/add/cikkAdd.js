@@ -13,13 +13,18 @@ function CikkAdd({ showModal, handleCloseModal }) {
   const [visibilityStatus, setVisibilityStatus] = useState(false);
   const [pageLink, setPageLink] = useState("");
 
-  // A partner lista lekérése a komponens betöltésekor
-  useEffect(() => {
-    getAdat("/api/partners", setPartnerLista); // Lekérjük a partnereket az API-ból
-    getAdat("/api/classes", setClassLista);  // Lekérjük a besorolásokat az API-ból
-  }, [getAdat, setPartnerLista, setClassLista]); // Csak egyszer fut le, amikor a komponens betöltődik
+  const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le lettek-e kérve az adatok
 
-  // Űrlap elküldése
+  // A partner lista lekérése csak egyszer, ha a modal megjelenik és még nem lett lekérve
+  useEffect(() => {
+    if (showModal && !dataLoaded) { // Ha a modal megjelenik és még nem lettek lekérve az adatok
+      getAdat("/api/partners", setPartnerLista); // Lekérjük a partnereket
+      getAdat("/api/classes", setClassLista);  // Lekérjük a besorolásokat
+      setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
+    }
+  }, [showModal, dataLoaded, getAdat, setPartnerLista, setClassLista]); // Csak akkor frissítjük, ha a modal látható és még nem történt meg a lekérés
+
+  // űrlap elküldése
   const handleSubmit = (event) => {
     event.preventDefault();
 

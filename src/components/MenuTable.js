@@ -11,8 +11,11 @@ function MenuTable() {
   const handleCloseModal = () => setShowModal(false);
   const { menuLista, setMenuLista, getAdat } = useContext(AdatokContext);
   useEffect(() => {
-    getAdat("/api/menus", setMenuLista);
-  }, []);
+    if (menuLista.length === 0) { // Csak akkor kérjünk le adatokat, ha nincs már adat
+      getAdat("/api/menus", setMenuLista);
+    }
+  }, [menuLista, getAdat]);  // Ha a menuLista változik, csak akkor frissítsük
+  
   return (
     <div>
       <div className="text-end">
