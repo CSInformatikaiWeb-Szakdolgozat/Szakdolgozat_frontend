@@ -28,7 +28,7 @@ export default function Navigacio() {
             </Nav.Link>
             <Nav.Link
               className="text-white text-uppercase"
-              href="/virtualizácio"
+              href="/virtualizacio"
             >
               Virtualizáció
             </Nav.Link>
