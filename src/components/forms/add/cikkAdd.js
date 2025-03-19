@@ -1,23 +1,39 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
 function CikkAdd({ showModal, handleCloseModal }) {
-  const { postAdat, getAdat, setArticleLista } = useContext(AdatokContext);
+  const { postAdat, getAdat, setArticleLista, partnerLista, setPartnerLista, classLista, setClassLista } =
+    useContext(AdatokContext);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [partner, setPartner] = useState("");
+  const [partnerId, setPartnerId] = useState(""); // Partner ID tárolása
+  const [classId, setClassId] = useState(""); // Besorolás ID tárolása
   const [visibilityStatus, setVisibilityStatus] = useState(false);
   const [pageLink, setPageLink] = useState("");
+
+  // A partner lista lekérése a komponens betöltésekor
+  useEffect(() => {
+    getAdat("/api/partners", setPartnerLista); // Lekérjük a partnereket az API-ból
+    getAdat("/api/classes", setClassLista);  // Lekérjük a besorolásokat az API-ból
+  }, [getAdat, setPartnerLista, setClassLista]); // Csak egyszer fut le, amikor a komponens betöltődik
 
   // Űrlap elküldése
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Validáljuk, hogy a partner és besorolás választható értékek
+    if (!partnerId || !classId) {
+      alert("Kérjük, válasszon partnert és besorolást!");
+      return;
+    }
+
     const newArticle = {
       name,
       description,
-      partner,
+      partner: partnerId, // Partner ID
+      class: classId, // Besorolás ID
       visibility_status: visibilityStatus,
       page_link: pageLink,
     };
@@ -65,11 +81,41 @@ function CikkAdd({ showModal, handleCloseModal }) {
           <Form.Group controlId="formPartner">
             <Form.Label>Partner</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Partner"
-              value={partner}
-              onChange={(e) => setPartner(e.target.value)}
-            />
+              as="select"
+              value={partnerId}
+              onChange={(e) => setPartnerId(e.target.value)}
+            >
+              <option value="">-- Válassz partnert --</option>
+              {partnerLista && partnerLista.length > 0 ? (
+                partnerLista.map((partner) => (
+                  <option key={partner.id} value={partner.id}>
+                    {partner.name} {/* A partner nevét jelenítjük meg */}
+                  </option>
+                ))
+              ) : (
+                <option disabled>Nem található partner</option> // Ha nincs partner, mutassunk egy üzenetet
+              )}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formClass">
+            <Form.Label>Besorolás</Form.Label>
+            <Form.Control
+              as="select"
+              value={classId}
+              onChange={(e) => setClassId(e.target.value)}
+            >
+              <option value="">-- Válassz besorolást --</option>
+              {classLista && classLista.length > 0 ? (
+                classLista.map((besorolas) => (
+                  <option key={besorolas.id} value={besorolas.id}>
+                    {besorolas.name} {/* A besorolás nevét jelenítjük meg */}
+                  </option>
+                ))
+              ) : (
+                <option disabled>Nem található besorolás</option> // Ha nincs besorolás, mutassunk egy üzenetet
+              )}
+            </Form.Control>
           </Form.Group>
 
           <Form.Group controlId="formStatus">
