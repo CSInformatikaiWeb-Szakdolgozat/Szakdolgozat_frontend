@@ -2,18 +2,13 @@ import React, { useContext, useState, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
-/* CKEditor-os importok */
-
-/* import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { ClassicEditor, Essentials, Paragraph, Bold, Italic } from 'ckeditor5';
-
-import 'ckeditor5/ckeditor5.css';*/
+import Ckeditor from "./ckeditor/Ckeditor.jsx";
 
 function CikkAdd({ showModal, handleCloseModal }) {
   const {
     postAdat,
     getAdat,
-    setArticleLista,
+    setCikkLista,
     partnerLista,
     setPartnerLista,
     classLista,
@@ -25,7 +20,7 @@ function CikkAdd({ showModal, handleCloseModal }) {
   const [partnerId, setPartnerId] = useState(""); // Partner ID tárolása
   const [classId, setClassId] = useState(""); // Besorolás ID tárolása
   const [content, setContent] = useState("");
-  const [visibilityStatus, setVisibilityStatus] = useState(false);
+  const [visibilityStatus, setVisibilityStatus] = useState("");
   const [pageLink, setPageLink] = useState("");
 
   const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le lettek-e kérve az adatok
@@ -55,25 +50,20 @@ function CikkAdd({ showModal, handleCloseModal }) {
       description,
       partner: partnerId, // Partner ID
       classification: classId, // Besorolás ID
+      content: content,
       visibility_status: visibilityStatus,
       page_link: pageLink,
     };
     console.log(newArticle); // Az adatok naplózása a küldés előtt
 
     // Az új cikk adatainak elküldése a szerverre
-    postAdat("/api/article", newArticle)
-      .then(() => {
-        // Sikeres cikk hozzáadása után frissítjük a cikkek listáját
-        getAdat("/api/articles", setArticleLista);
-        handleCloseModal(); // A modal bezárása
-      })
-      .catch((error) => {
-        console.error("Hiba történt a cikk hozzáadása során:", error);
-      });
+    postAdat("/api/article", newArticle);
+    getAdat("/api/articles", setCikkLista);
+    handleCloseModal(); // A modal bezárása
   };
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal}>
+    <Modal show={showModal} onHide={handleCloseModal} size="xl">
       <Modal.Header closeButton>
         <Modal.Title>Cikk hozzáadása</Modal.Title>
       </Modal.Header>
@@ -140,34 +130,26 @@ function CikkAdd({ showModal, handleCloseModal }) {
           </Form.Group>
 
           <Form.Group controlId="formContent">
-            <Form.Label>Tartalom</Form.Label>
+            {/*<Form.Label>Tartalom</Form.Label>
             <Form.Control
               type="text"
               placeholder="tartalom"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-            />
-            {/* A fönti helyett ez lenne a megoldás */}
-
-            {/* <CKEditor
-              editor={ClassicEditor}
-              config={{
-                licenseKey: "<YOUR_LICENSE_KEY>", // Or 'GPL'.
-                plugins: [Essentials, Paragraph, Bold, Italic],
-                toolbar: [
-                  "undo",
-                  "redo",
-                  "|",
-                  "bold",
-                  "italic",
-                ],
-                initialData: "<p>Hello from CKEditor 5 in React!</p>",
-              }}
             /> */}
+            {/* A fönti helyett ez lenne a megoldás */}
+            <Form.Label>Tartalom</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Ide helyezd el a CKEditor-ban készített cikk HTML kódját!"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            /> 
+            <Ckeditor />
           </Form.Group>
 
           <Form.Group controlId="formStatus">
-            <Form.Label>Status</Form.Label>
+            <Form.Label>Megjelenítési állapot</Form.Label>
             <Form.Check
               type="checkbox"
               label="Aktív"

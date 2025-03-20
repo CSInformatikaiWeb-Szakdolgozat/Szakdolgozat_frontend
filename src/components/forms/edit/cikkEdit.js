@@ -3,7 +3,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
 function CikkEdit({ showModal, handleCloseModal, elemId }) {
-  const { patchAdat, getAdat, postAdat, setArticleLista } = useContext(AdatokContext);
+  const { patchAdat, getAdat, postAdat, setCikkLista } = useContext(AdatokContext);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -29,7 +29,7 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     patchAdat(`/api/article`, elemId, formData); // Küldd el az adatokat
-    getAdat("/api/articles", setArticleLista); // Frissíti az cikkeket
+    getAdat("/api/articles", setCikkLista); // Frissíti az cikkeket
     handleCloseModal();
   };
 
@@ -42,7 +42,7 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
       // POST kérés a klónozott adat mentéséhez
       await postAdat("/api/article", clonedData);
       // Frissítjük a cikkek listáját, hogy az új rekord is megjelenjen
-      getAdat("/api/articles", setArticleLista);
+      getAdat("/api/articles", setCikkLista);
       handleCloseModal(); // Bezárja a modált
     } catch (error) {
       console.error("Hiba történt a klónozás közben:", error);

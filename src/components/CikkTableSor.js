@@ -4,7 +4,7 @@ import AdatokContext from "../contexts/AdatokContext";
 import CikkEdit from "../components/forms/edit/cikkEdit";
 
 function CikkTablaSor(props) {
-  const { patchAdat, deletAdat,getAdat,setArticleLista } = useContext(AdatokContext);
+  const { patchAdat, deletAdat,getAdat,setCikkLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -22,8 +22,6 @@ function CikkTablaSor(props) {
       <td className="text-center">{props.elem.description}</td>
       <td className="text-center">{props.elem.partner}</td>
       <td className="text-center">{props.elem.classification}</td>
-      <td className="text-center">{props.elem.visibility_status}</td>
-      <td className="text-center">{props.elem.page_link}</td>
       <td className="text-center">
         <div>
           <Button
@@ -34,6 +32,8 @@ function CikkTablaSor(props) {
           </Button>
         </div>
       </td>
+      <td className="text-center">{props.elem.page_link}</td>
+      
 
       <td className="text-center">
         {/* Gomb a modal megnyitásához */}
@@ -53,7 +53,7 @@ function CikkTablaSor(props) {
         <Button
           onClick={() => {
             deletAdat("/api/article", props.elem.id);
-            getAdat("/api/articles", setArticleLista);
+            getAdat("/api/articles", setCikkLista);
           }}
           variant="danger"
         >
