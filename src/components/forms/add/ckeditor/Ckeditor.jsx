@@ -120,7 +120,7 @@ export default function Ckeditor() {
 						'outdent',
 						'indent'
 					],
-					shouldNotGroupWhenFull: false
+					shouldNotGroupWhenFull: true
 				},
 				plugins: [
 					Alignment,

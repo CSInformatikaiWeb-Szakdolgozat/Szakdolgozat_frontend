@@ -1,13 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
+import Ckeditor from "../add/ckeditor/Ckeditor";
 
 function CikkEdit({ showModal, handleCloseModal, elemId }) {
-  const { patchAdat, getAdat, postAdat, setCikkLista } = useContext(AdatokContext);
+  const { patchAdat, getAdat, postAdat, setCikkLista, classLista } = useContext(AdatokContext);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     partner: "",
+    classification: "",
+    content: "",
     visibility_status: false,
     page_link: "",
   });
@@ -20,6 +23,7 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
           description: data.description,
           partner: data.partner,
           visibility_status: data.visibility_status,
+          content: data.content,
           page_link: data.page_link,
         });
       });
@@ -50,7 +54,7 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
   };
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal}>
+    <Modal show={showModal} onHide={handleCloseModal} size="xl">
       <Modal.Header closeButton>
         <Modal.Title>Cikk szerkesztése</Modal.Title>
       </Modal.Header>
@@ -83,6 +87,36 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
               onChange={(e) => setFormData({ ...formData, partner: e.target.value })}
             />
           </Form.Group>
+          <Form.Group controlId="formClass">
+            <Form.Label>Besorolás</Form.Label>
+            <Form.Control
+              as="select"
+              value={formData.classification}
+              onChange={(e) => setFormData({ ...formData, classification: e.target.value })}>
+            <option value="">-- Válassz besorolást --</option>
+              {classLista && classLista.length > 0 ? (
+                classLista.map((besorolas) => (
+                  <option key={besorolas.id} value={besorolas.id}>
+                    {besorolas.name} {/* A besorolás nevét jelenítjük meg */}
+                  </option>
+                ))
+              ) : (
+                <option disabled>Nem található besorolás</option> // Ha nincs besorolás, mutassunk egy üzenetet
+              )}
+              </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formContent">
+            <Form.Label>Tartalom</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Ide helyezd el a CKEditor-ban készített cikk HTML kódját!"
+              value={formData.content}
+              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+            /> 
+            <Ckeditor />
+          </Form.Group>
+
           <Form.Group controlId="formStatus">
             <Form.Label>Status</Form.Label>
             <Form.Check

@@ -35,6 +35,16 @@ function CikkAdd({ showModal, handleCloseModal }) {
     }
   }, [showModal, dataLoaded, getAdat, setPartnerLista, setClassLista]); // Csak akkor frissítjük, ha a modal látható és még nem történt meg a lekérés
 
+  
+  /* const handlePageLinkChange = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "null") {
+      setPageLink(null); // Ha az új főmenüt választja, a main_menu értéke null lesz
+    } else {
+      setPageLink(selectedValue); // Ha egy meglévő főmenüt választ, annak id-jét beállítjuk
+    }
+  }; */
+
   // űrlap elküldése
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -130,14 +140,6 @@ function CikkAdd({ showModal, handleCloseModal }) {
           </Form.Group>
 
           <Form.Group controlId="formContent">
-            {/*<Form.Label>Tartalom</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="tartalom"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            /> */}
-            {/* A fönti helyett ez lenne a megoldás */}
             <Form.Label>Tartalom</Form.Label>
             <Form.Control
               type="text"
