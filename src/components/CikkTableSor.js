@@ -5,7 +5,7 @@ import CikkEdit from "../components/forms/edit/cikkEdit";
 
 function CikkTablaSor(props) {
   const { patchAdat, deletAdat,getAdat,setCikkLista } = useContext(AdatokContext);
-  const [isOn, setIsOn] = useState(props.elem.megjelenit);
+  const [isOn, setIsOn] = useState(props.elem.visibility_status);
   const toggleSwitch = () => {
     setIsOn(!isOn);
   };
