@@ -11,7 +11,7 @@ function Virtulazitacio() {
           <Col>
             <h4 className="text-primary">Mit lehet virtualizálni?</h4>
             <Col>
-              <div className="mb-10 me-15 float-start">
+              <div className="p-4 float-start">
                 <img src="./kepek/virtualization.jpg" alt="kép" />
               </div>
               <p>

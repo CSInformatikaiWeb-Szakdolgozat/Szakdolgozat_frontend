@@ -1,6 +1,7 @@
 import React from "react";
 import Footer from "../../components/Footer";
-import { Col, Container, Image, Row, Table } from "react-bootstrap";
+
+import { Col, Container, Row, Table } from "react-bootstrap";
 
 function Szerverkonszolidacio() {
   return (
@@ -10,43 +11,47 @@ function Szerverkonszolidacio() {
           <h1 className="text-primary">Szerverkonszolidáció</h1>
           <Col>
             <Col>
-              <div className="mb-10 me-15 float-start">
-                <img src="./kepek/virtualization.jpg" alt="kép" />
+              <div className="p-4 float-start">
+                <img src="./kepek/kabeldzungel.jpg" alt="kábeldzsngel" />
               </div>
-              <p>
-                Amikor már a gépteremben a kábelezés áttekinthetetlenné, az
-                egyedi szerverek felügyelete egyre bonyolultabbá, az
-                energiafelhasználás követhetetlené kezd válni, előtérbe kerül a
-                szerverkonszolidáció fogalma.
-              </p>
-              <p>
-                A cégek egyre növekvő szerverigénye egyre több energia és hely
-                igényes szerver üzemeltetését teszi szükségessé. Gazdaságossági
-                és ésszerűsítési okok miatt a hagyományos RACK-es szervereket
-                célszerű lenne valamilyen hatékonyabb megoldással felváltani,
-                ahol a szervereket még nagyobb integrációval még kisebb helyen
-                még hatékonyabban üzemeltethetjük ugyan akkora számítási
-                teljesítmény, de jóval alacsonyabb energiafelhasználás mellett.
-                A szerver konszolidáció lényege, hogy kiemeljük a szerverből a
-                hűtést, tápellátást, távfelügyeletet (management) és szerverek
-                egy csoportjának központilag oldjuk meg ezeket a feladatokat,
-                ezáltal a szerverekben csak a CPU, a RAM és az adatkapcsolatért
-                felelős komponensek maradnak amik nem tartalmaznak nagyméretű
-                mechanikus alkatrészeket, így ezek a szerverek tovább
-                kicsinyíthetőek, integrálhatóak. Ilyen integrációs megoldás
-                példáúl az <a href="#">LENOVO Flex technológiája</a>.
-              </p>
+              <div>
+                <p>
+                  Amikor már a gépteremben a kábelezés áttekinthetetlenné, az
+                  egyedi szerverek felügyelete egyre bonyolultabbá, az
+                  energiafelhasználás követhetetlené kezd válni, előtérbe kerül
+                  a szerverkonszolidáció fogalma.
+                </p>
+                <p>
+                  A cégek egyre növekvő szerverigénye egyre több energia és hely
+                  igényes szerver üzemeltetését teszi szükségessé.
+                  Gazdaságossági és ésszerűsítési okok miatt a hagyományos
+                  RACK-es szervereket célszerű lenne valamilyen hatékonyabb
+                  megoldással felváltani, ahol a szervereket még nagyobb
+                  integrációval még kisebb helyen még hatékonyabban
+                  üzemeltethetjük ugyan akkora számítási teljesítmény, de jóval
+                  alacsonyabb energiafelhasználás mellett. A szerver
+                  konszolidáció lényege, hogy kiemeljük a szerverből a hűtést,
+                  tápellátást, távfelügyeletet (management) és szerverek egy
+                  csoportjának központilag oldjuk meg ezeket a feladatokat,
+                  ezáltal a szerverekben csak a CPU, a RAM és az
+                  adatkapcsolatért felelős komponensek maradnak amik nem
+                  tartalmaznak nagyméretű mechanikus alkatrészeket, így ezek a
+                  szerverek tovább kicsinyíthetőek, integrálhatóak. Ilyen
+                  integrációs megoldás példáúl az{" "}
+                  <a href="#">LENOVO Flex technológiája</a>.
+                </p>
+              </div>
             </Col>
             <Col>
               <p>
                 A szerverkonszolidáció hatékonyságát tovább növelhetjük, ha egy
                 <a href="#">tároló konszolidációval</a> egybekötve valósítjuk
                 meg. Erre az IBM két fő megoldáshalmazt kínál. Az egyik a
-                kisvállalatok számára elérhető <a href="#">IBM Blade S keret</a>{" "}
+                kisvállalatok számára elérhető <a href="#">IBM Blade S keret</a>
                 ami a szerverek mellett központosított tárolókapacitást is
                 biztosít egy kereten belül. A közép és nagyvállalatok számára az
-                IBM valamely <a href="#">központi tároló megoldása</a>teheti még
-                hatékonyabbá a konszolidációt.
+                IBM valamely <a href="#">központi tároló megoldása</a> teheti
+                még hatékonyabbá a konszolidációt.
               </p>
             </Col>
             <Col>
@@ -62,8 +67,7 @@ function Szerverkonszolidacio() {
             <Col>
               <p>
                 Gyors összeadás és szorzás alapján a 14 szerver hagyományos 1U-s
-                komponensekből építkezve valamint az
-                <a href="#">LENOVO Flex technológiáját</a>
+                komponensekből építkezve valamint az <a href="#">LENOVO Flex technológiáját</a>
                 alkalmazva az alábbi adatokat kapjuk
               </p>
             </Col>

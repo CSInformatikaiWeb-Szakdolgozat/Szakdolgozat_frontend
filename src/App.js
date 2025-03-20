@@ -18,6 +18,9 @@ import PartnerTable from "./components/PartnerTable";
 import BesorolasTable from "./components/BesorolasTable";
 import CeginfoTable from "./components/CeginfoTable";
 import EsemenyTable from "./components/EsemenyTable";
+import TaroloKonszolidacio from "./pages/public/TaroloKonszolidacio";
+import Megoldasok from "./pages/public/Megoldasok";
+import Rendezvenyek from "./pages/public/Rendezvenyek";
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -40,14 +43,16 @@ function App() {
           <Route path="/" element={<Kezdolap />} />
           <Route path="/bemutato" element={<Cegbemutato />} />
           <Route path="/kapcsolat" element={<Kapcsolat />} />
-          <Route path="/letoltesek" element={<Letoltes />} />
-          <Route path="/kapcsolat" element={<Kapcsolat />} />
           <Route path="/virtualizacio" element={<Virtulazitacio />} />
-          <Route
-            path="/szerverkonszolidacio"
-            element={<Szerverkonszolidacio />}
-          />
+          <Route path="/szerverkonszolidacio" element={<Szerverkonszolidacio />} />
+          <Route path="/tarolokonszolidacio" element={<TaroloKonszolidacio />}/>
+          <Route path="/megoldasok" element={<Megoldasok />}/>
+          <Route path="/rendezvenyek" element={<Rendezvenyek />} />
+          <Route path="/letoltesek" element={<Letoltes />} />
         </Route>
+        
+        
+        
       )}
 
       {/* Admin és User ugyanazon útvonalon */}
