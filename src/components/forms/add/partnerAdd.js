@@ -128,4 +128,4 @@ return (
 );
 }
 
-export default PartnerAdd
+export default PartnerAdd;

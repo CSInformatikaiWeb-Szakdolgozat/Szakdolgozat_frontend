@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Nav, NavDropdown } from 'react-bootstrap';
 import AdatokContext from '../../../contexts/AdatokContext';
+import NavGordulo from './NavGordulo';
 
 function NavigacioAlmenu(props) {
     const { menuLista, setMenuLista, getAdat } = useContext(AdatokContext)
@@ -9,19 +10,20 @@ function NavigacioAlmenu(props) {
         getAdat("/api/menus", setMenuLista);
     }, []);
 
-    if (props.elem.main_menu != null) {
+    if (props.elem.szint === 1) {
+        return (
         <NavDropdown
-              title={setMenuLista[props.elem.main_menu].name}
+              title={props.elem.name}
               id="collapsible-nav-dropdown"
               className="text-uppercase nav-item dropdown"
-            ></NavDropdown>
-            for (let i = 0; i < [...setMenuLista].length; i++) {
-                if (setMenuLista[i].main_menu == props.elem.main_menu) {
-                    return (
-                        <NavDropdown.Item href={setMenuLista[i].link}>{setMenuLista[i].name}</NavDropdown.Item>
-                    )
-                }
+            >
+            {
+                menuLista.map((almenu, index) => {
+                    <NavGordulo almenu={almenu} key={index} index={index} />
+                })
             }
+            </NavDropdown>
+        )
     } else {
         return (
             <Nav.Link className="text-white text-uppercase" href={props.elem.link}>

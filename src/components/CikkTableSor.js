@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
-import CikkEdit from "../components/forms/edit/cikkEdit";
+import CikkEdit from "../components/forms/edit/CikkEdit";
 
 function CikkTablaSor(props) {
   const { patchAdat, deletAdat,getAdat,setCikkLista } = useContext(AdatokContext);

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
-import CeginfoEdit from "../components/forms/edit/cegInfoEdit";
+import CeginfoEdit from "../components/forms/edit/CegInfoEdit";
 
 function CeginfoTableSor(props) {
   const { patchAdat,setCompanyInfoLista,getAdat } = useContext(AdatokContext);

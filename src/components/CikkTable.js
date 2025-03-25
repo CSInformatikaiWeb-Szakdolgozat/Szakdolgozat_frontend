@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import useAdatokContext from "../contexts/AdatokContext";
 import CikkTablaSor from "./CikkTableSor";
 import { Button, Table } from "react-bootstrap";
-import CikkAdd from "./forms/add/cikkAdd";
+import CikkAdd from "./forms/add/CikkAdd";
 
 function CikkTable() {
   const { cikkLista, setCikkLista, getAdat } = useContext(useAdatokContext);
