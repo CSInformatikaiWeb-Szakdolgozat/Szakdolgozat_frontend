@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import MenuTableSor from "./MenuTableSor";
-import MenuAdd from "../components/forms/add/menuAdd"; // Importáljuk a menuAdd komponenst
+import MenuAdd from "./forms/add/MenuAdd"; // Importáljuk a menuAdd komponenst
 
 function MenuTable() {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
   const { menuLista, setMenuLista, getAdat } = useContext(AdatokContext);
   useEffect(() => {
     if (menuLista.length === 0) { // Csak akkor kérjünk le adatokat, ha nincs már adat

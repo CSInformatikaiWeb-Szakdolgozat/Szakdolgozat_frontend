@@ -1,6 +1,6 @@
 import React from 'react'
 
-function partnerAdd() {
+function PartnerAdd() {
   const { postAdat, menuLista, getAdat, setMenuLista } =
   useContext(AdatokContext);
 
@@ -128,4 +128,4 @@ return (
 );
 }
 
-export default partnerAdd
+export default PartnerAdd

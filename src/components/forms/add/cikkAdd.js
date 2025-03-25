@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import AdatokContext from "../../../contexts/AdatokContext";
+import AdatokContext from "../../../contexts/AdatokContext.js";
 
 import Ckeditor from "./ckeditor/Ckeditor.jsx";
 

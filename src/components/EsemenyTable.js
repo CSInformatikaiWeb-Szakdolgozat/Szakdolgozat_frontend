@@ -1,17 +1,29 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import EsemenyTableSor from "./EsemenyTableSor";
 import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
+import esemenyAdd from "./forms/add/EsemenyAdd";
 
 function EsemenyTable() {
   const { eventLista, setEventLista, getAdat } = useContext(AdatokContext);
+    const [showModal, setShowModal] = useState(false);
+  
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+    
   useEffect(() => {
     getAdat("/api/events", setEventLista);
   }, []);
   return (
     <div>
       <div className="text-end">
-        <Button variant="success">Felvesz</Button>
+        {/* Gomb a modal megnyitásához */}
+        <Button variant="success" onClick={handleShowModal}>
+          Hozzáadás
+        </Button>
+
+        {/* esemenyAdd komponens megjelenítése, átadva a modal vezérlését */}
+        <esemenyAdd showModal={showModal} handleCloseModal={handleCloseModal} />
       </div>
 
       <Table striped bordered hover responsive>

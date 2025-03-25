@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
-import MenuEdit from "../components/forms/edit/menuEdit";
+import MenuEdit from "./forms/edit/MenuEdit";
 
 function MenuTableSor(props) {
   const {  deletAdat, getAdat, setMenuLista } =

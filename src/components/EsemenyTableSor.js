@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
-import EsemenyEdit from "../components/forms/edit/esemenyEdit";
+import EsemenyEdit from "./forms/edit/EsemenyEdit";
 
 function EsemenyTableSor(props) {
   const { patchAdat, deletAdat, getAdat, setEsemenyLista } =
