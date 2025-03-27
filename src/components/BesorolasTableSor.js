@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
-import BesorolasEdit from "../components/forms/edit/BesorolasEdit";
+import BesorolasEdit from "./forms/edit/BesorolasEdit";
 
 
 function BesorolasTableSor(props) {

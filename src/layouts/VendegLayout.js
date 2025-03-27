@@ -9,5 +9,5 @@ import NavigacioTeszt from "../pages/public/dinamikus/NavigacioTeszt"
 
 export default function VendegLayout() {
     const { user } = useAuthContext(); 
-      return !user ? <>  <Navigacio /> {/* <NavJobbOldal/> */} <Outlet /> </>  : <Navigate to="/" />;
+      return !user ? <>  <NavigacioTeszt /> {/* <NavJobbOldal/> */} <Outlet /> </>  : <Navigate to="/" />;
 }

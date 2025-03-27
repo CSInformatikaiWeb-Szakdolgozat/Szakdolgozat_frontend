@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
-import PartnerEdit from "../components/forms/edit/PartnerEdit";
+import PartnerEdit from "./forms/edit/PartnerEdit";
 
 function PartnerTableSor(props) {
   const { patchAdat, deletAdat, getAdat, setPartnerLista } = useContext(AdatokContext);

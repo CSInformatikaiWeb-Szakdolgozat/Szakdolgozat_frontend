@@ -34,8 +34,8 @@ function NavigacioTeszt() {
           <Nav>
             {
                 menuLista.map((elem, index) => {
-                    console.log("Belépett a ciklusba")
-                    return <NavigacioFomenu elem={elem} key={index} index={index} />;
+                    console.log("Almenüpont generálása...")
+                    return <NavigacioAlmenu elem={elem} key={index} index={index} />;
                 })
             }
           </Nav>

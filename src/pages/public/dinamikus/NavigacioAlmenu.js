@@ -11,6 +11,7 @@ function NavigacioAlmenu(props) {
     }, []);
 
     if (props.elem.szint === 1) {
+        let fo = props.elem.id;
         return (
         <NavDropdown
               title={props.elem.name}
@@ -19,12 +20,14 @@ function NavigacioAlmenu(props) {
             >
             {
                 menuLista.map((almenu, index) => {
-                    <NavGordulo almenu={almenu} key={index} index={index} />
+                    if (almenu.main_menu == fo) {
+                        return <NavDropdown.Item href={almenu.link} key={index}>{almenu.name}</NavDropdown.Item>
+                    }
                 })
             }
             </NavDropdown>
         )
-    } else {
+    } else if (props.elem.szint == 0) {
         return (
             <Nav.Link className="text-white text-uppercase" href={props.elem.link}>
               {props.elem.name}
