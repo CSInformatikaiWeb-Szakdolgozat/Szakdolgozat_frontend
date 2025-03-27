@@ -9,7 +9,7 @@ function MenuAdd({ showModal, handleCloseModal }) {
   const [main_menu, setMainMenu] = useState(""); // Kezdő érték: ""
   const [link, setLink] = useState("");
   const [status, setStatus] = useState(false); // Default érték: false
-  const [szint, setSzint] = useState("");
+  const [level, setLevel] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le vannak-e kérve az adatok
   const [showAlert, setShowAlert] = useState(false); // Az alert megjelenítéséhez szükséges állapot
   const [alertMessage, setAlertMessage] = useState(""); // Az alert üzenetének tárolása
@@ -18,6 +18,7 @@ function MenuAdd({ showModal, handleCloseModal }) {
   // Szűrés, hogy csak azok a menük jelenjenek meg, amelyek main_menu értéke null
   const filteredMenuList = menuLista.filter((menu) => menu.main_menu === null);
 
+  
   // Menülista lekérése csak akkor, amikor a modal megjelenik és még nem lett lekérve
   useEffect(() => {
     if (showModal && !dataLoaded) {
@@ -25,7 +26,7 @@ function MenuAdd({ showModal, handleCloseModal }) {
       getAdat("/api/menus", setMenuLista); // Menülista lekérése
       setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
     }
-  }, [showModal, dataLoaded, getAdat, setMenuLista]); // Csak akkor frissül, amikor a modal látható
+  }, []); // Csak akkor frissül, amikor a modal látható
 
   // Main menu változtatása
   const handleMainMenuChange = (e) => {
@@ -40,10 +41,10 @@ function MenuAdd({ showModal, handleCloseModal }) {
     }
   };
 
-  // Szint változtatása
-  const handleSzintChange = (e) => {
+  // level változtatása
+  const handlelevelChange = (e) => {
     const selectedValue = e.target.value;
-    setSzint(selectedValue); // Az opciók váltásakor nem szükséges alertet generálni
+    setLevel(selectedValue); // Az opciók váltásakor nem szükséges alertet generálni
   };
 
   const handleLinkChange = (e) => {
@@ -62,20 +63,20 @@ function MenuAdd({ showModal, handleCloseModal }) {
     let tempErrors = {};
     let isValid = true;
 
-    // Validáció: Ha nincs kiválasztva a főmenü vagy a szint
+    // Validáció: Ha nincs kiválasztva a főmenü vagy a level
     if (main_menu === "") {
       tempErrors.main_menu = "A főmenü kiválasztása kötelező!";
       isValid = false;
     }
 
-    if (szint === "") {
-      tempErrors.szint = "A szint kiválasztása kötelező!";
+    if (level === "") {
+      tempErrors.level = "A level kiválasztása kötelező!";
       isValid = false;
     }
 
     if (!isValid) {
       setErrors(tempErrors); // A hibák beállítása
-      setAlertMessage("Kérjük, válasszon érvényes főmenüt és szintet!");
+      setAlertMessage("Kérjük, válasszon érvényes főmenüt és levelet!");
       setShowAlert(true); // Ha bármelyik hiba van, akkor megjelenítjük az alertet
       return;
     }
@@ -85,7 +86,7 @@ function MenuAdd({ showModal, handleCloseModal }) {
       name: name,
       main_menu: main_menu === "new" ? null : main_menu, // Ha "Új főmenü"-t választanak, akkor null-ra állítjuk
       link: link,
-      szint: szint,
+      level: level,
       status: status,
     };
 
@@ -152,21 +153,21 @@ function MenuAdd({ showModal, handleCloseModal }) {
             )}
           </Form.Group>
 
-          <Form.Group controlId="formSzint">
-            <Form.Label>Szint</Form.Label>
+          <Form.Group controlId="formlevel">
+            <Form.Label>level</Form.Label>
             <Form.Control
               as="select"
-              value={szint}
-              onChange={handleSzintChange}
+              value={level}
+              onChange={handlelevelChange}
             >
-              <option value="">-- Válassz szintet --</option>
+              <option value="">-- Válassz levelet --</option>
               <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
             </Form.Control>
-            {errors.szint && (
-              <div style={{ color: "red" }}>{errors.szint}</div>
+            {errors.level && (
+              <div style={{ color: "red" }}>{errors.level}</div>
             )}
           </Form.Group>
 

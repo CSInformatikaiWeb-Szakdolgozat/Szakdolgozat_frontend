@@ -31,7 +31,7 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
         }
       });
     }
-  }, [menuId, getAdat]);
+  }, []);
 
   const handleMainMenuChange = (e) => {
     const selectedValue = e.target.value;
