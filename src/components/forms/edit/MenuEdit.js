@@ -3,11 +3,13 @@ import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
 function MenuEdit({ showModal, handleCloseModal, menuId }) {
-  const { menuLista, getAdat, setMenuLista, patchAdat, postAdat } = useContext(AdatokContext);
+  const { menuLista, getAdat, setMenuLista, patchAdat, postAdat } =
+    useContext(AdatokContext);
 
   const [formData, setFormData] = useState({
     name: "",
     main_menu: null,
+    level: null,
     link: "",
     status: false,
   });
@@ -17,21 +19,24 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
 
   useEffect(() => {
     if (menuId) {
-      // Ha van menuId, betöltjük az adatokat és frissítjük a formot
+      // Ha van menuId, akkor próbáljuk lekérni az adatokat
       getAdat(`/api/menu/${menuId}`, (data) => {
         if (data) {
+          // Ha adatot kapunk, beállítjuk a formData állapotot
           setFormData({
-            name: data.name || "", // Ha nincs név, akkor alapértelmezett üres string
-            main_menu: data.main_menu !== undefined ? data.main_menu : null, // Ha nincs main_menu, akkor null
-            link: data.link || "", // Ha nincs link, akkor alapértelmezett üres string
-            status: data.status || false, // Ha nincs status, akkor alapértelmezett false
+            name: data.name || "",
+            main_menu: data.main_menu,
+            level: data.level,
+            link: data.link || "",
+            status: data.status || false,
           });
         } else {
-          console.error("Nem sikerült betölteni a menüt");
+          console.log("Nincs adat a kéréshez.");
         }
       });
     }
-  }, []);
+  }, [menuId]); // Figyeljük a menuId változást
+  
 
   const handleMainMenuChange = (e) => {
     const selectedValue = e.target.value;
@@ -61,6 +66,14 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
     }));
   };
 
+  const handlelevelChange = (e) => {
+    const selectedValue = e.target.value;
+    setFormData((prevData) => ({
+      ...prevData,
+      level: selectedValue, // Itt frissítjük a level-t a formData-ban
+    }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -68,6 +81,7 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
     if (
       formData.name === "" ||
       formData.main_menu === null ||
+      formData.level === "" ||
       formData.link === "" ||
       formData.status === false
     ) {
@@ -116,8 +130,10 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
             <Form.Control
               type="text"
               placeholder="Enter name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={formData.name} // Itt jelenik meg az aktuális név
+              onChange={
+                (e) => setFormData({ ...formData, name: e.target.value }) // Ha módosítják, frissítjük a formData-t
+              }
             />
           </Form.Group>
 
@@ -125,16 +141,31 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
             <Form.Label>Főmenü pont</Form.Label>
             <Form.Control
               as="select"
-              value={formData.main_menu === null ? "null" : formData.main_menu} // Ha null, akkor az új főmenü lesz kiválasztva
+              value={formData.main_menu === null ? "" : formData.main_menu} // Beállítjuk az aktuális main_menu-t
               onChange={handleMainMenuChange}
             >
-              <option value="null">-- Válassz főmenüt --</option>
-              <option value="null">Új főmenü</option> {/* null érték lehetőség új főmenü esetén */}
+              <option value="">-- Válassz főmenüt --</option>
+              <option value="new">Új főmenü</option>
               {filteredMenuList.map((menu) => (
                 <option key={menu.id} value={menu.id}>
-                  {menu.name} {/* A főmenü neve */}
+                  {menu.name}
                 </option>
               ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formlevel">
+            <Form.Label>level</Form.Label>
+            <Form.Control
+              as="select"
+              value={formData.level} // Beállítjuk az aktuális level-t
+              onChange={handlelevelChange}
+            >
+              <option value="">-- Válassz levelet --</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
             </Form.Control>
           </Form.Group>
 
@@ -143,7 +174,7 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
             <Form.Control
               type="text"
               placeholder="Enter link (pl. /menuoldal)"
-              value={formData.link}
+              value={formData.link} // Itt jelenik meg az aktuális link
               onChange={handleLinkChange}
             />
           </Form.Group>
@@ -153,11 +184,10 @@ function MenuEdit({ showModal, handleCloseModal, menuId }) {
             <Form.Check
               type="checkbox"
               label="Aktív"
-              checked={formData.status}
-              onChange={handleStatusChange} // Checkbox állapot módosítása
+              checked={formData.status} // Itt jelenik meg az aktuális státusz
+              onChange={handleStatusChange}
             />
           </Form.Group>
-
         </Form>
       </Modal.Body>
       <Modal.Footer>
