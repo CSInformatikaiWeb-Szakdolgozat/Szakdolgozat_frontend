@@ -21,6 +21,7 @@ function MenuTableSor(props) {
       <td className="text-center">{props.elem.id}</td>
       <td className="text-center">{props.elem.name}</td>
       <td className="text-center">{props.elem.main_menu}</td>
+      <td className="text-center">{props.elem.szint}</td>
       <td className="text-center">{props.elem.link}</td>
       <td className="text-center">
         <div>

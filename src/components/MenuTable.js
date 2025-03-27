@@ -35,6 +35,7 @@ function MenuTable() {
             <th>Menü id</th>
             <th>Név</th>
             <th>Fő menü</th>
+            <th>Szint</th>
             <th>Link</th>
             <th>Megjelenít</th>
             <th>Módosít</th>

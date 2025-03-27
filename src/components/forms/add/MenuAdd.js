@@ -1,36 +1,49 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Alert, Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
 function MenuAdd({ showModal, handleCloseModal }) {
-  const { postAdat, menuLista, getAdat, setMenuLista } =
-    useContext(AdatokContext);
+  const { postAdat, menuLista, getAdat, setMenuLista } = useContext(AdatokContext);
 
   const [name, setName] = useState("");
-  const [main_menu, setMainMenu] = useState("");
+  const [main_menu, setMainMenu] = useState(""); // Kezdő érték: ""
   const [link, setLink] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(false); // Default érték: false
+  const [szint, setSzint] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le vannak-e kérve az adatok
+  const [showAlert, setShowAlert] = useState(false); // Az alert megjelenítéséhez szükséges állapot
+  const [alertMessage, setAlertMessage] = useState(""); // Az alert üzenetének tárolása
+  const [errors, setErrors] = useState({}); // Hibák tárolása, kezdő érték üres objektum
 
   // Szűrés, hogy csak azok a menük jelenjenek meg, amelyek main_menu értéke null
   const filteredMenuList = menuLista.filter((menu) => menu.main_menu === null);
 
   // Menülista lekérése csak akkor, amikor a modal megjelenik és még nem lett lekérve
   useEffect(() => {
-    if (showModal && !dataLoaded) { // Ha a modal megjelenik és még nem lett lekérve az adat
+    if (showModal && !dataLoaded) {
+      // Ha a modal megjelenik és még nem lett lekérve az adat
       getAdat("/api/menus", setMenuLista); // Menülista lekérése
       setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
     }
   }, [showModal, dataLoaded, getAdat, setMenuLista]); // Csak akkor frissül, amikor a modal látható
 
-  // Main menu kiválasztása és automatikusan új főmenü beállítása
+  // Main menu változtatása
   const handleMainMenuChange = (e) => {
     const selectedValue = e.target.value;
-    if (selectedValue === "null") {
-      setMainMenu(null); // Ha az új főmenüt választja, a main_menu értéke null lesz
+    // Csak akkor állítjuk be a változásokat, ha nem akarjuk, hogy az alert megjelenjen
+    if (selectedValue === "") {
+      setMainMenu(null);
+    } else if (selectedValue === "new") {
+      setMainMenu("new");
     } else {
-      setMainMenu(selectedValue); // Ha egy meglévő főmenüt választ, annak id-jét beállítjuk
+      setMainMenu(selectedValue);
     }
+  };
+
+  // Szint változtatása
+  const handleSzintChange = (e) => {
+    const selectedValue = e.target.value;
+    setSzint(selectedValue); // Az opciók váltásakor nem szükséges alertet generálni
   };
 
   const handleLinkChange = (e) => {
@@ -44,19 +57,45 @@ function MenuAdd({ showModal, handleCloseModal }) {
   // Menü hozzáadásának kezelése
   const kuld = (event) => {
     event.preventDefault();
+
+    // Hibaüzenetek állapota
+    let tempErrors = {};
+    let isValid = true;
+
+    // Validáció: Ha nincs kiválasztva a főmenü vagy a szint
+    if (main_menu === "") {
+      tempErrors.main_menu = "A főmenü kiválasztása kötelező!";
+      isValid = false;
+    }
+
+    if (szint === "") {
+      tempErrors.szint = "A szint kiválasztása kötelező!";
+      isValid = false;
+    }
+
+    if (!isValid) {
+      setErrors(tempErrors); // A hibák beállítása
+      setAlertMessage("Kérjük, válasszon érvényes főmenüt és szintet!");
+      setShowAlert(true); // Ha bármelyik hiba van, akkor megjelenítjük az alertet
+      return;
+    }
+
+    // Ha minden validációs szabály teljesül, akkor készítjük el az adatokat
     let adat = {
       name: name,
-      main_menu: main_menu,
+      main_menu: main_menu === "new" ? null : main_menu, // Ha "Új főmenü"-t választanak, akkor null-ra állítjuk
       link: link,
+      szint: szint,
       status: status,
     };
+
     console.log(adat); // Logoljuk a küldés előtt
 
     // Küldjük az adatokat
     postAdat("/api/menu", adat)
       .then(() => {
         // Hozzáadott menüpont frissítése a listában
-        setMenuLista((prevLista) => [...prevLista, adat]);  // Frissítjük a menüt
+        setMenuLista((prevLista) => [...prevLista, adat]); // Frissítjük a menüt
         handleCloseModal(); // Bezárja a modal-t a küldés után
       })
       .catch((error) => {
@@ -70,6 +109,18 @@ function MenuAdd({ showModal, handleCloseModal }) {
         <Modal.Title>Form Küldése</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {/* Alert megjelenítése, ha a formot próbáljuk elküldeni */}
+        {showAlert && (
+          <Alert
+            variant="danger"
+            onClose={() => setShowAlert(false)}
+            dismissible
+          >
+            <Alert.Heading>Hiba!</Alert.Heading>
+            {alertMessage}
+          </Alert>
+        )}
+
         <Form onSubmit={kuld}>
           <Form.Group controlId="formName">
             <Form.Label>Menü név</Form.Label>
@@ -85,20 +136,38 @@ function MenuAdd({ showModal, handleCloseModal }) {
             <Form.Label>Főmenü pont</Form.Label>
             <Form.Control
               as="select"
-              value={main_menu === null ? "null" : main_menu} // Ha null, akkor az új főmenü lesz kiválasztva
+              value={main_menu === null ? "" : main_menu} // Ha null, akkor az alapértelmezett "-- Válassz főmenüt --" érték legyen
               onChange={handleMainMenuChange}
             >
-              <option>-- Válassz főmenüt --</option>
-              <option value="null">Új főmenü</option>{" "}
-              {/* null érték lehetőség új főmenü esetén */}
+              <option value="">-- Válassz főmenüt --</option>
+              <option value="new">Új főmenü</option> {/* Ezt választhatják */}
               {filteredMenuList.map((menu) => (
                 <option key={menu.id} value={menu.id}>
-                  {" "}
-                  {/* A főmenü id-jére hivatkozunk */}
                   {menu.name}
                 </option>
               ))}
             </Form.Control>
+            {errors.main_menu && (
+              <div style={{ color: "red" }}>{errors.main_menu}</div>
+            )}
+          </Form.Group>
+
+          <Form.Group controlId="formSzint">
+            <Form.Label>Szint</Form.Label>
+            <Form.Control
+              as="select"
+              value={szint}
+              onChange={handleSzintChange}
+            >
+              <option value="">-- Válassz szintet --</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </Form.Control>
+            {errors.szint && (
+              <div style={{ color: "red" }}>{errors.szint}</div>
+            )}
           </Form.Group>
 
           <Form.Group controlId="formLink">
@@ -107,7 +176,7 @@ function MenuAdd({ showModal, handleCloseModal }) {
               type="text"
               placeholder="Enter link (pl. /menuoldal)"
               value={link}
-              onChange={handleLinkChange} // Link változtatás kezelése
+              onChange={handleLinkChange}
             />
           </Form.Group>
 
@@ -117,7 +186,7 @@ function MenuAdd({ showModal, handleCloseModal }) {
               type="checkbox"
               label="Aktív"
               checked={status}
-              onChange={(e) => setStatus(e.target.checked)} // Checkbox állapot módosítása
+              onChange={(e) => setStatus(e.target.checked)}
             />
           </Form.Group>
 
