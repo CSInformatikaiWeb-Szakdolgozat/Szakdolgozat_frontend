@@ -10,7 +10,13 @@ function NavigacioAlmenu(props) {
         getAdat("/api/menus", setMenuLista);
     }, []);
 
-    if (props.elem.szint === 1) {
+    if (props.elem.szint === 0) {
+        return (
+            <Nav.Link className="text-white text-uppercase" href={props.elem.link}>
+              {props.elem.name}
+            </Nav.Link>
+          )
+    } else if (props.elem.szint === 1 && props.elem.main_menu === null) {
         let fo = props.elem.id;
         return (
         <NavDropdown
@@ -20,19 +26,15 @@ function NavigacioAlmenu(props) {
             >
             {
                 menuLista.map((almenu, index) => {
-                    if (almenu.main_menu == fo) {
+                    if (almenu.szint === 3) {
+
+                    } else if (almenu.main_menu === fo) {
                         return <NavDropdown.Item href={almenu.link} key={index}>{almenu.name}</NavDropdown.Item>
                     }
                 })
             }
             </NavDropdown>
         )
-    } else if (props.elem.szint == 0) {
-        return (
-            <Nav.Link className="text-white text-uppercase" href={props.elem.link}>
-              {props.elem.name}
-            </Nav.Link>
-          )
     }
 }
 
