@@ -1,178 +1,144 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react"; 
 import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext.js";
-
 import Ckeditor from "./ckeditor/Ckeditor.jsx";
 
 function CikkAdd({ showModal, handleCloseModal }) {
-  const {
-    postAdat,
-    getAdat,
-    setCikkLista,
-    partnerLista,
-    setPartnerLista,
-    classLista,
-    setClassLista,
-  } = useContext(AdatokContext);
+  const { postAdat, getAdat, setCikkLista } = useContext(AdatokContext);
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [partnerId, setPartnerId] = useState(""); // Partner ID tárolása
-  const [classId, setClassId] = useState(""); // Besorolás ID tárolása
-  const [content, setContent] = useState("");
-  const [visibilityStatus, setVisibilityStatus] = useState("");
-  const [pageLink, setPageLink] = useState("");
+  const [nev, setNev] = useState("");
+  const [leiras, setLeiras] = useState("");
+  const [partner, setPartner] = useState(""); // Partner lista tárolása
+  const [besorolas, setBesorolas] = useState(""); // Besorolás lista tárolása
+  const [tartalom, setTartalom] = useState(""); // Tartalom (CKEditor) tárolása
+  const [lathatosag, setLathatosag] = useState(false);
+  const [oldalLink, setOldalLink] = useState("");
+  const [partnerek, setPartnerek] = useState([]); // Partnerek lista
+  const [besorolasok, setBesorolasok] = useState([]); // Besorolások lista
+  const [dataLoaded, setDataLoaded] = useState(false); // Adatok betöltése
 
-  const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le lettek-e kérve az adatok
-
-  // A partner lista lekérése csak egyszer, ha a modal megjelenik és még nem lett lekérve
+  // A partnerek és besorolások lekérése
   useEffect(() => {
     if (showModal && !dataLoaded) {
-      // Ha a modal megjelenik és még nem lettek lekérve az adatok
-      getAdat("/api/partners", setPartnerLista); // Lekérjük a partnereket
-      getAdat("/api/classes", setClassLista); // Lekérjük a besorolásokat
-      setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
-    }
-  }, [showModal, dataLoaded, getAdat, setPartnerLista, setClassLista]); // Csak akkor frissítjük, ha a modal látható és még nem történt meg a lekérés
+      // Partnerek lekérése és szűrése aktív állapotra
+      getAdat("/api/partners", (data) => {
+        console.log("Partnerek adatai:", data); // Ellenőrizd az API válaszát
+        const activePartners = data.filter(partner => partner.status === true);
+        setPartnerek(activePartners); // Csak az aktív partnerek
+      });
+      
+      // Besorolások lekérése és szűrése az upper_classification nem null értékűekre
+      getAdat("/api/classes", (data) => {
+        const validBesorolasok = data.filter(besorolas => besorolas.upper_classification !== null); // Csak a valid besorolások
+        setBesorolasok(validBesorolasok); // Csak a valid besorolások
+      });
 
-  
-  /* const handlePageLinkChange = (e) => {
-    const selectedValue = e.target.value;
-    if (selectedValue === "null") {
-      setPageLink(null); // Ha az új főmenüt választja, a main_menu értéke null lesz
-    } else {
-      setPageLink(selectedValue); // Ha egy meglévő főmenüt választ, annak id-jét beállítjuk
+      setDataLoaded(true);
     }
-  }; */
+  }, [showModal, dataLoaded]); // Csak akkor fut le, ha a modal megjelenik és még nem töltődtek be az adatok
 
-  // űrlap elküldése
-  const handleSubmit = (event) => {
+  const handleLinkChange = (e) => {
+    let newLink = e.target.value;
+    if (newLink && !newLink.startsWith("/")) {
+      newLink = "/" + newLink;
+    }
+    setOldalLink(newLink);
+  };
+
+  const kuld = (event) => {
     event.preventDefault();
 
-    // Validáljuk, hogy a partner és besorolás választható értékek
-    if (!partnerId || !classId) {
-      alert("Kérjük, válasszon partnert és besorolást!");
-      return;
-    }
-
-    const newArticle = {
-      name,
-      description,
-      partner: partnerId, // Partner ID
-      classification: classId, // Besorolás ID
-      content: content,
-      visibility_status: visibilityStatus,
-      page_link: pageLink,
+    let adat = {
+      nev,
+      leiras,
+      partner,
+      besorolas,
+      tartalom,
+      lathatosag,
+      oldalLink,
     };
-    console.log(newArticle); // Az adatok naplózása a küldés előtt
 
-    // Az új cikk adatainak elküldése a szerverre
-    postAdat("/api/article", newArticle);
-    getAdat("/api/articles", setCikkLista);
-    handleCloseModal(); // A modal bezárása
+    console.log(adat);
+
+    postAdat("/articles", adat)
+      .then(() => {
+        setCikkLista((prevLista) => [...prevLista, adat]);
+        handleCloseModal();
+      })
+      .catch((error) => {
+        console.error("Hiba történt a cikk hozzáadásakor:", error);
+      });
   };
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal} size="xl">
+    <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Cikk hozzáadása</Modal.Title>
+        <Modal.Title>Új Cikk Hozzáadása</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formName">
+        <Form onSubmit={kuld}>
+          <Form.Group controlId="formNev">
             <Form.Label>Név</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Cikk neve"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Form.Control type="text" value={nev} onChange={(e) => setNev(e.target.value)} required />
           </Form.Group>
 
-          <Form.Group controlId="formDescription">
+          <Form.Group controlId="formLeiras">
             <Form.Label>Leírás</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Leírás"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+            <Form.Control as="textarea" value={leiras} onChange={(e) => setLeiras(e.target.value)} required />
           </Form.Group>
 
+          {/* Partner választás lenyíló menü */}
           <Form.Group controlId="formPartner">
             <Form.Label>Partner</Form.Label>
-            <Form.Control
-              as="select"
-              value={partnerId}
-              onChange={(e) => setPartnerId(e.target.value)}
-            >
+            <Form.Control as="select" value={partner} onChange={(e) => setPartner(e.target.value)} required>
               <option value="">-- Válassz partnert --</option>
-              {partnerLista && partnerLista.length > 0 ? (
-                partnerLista.map((partner) => (
+              {partnerek.length > 0 ? (
+                partnerek.map((partner) => (
                   <option key={partner.id} value={partner.id}>
-                    {partner.name} {/* A partner nevét jelenítjük meg */}
+                    {partner.name} {/* Partner neve */}
                   </option>
                 ))
               ) : (
-                <option disabled>Nem található partner</option> // Ha nincs partner, mutassunk egy üzenetet
+                <option disabled>Partnerek betöltése...</option>
               )}
             </Form.Control>
           </Form.Group>
 
-          <Form.Group controlId="formClass">
+          {/* Besorolás választás lenyíló menü */}
+          <Form.Group controlId="formBesorolas">
             <Form.Label>Besorolás</Form.Label>
-            <Form.Control
-              as="select"
-              value={classId}
-              onChange={(e) => setClassId(e.target.value)}
-            >
+            <Form.Control as="select" value={besorolas} onChange={(e) => setBesorolas(e.target.value)} required>
               <option value="">-- Válassz besorolást --</option>
-              {classLista && classLista.length > 0 ? (
-                classLista.map((besorolas) => (
+              {besorolasok.length > 0 ? (
+                besorolasok.map((besorolas) => (
                   <option key={besorolas.id} value={besorolas.id}>
-                    {besorolas.name} {/* A besorolás nevét jelenítjük meg */}
+                    {besorolas.name} {/* Besorolás neve */}
                   </option>
                 ))
               ) : (
-                <option disabled>Nem található besorolás</option> // Ha nincs besorolás, mutassunk egy üzenetet
+                <option disabled>Besorolások betöltése...</option>
               )}
             </Form.Control>
           </Form.Group>
 
-          <Form.Group controlId="formContent">
+          {/* Tartalom (CKEditor) */}
+          <Form.Group controlId="formTartalom">
             <Form.Label>Tartalom</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Ide helyezd el a CKEditor-ban készített cikk HTML kódját!"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            /> 
-            <Ckeditor />
+            <Ckeditor value={tartalom} onChange={setTartalom} />
           </Form.Group>
 
-          <Form.Group controlId="formStatus">
-            <Form.Label>Megjelenítési állapot</Form.Label>
-            <Form.Check
-              type="checkbox"
-              label="Aktív"
-              checked={visibilityStatus}
-              onChange={(e) => setVisibilityStatus(e.target.checked)}
-            />
+          {/* Láthatóság checkbox */}
+          <Form.Group controlId="formLathatosag">
+            <Form.Check type="checkbox" label="Láthatóság" checked={lathatosag} onChange={(e) => setLathatosag(e.target.checked)} />
           </Form.Group>
 
-          <Form.Group controlId="formPageLink">
-            <Form.Label>Link</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Link"
-              value={pageLink}
-              onChange={(e) => setPageLink(e.target.value)}
-            />
+          {/* Oldal link */}
+          <Form.Group controlId="formOldalLink">
+            <Form.Label>Oldal Link</Form.Label>
+            <Form.Control type="text" value={oldalLink} onChange={handleLinkChange} required />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Hozzáadás
-          </Button>
+          <Button variant="primary" type="submit">Küld</Button>
         </Form>
       </Modal.Body>
     </Modal>
