@@ -1,148 +1,205 @@
-import React, { useContext, useState, useEffect } from "react"; 
-import { Button, Form, Modal } from "react-bootstrap";
-import AdatokContext from "../../../contexts/AdatokContext.js";
-import Ckeditor from "./ckeditor/Ckeditor.jsx";
+import React, { useContext, useState, useEffect } from "react";
+import { Alert, Button, Form, Modal } from "react-bootstrap";
+import AdatokContext from "../../../contexts/AdatokContext";
 
-function CikkAdd({ showModal, handleCloseModal }) {
-  const { postAdat, getAdat, setCikkLista } = useContext(AdatokContext);
+function MenuAdd({ showModal, handleCloseModal }) {
+  const { postAdat, menuLista, getAdat, setMenuLista } =
+    useContext(AdatokContext);
 
-  const [nev, setNev] = useState("");
-  const [leiras, setLeiras] = useState("");
-  const [partner, setPartner] = useState(""); // Partner lista tárolása
-  const [besorolas, setBesorolas] = useState(""); // Besorolás lista tárolása
-  const [tartalom, setTartalom] = useState(""); // Tartalom (CKEditor) tárolása
-  const [lathatosag, setLathatosag] = useState(false);
-  const [oldalLink, setOldalLink] = useState("");
-  const [partnerek, setPartnerek] = useState([]); // Partnerek lista
-  const [besorolasok, setBesorolasok] = useState([]); // Besorolások lista
-  const [dataLoaded, setDataLoaded] = useState(false); // Adatok betöltése
+  const [name, setName] = useState("");
+  const [main_menu, setMainMenu] = useState(""); // Kezdő érték: ""
+  const [link, setLink] = useState("");
+  const [status, setStatus] = useState(false); // Default érték: false
+  const [level, setLevel] = useState("");
+  const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le vannak-e kérve az adatok
+  const [showAlert, setShowAlert] = useState(false); // Az alert megjelenítéséhez szükséges állapot
+  const [alertMessage, setAlertMessage] = useState(""); // Az alert üzenetének tárolása
+  const [errors, setErrors] = useState({}); // Hibák tárolása, kezdő érték üres objektum
 
-  // A partnerek és besorolások lekérése
+  // Szűrés, hogy csak azok a menük jelenjenek meg, amelyek main_menu értéke null
+  const filteredMenuList = menuLista.filter((menu) => menu.main_menu === null);
+
+  // Menülista lekérése csak akkor, amikor a modal megjelenik és még nem lett lekérve
   useEffect(() => {
     if (showModal && !dataLoaded) {
-      // Partnerek lekérése és szűrése aktív állapotra
-      getAdat("/api/partners", (data) => {
-        console.log("Partnerek adatai:", data); // Ellenőrizd az API válaszát
-        const activePartners = data.filter(partner => partner.status === true);
-        setPartnerek(activePartners); // Csak az aktív partnerek
-      });
-      
-      // Besorolások lekérése és szűrése az upper_classification nem null értékűekre
-      getAdat("/api/classes", (data) => {
-        const validBesorolasok = data.filter(besorolas => besorolas.upper_classification !== null); // Csak a valid besorolások
-        setBesorolasok(validBesorolasok); // Csak a valid besorolások
-      });
-
-      setDataLoaded(true);
+      // Ha a modal megjelenik és még nem lett lekérve az adat
+      getAdat("/api/menus", setMenuLista); // Menülista lekérése
+      setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
     }
-  }, [showModal, dataLoaded]); // Csak akkor fut le, ha a modal megjelenik és még nem töltődtek be az adatok
+  }, []); // Csak akkor frissül, amikor a modal látható
+
+  // Main menu változtatása
+  const handleMainMenuChange = (e) => {
+    const selectedValue = e.target.value;
+    // Csak akkor állítjuk be a változásokat, ha nem akarjuk, hogy az alert megjelenjen
+    if (selectedValue === "") {
+      setMainMenu(null);
+    } else if (selectedValue === "new") {
+      setMainMenu("new");
+    } else {
+      setMainMenu(selectedValue);
+    }
+  };
+
+  // level változtatása
+  const handlelevelChange = (e) => {
+    const selectedValue = e.target.value;
+    setLevel(selectedValue); // Az opciók váltásakor nem szükséges alertet generálni
+  };
 
   const handleLinkChange = (e) => {
     let newLink = e.target.value;
     if (newLink && !newLink.startsWith("/")) {
       newLink = "/" + newLink;
     }
-    setOldalLink(newLink);
+    setLink(newLink);
   };
 
+  // Menü hozzáadásának kezelése
   const kuld = (event) => {
     event.preventDefault();
 
+    // Hibaüzenetek állapota
+    let tempErrors = {};
+    let isValid = true;
+
+    // Validáció: Ha nincs kiválasztva a főmenü vagy a level
+    if (main_menu === "") {
+      tempErrors.main_menu = "A főmenü kiválasztása kötelező!";
+      isValid = false;
+    }
+
+    if (level === "") {
+      tempErrors.level = "A level kiválasztása kötelező!";
+      isValid = false;
+    }
+
+    if (!isValid) {
+      setErrors(tempErrors); // A hibák beállítása
+      setAlertMessage("Kérjük, válasszon érvényes főmenüt és levelet!");
+      setShowAlert(true); // Ha bármelyik hiba van, akkor megjelenítjük az alertet
+      return;
+    }
+
+    // Ha minden validációs szabály teljesül, akkor készítjük el az adatokat
     let adat = {
-      nev,
-      leiras,
-      partner,
-      besorolas,
-      tartalom,
-      lathatosag,
-      oldalLink,
+      name: name,
+      main_menu: main_menu === "new" ? null : main_menu, // Ha "Új főmenü"-t választanak, akkor null-ra állítjuk
+      link: link,
+      level: level,
+      status: status,
     };
 
     console.log(adat);
 
-    postAdat("/articles", adat)
+    // Küldjük az adatokat
+    postAdat("/api/menu", adat)
       .then(() => {
-        setCikkLista((prevLista) => [...prevLista, adat]);
-        handleCloseModal();
+        // Hozzáadott menüpont frissítése a listában
+        setMenuLista((prevLista) => [...prevLista, adat]); // Frissítjük a menüt
+        handleCloseModal(); // Bezárja a modal-t a küldés után
       })
       .catch((error) => {
-        console.error("Hiba történt a cikk hozzáadásakor:", error);
+        console.error("Hiba történt a menü hozzáadásakor:", error);
       });
   };
 
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Új Cikk Hozzáadása</Modal.Title>
+        <Modal.Title>Új Menu Hozzáadása</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {/* Alert megjelenítése, ha a formot próbáljuk elküldeni */}
+        {showAlert && (
+          <Alert
+            variant="danger"
+            onClose={() => setShowAlert(false)}
+            dismissible
+          >
+            <Alert.Heading>Hiba!</Alert.Heading>
+            {alertMessage}
+          </Alert>
+        )}
+
         <Form onSubmit={kuld}>
-          <Form.Group controlId="formNev">
-            <Form.Label>Név</Form.Label>
-            <Form.Control type="text" value={nev} onChange={(e) => setNev(e.target.value)} required />
+          <Form.Group controlId="formName">
+            <Form.Label>Menü név</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </Form.Group>
 
-          <Form.Group controlId="formLeiras">
-            <Form.Label>Leírás</Form.Label>
-            <Form.Control as="textarea" value={leiras} onChange={(e) => setLeiras(e.target.value)} required />
-          </Form.Group>
-
-          {/* Partner választás lenyíló menü */}
-          <Form.Group controlId="formPartner">
-            <Form.Label>Partner</Form.Label>
-            <Form.Control as="select" value={partner} onChange={(e) => setPartner(e.target.value)} required>
-              <option value="">-- Válassz partnert --</option>
-              {partnerek.length > 0 ? (
-                partnerek.map((partner) => (
-                  <option key={partner.id} value={partner.id}>
-                    {partner.name ? partner.name : 'Név nem elérhető'} {/* Partner neve */}
-                  </option>
-                ))
-              ) : (
-                <option disabled>Partnerek betöltése...</option>
-              )}
+          <Form.Group controlId="formMainMenu">
+            <Form.Label>Főmenü pont</Form.Label>
+            <Form.Control
+              as="select"
+              value={main_menu === null ? "" : main_menu} // Ha null, akkor az alapértelmezett "-- Válassz főmenüt --" érték legyen
+              onChange={handleMainMenuChange}
+            >
+              <option value="">-- Válassz főmenüt --</option>
+              <option value="new">Új főmenü</option> {/* Ezt választhatják */}
+              {filteredMenuList.map((menu) => (
+                <option key={menu.id} value={menu.id}>
+                  {menu.name}
+                </option>
+              ))}
             </Form.Control>
+            {errors.main_menu && (
+              <div style={{ color: "red" }}>{errors.main_menu}</div>
+            )}
           </Form.Group>
 
-          {/* Besorolás választás lenyíló menü */}
-          <Form.Group controlId="formBesorolas">
-            <Form.Label>Besorolás</Form.Label>
-            <Form.Control as="select" value={besorolas} onChange={(e) => setBesorolas(e.target.value)} required>
-              <option value="">-- Válassz besorolást --</option>
-              {besorolasok.length > 0 ? (
-                besorolasok.map((besorolas) => (
-                  <option key={besorolas.id} value={besorolas.id}>
-                    {besorolas.name} {/* Besorolás neve */}
-                  </option>
-                ))
-              ) : (
-                <option disabled>Besorolások betöltése...</option>
-              )}
+          <Form.Group controlId="formlevel">
+             <Form.Label>level</Form.Label>
+             <Form.Control
+               as="select"
+               value={level}
+               onChange={handlelevelChange}
+             >
+               <option value="">-- Válassz levelet --</option>
+               <option value="0">0</option>
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3">3</option>
             </Form.Control>
+            {errors.level && (
+               <div style={{ color: "red" }}>{errors.level}</div>
+             )}
           </Form.Group>
 
-          {/* Tartalom (CKEditor) */}
-          <Form.Group controlId="formTartalom">
-            <Form.Label>Tartalom</Form.Label>
-            <Ckeditor value={tartalom} onChange={setTartalom} />
+          
+          <Form.Group controlId="formLink">
+             <Form.Label>Link</Form.Label>
+             <Form.Control
+               type="text"
+               placeholder="Enter link (pl. /menuoldal)"
+               value={link}
+               onChange={handleLinkChange}
+             />
           </Form.Group>
 
-          {/* Láthatóság checkbox */}
-          <Form.Group controlId="formLathatosag">
-            <Form.Check type="checkbox" label="Láthatóság" checked={lathatosag} onChange={(e) => setLathatosag(e.target.checked)} />
+          <Form.Group controlId="formStatus">
+             <Form.Label>Status</Form.Label>
+             <Form.Check
+               type="checkbox"
+               label="Aktív"
+               checked={status}
+               onChange={(e) => setStatus(e.target.checked)}
+             />
           </Form.Group>
 
-          {/* Oldal link */}
-          <Form.Group controlId="formOldalLink">
-            <Form.Label>Oldal Link</Form.Label>
-            <Form.Control type="text" value={oldalLink} onChange={handleLinkChange} required />
-          </Form.Group>
-
-          <Button variant="primary" type="submit">Küld</Button>
+          <Button variant="primary" type="submit">
+            Küld
+          </Button>
         </Form>
       </Modal.Body>
     </Modal>
   );
 }
 
-export default CikkAdd;
+export default MenuAdd;
