@@ -5,6 +5,7 @@ import Ckeditor from "../add/ckeditor/Ckeditor";
 
 function CikkEdit({ showModal, handleCloseModal, elemId }) {
   const { patchAdat, getAdat, postAdat, setCikkLista, classLista } = useContext(AdatokContext);
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -14,42 +15,77 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
     visibility_status: false,
     page_link: "",
   });
+  const [loading, setLoading] = useState(false);
 
+  // Cikk adatainak betöltése, ha elemId van
   useEffect(() => {
     if (elemId) {
+      setLoading(true); // Betöltés kezdete
       getAdat(`/api/article/${elemId}`, (data) => {
-        setFormData({
-          name: data.name,
-          description: data.description,
-          partner: data.partner,
-          visibility_status: data.visibility_status,
-          content: data.content,
-          page_link: data.page_link,
-        });
+        setLoading(false); // Betöltés befejezése
+        if (data) {
+          setFormData({
+            name: data.name || "",
+            description: data.description || "",
+            partner: data.partner || "",
+            classification: data.classification || "",
+            content: data.content || "",
+            visibility_status: data.visibility_status || false,
+            page_link: data.page_link || "",
+          });
+        }
       });
     }
   }, [elemId, getAdat]);
 
+  // Űrlap mezők változásának kezelése
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // Checkbox változásának kezelése
+  const handleCheckboxChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      visibility_status: e.target.checked,
+    }));
+  };
+
+  // Űrlap beküldése
   const handleSubmit = (event) => {
     event.preventDefault();
-    patchAdat(`/api/article`, elemId, formData); // Küldd el az adatokat
-    getAdat("/api/articles", setCikkLista); // Frissíti az cikkeket
-    handleCloseModal();
+    // Ellenőrzés, hogy ne küldjünk üres adatokat
+    if (!formData.name || !formData.description || !formData.content) {
+      console.log("Hiányzó mezők, nem küldünk adatot.");
+      return;
+    }
+
+    setLoading(true); // Betöltés kezdete
+    patchAdat(`/api/article/${elemId}`, formData)
+      .then(() => {
+        getAdat("/api/articles", setCikkLista); // Cikk lista frissítése
+        handleCloseModal(); // Modal bezárása
+      })
+      .finally(() => setLoading(false)); // Betöltés befejezése
   };
 
   // Klónozás kezelése
   const handleClone = async () => {
-    const clonedData = { ...formData }; // Klónozzuk a jelenlegi adatokat
-    clonedData.name = `${formData.name} (klónozva)`; // Klónozott elemhez új nevet adunk
+    const clonedData = { ...formData, name: `${formData.name} (klónozva)` };
 
     try {
-      // POST kérés a klónozott adat mentéséhez
+      setLoading(true); // Klónozás kezdete
       await postAdat("/api/article", clonedData);
-      // Frissítjük a cikkek listáját, hogy az új rekord is megjelenjen
-      getAdat("/api/articles", setCikkLista);
-      handleCloseModal(); // Bezárja a modált
+      getAdat("/api/articles", setCikkLista); // Cikk lista frissítése
+      handleCloseModal(); // Modal bezárása
     } catch (error) {
       console.error("Hiba történt a klónozás közben:", error);
+    } finally {
+      setLoading(false); // Klónozás befejezése
     }
   };
 
@@ -59,97 +95,104 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
         <Modal.Title>Cikk szerkesztése</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formName">
-            <Form.Label>Név</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Cikk neve"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
-          </Form.Group>
-          <Form.Group controlId="formDescription">
-            <Form.Label>Leírás</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Leírás"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            />
-          </Form.Group>
-          <Form.Group controlId="formPartner">
-            <Form.Label>Partner</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Partner"
-              value={formData.partner}
-              onChange={(e) => setFormData({ ...formData, partner: e.target.value })}
-            />
-          </Form.Group>
-          <Form.Group controlId="formClass">
-            <Form.Label>Besorolás</Form.Label>
-            <Form.Control
-              as="select"
-              value={formData.classification}
-              onChange={(e) => setFormData({ ...formData, classification: e.target.value })}>
-            <option value="">-- Válassz besorolást --</option>
-              {classLista && classLista.length > 0 ? (
-                classLista.map((besorolas) => (
-                  <option key={besorolas.id} value={besorolas.id}>
-                    {besorolas.name} {/* A besorolás nevét jelenítjük meg */}
-                  </option>
-                ))
-              ) : (
-                <option disabled>Nem található besorolás</option> // Ha nincs besorolás, mutassunk egy üzenetet
-              )}
+        {loading ? (
+          <div>Betöltés...</div> // Betöltési üzenet
+        ) : (
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formName">
+              <Form.Label>Név</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Cikk neve"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formDescription">
+              <Form.Label>Leírás</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Leírás"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formPartner">
+              <Form.Label>Partner</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Partner"
+                name="partner"
+                value={formData.partner}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formClass">
+              <Form.Label>Besorolás</Form.Label>
+              <Form.Control
+                as="select"
+                name="classification"
+                value={formData.classification}
+                onChange={handleInputChange}
+              >
+                <option value="">-- Válassz besorolást --</option>
+                {classLista.length > 0 ? (
+                  classLista.map((besorolas) => (
+                    <option key={besorolas.id} value={besorolas.id}>
+                      {besorolas.name}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>Nincs besorolás</option>
+                )}
               </Form.Control>
-          </Form.Group>
+            </Form.Group>
 
-          <Form.Group controlId="formContent">
-            <Form.Label>Tartalom</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Ide helyezd el a CKEditor-ban készített cikk HTML kódját!"
-              value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-            /> 
-            <Ckeditor />
-          </Form.Group>
+            <Form.Group controlId="formContent">
+              <Form.Label>Tartalom</Form.Label>
+              <Ckeditor
+                content={formData.content}
+                onChange={(newContent) =>
+                  setFormData((prevData) => ({ ...prevData, content: newContent }))
+                }
+              />
+            </Form.Group>
 
-          <Form.Group controlId="formStatus">
-            <Form.Label>Status</Form.Label>
-            <Form.Check
-              type="checkbox"
-              label="Aktív"
-              checked={formData.visibility_status}
-              onChange={(e) => setFormData({ ...formData, visibility_status: e.target.checked })}
-            />
-          </Form.Group>
-          <Form.Group controlId="formPageLink">
-            <Form.Label>Link</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Link"
-              value={formData.page_link}
-              onChange={(e) => setFormData({ ...formData, page_link: e.target.value })}
-            />
-          </Form.Group>
+            <Form.Group controlId="formStatus">
+              <Form.Label>Státusz</Form.Label>
+              <Form.Check
+                type="checkbox"
+                label="Aktív"
+                checked={formData.visibility_status}
+                onChange={handleCheckboxChange}
+              />
+            </Form.Group>
 
-        </Form>
+            <Form.Group controlId="formPageLink">
+              <Form.Label>Link</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Link"
+                name="page_link"
+                value={formData.page_link}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Form>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        {/* Módosítás gomb */}
-        <Button variant="success" onClick={handleSubmit}>
+        <Button variant="success" onClick={handleSubmit} disabled={loading}>
           Módosítás
         </Button>
-
-        {/* Klónozás gomb */}
-        <Button variant="primary" onClick={handleClone}>
+        <Button variant="primary" onClick={handleClone} disabled={loading}>
           Klónozás
         </Button>
-
-        {/* Mégse gomb */}
         <Button variant="danger" onClick={handleCloseModal}>
           Mégse
         </Button>
