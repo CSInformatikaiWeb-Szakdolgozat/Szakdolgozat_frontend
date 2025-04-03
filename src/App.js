@@ -21,13 +21,17 @@ import EsemenyTable from "./components/EsemenyTable";
 import TaroloKonszolidacio from "./pages/public/TaroloKonszolidacio";
 import Megoldasok from "./pages/public/Megoldasok";
 import Rendezvenyek from "./pages/public/Rendezvenyek";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AdatokContext from "./contexts/AdatokContext";
 import General from "./pages/public/General";
 
 function App() {
   const { user, loading } = useAuthContext();
-  const {cikkLista} = useContext(AdatokContext);
+  const {cikkLista, setCikkLista, getAdat } = useContext(AdatokContext);
+
+  useEffect(() => {
+      getAdat("/api/articles", setCikkLista);
+  }, []);
 
   if (loading) {
     return (
@@ -57,7 +61,6 @@ function App() {
           
           {
             cikkLista.map((elem, index) => {
-              console.log(elem.page_link);
               return (
                 <Route path={elem.page_link} element={<General elem={elem} key={index} index={index} />} />
               )
