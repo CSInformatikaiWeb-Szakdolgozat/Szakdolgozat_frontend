@@ -21,9 +21,14 @@ import EsemenyTable from "./components/EsemenyTable";
 import TaroloKonszolidacio from "./pages/public/TaroloKonszolidacio";
 import Megoldasok from "./pages/public/Megoldasok";
 import Rendezvenyek from "./pages/public/Rendezvenyek";
+import { useContext } from "react";
+import AdatokContext from "./contexts/AdatokContext";
+import General from "./pages/public/General";
 
 function App() {
   const { user, loading } = useAuthContext();
+  const {cikkLista} = useContext(AdatokContext);
+
   if (loading) {
     return (
       <div className="loading-body">
@@ -49,6 +54,15 @@ function App() {
           <Route path="/megoldasok" element={<Megoldasok />}/>
           <Route path="/rendezvenyek" element={<Rendezvenyek />} />
           <Route path="/letoltesek" element={<Letoltes />} />
+          
+          {
+            cikkLista.map((elem, index) => {
+              console.log(elem.page_link);
+              return (
+                <Route path={elem.page_link} element={<General elem={elem} key={index} index={index} />} />
+              )
+            })
+          }
         </Route>
         
         
