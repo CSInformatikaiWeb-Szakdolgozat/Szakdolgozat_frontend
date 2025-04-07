@@ -4,7 +4,7 @@ import AdatokContext from "../contexts/AdatokContext";
 import EsemenyEdit from "./forms/edit/EsemenyEdit";
 
 function EsemenyTableSor(props) {
-  const { patchAdat, deletAdat, getAdat, setEsemenyLista } =
+  const {  deletAdat, getAdat, setEsemenyLista } =
     useContext(AdatokContext);
 
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
@@ -40,7 +40,7 @@ function EsemenyTableSor(props) {
         <EsemenyEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
-          esemenyId={props.elem.id} // Az elem id-jét adjuk át
+          elemId={props.elem.id} // Az elem id-jét adjuk át
         />
       </td>
 

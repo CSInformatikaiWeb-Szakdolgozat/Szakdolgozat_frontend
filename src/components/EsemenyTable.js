@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import EsemenyTableSor from "./EsemenyTableSor";
 import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
-import esemenyAdd from "./forms/add/EsemenyAdd";
+import EsemenyAdd from "./forms/add/EsemenyAdd";
 
 function EsemenyTable() {
   const { eventLista, setEventLista, getAdat } = useContext(AdatokContext);
@@ -23,7 +23,7 @@ function EsemenyTable() {
         </Button>
 
         {/* esemenyAdd komponens megjelenítése, átadva a modal vezérlését */}
-        <esemenyAdd showModal={showModal} handleCloseModal={handleCloseModal} />
+        <EsemenyAdd showModal={showModal} handleCloseModal={handleCloseModal} />
       </div>
 
       <Table striped bordered hover responsive>

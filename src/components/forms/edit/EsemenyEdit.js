@@ -1,49 +1,61 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import React, { useState, useEffect, useContext } from "react";
+import { Modal, Form, Button } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
 function EsemenyEdit({ showModal, handleCloseModal, elemId }) {
-  const { patchAdat, getAdat, postAdat, setEsemenyLista } = useContext(AdatokContext);
+  const { patchAdat, getAdat, setEsemenyLista } = useContext(AdatokContext);
+
   const [formData, setFormData] = useState({
     description: "",
     location: "",
     date: "",
-    status: false,
   });
 
+  const [loading, setLoading] = useState(false);
+
+  // Esemény adatainak betöltése szerkesztés előtt (ha elemId van)
   useEffect(() => {
     if (elemId) {
+      setLoading(true);
       getAdat(`/api/event/${elemId}`, (data) => {
-        setFormData({
-          description: data.description,
-          location: data.location,
-          date: data.date,
-          status: data.status,
-        });
+        setLoading(false);
+        if (data) {
+          setFormData({
+            description: data.description || "",
+            location: data.location || "",
+            date: data.date || "", // Az esemény dátuma
+          });
+        }
       });
     }
   }, [elemId, getAdat]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    patchAdat(`/api/event`, elemId, formData); // Küldd el az adatokat
-    getAdat("/api/events", setEsemenyLista); // Frissíti az eseményeket
-    handleCloseModal();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  // Klónozás kezelése
-  const handleClone = async () => {
-    const clonedData = { ...formData }; // Klónozzuk a jelenlegi adatokat
-    clonedData.description = `${formData.description} (klónozva)`; // Klónozott elemhez új leírást adunk
+  // Az esemény adatainak szerkesztése (PATCH /api/event/{id})
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    if (!formData.description || !formData.location || !formData.date) {
+      console.log("Hiányzó mezők, nem küldünk adatot.");
+      return;
+    }
+
+    setLoading(true);
     try {
-      // POST kérés a klónozott adat mentéséhez
-      await postAdat("/api/event", clonedData);
-      // Frissítjük az események listáját, hogy az új rekord is megjelenjen
-      getAdat("/api/events", setEsemenyLista);
-      handleCloseModal(); // Bezárja a modált
+      await patchAdat(`/api/event/${elemId}`, formData); // Esemény szerkesztése
+      getAdat("/api/events", setEsemenyLista); // Esemény lista frissítése
+      handleCloseModal(); // Modal bezárása
     } catch (error) {
-      console.error("Hiba történt a klónozás közben:", error);
+      console.error("Hiba történt az esemény szerkesztésekor:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,63 +65,49 @@ function EsemenyEdit({ showModal, handleCloseModal, elemId }) {
         <Modal.Title>Esemény szerkesztése</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formDescription">
-            <Form.Label>Leírás</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Esemény leírás"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
-          </Form.Group>
-          <Form.Group controlId="formLocation">
-            <Form.Label>Helyszín</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Helyszín"
-              value={formData.location}
-              onChange={(e) =>
-                setFormData({ ...formData, location: e.target.value })
-              }
-            />
-          </Form.Group>
-          <Form.Group controlId="formDate">
-            <Form.Label>Dátum</Form.Label>
-            <Form.Control
-              type="date"
-              value={formData.date}
-              onChange={(e) =>
-                setFormData({ ...formData, date: e.target.value })
-              }
-            />
-          </Form.Group>
-          <Form.Group controlId="formStatus">
-            <Form.Label>Status</Form.Label>
-            <Form.Check
-              type="checkbox"
-              label="Aktív"
-              checked={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
-            />
-          </Form.Group>
-        </Form>
+        {loading ? (
+          <p>Betöltés...</p> // Betöltési üzenet
+        ) : (
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formDescription">
+              <Form.Label>Leírás</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Leírás"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formLocation">
+              <Form.Label>Helyszín</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Helyszín"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formDate">
+              <Form.Label>Dátum</Form.Label>
+              <Form.Control
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Form>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        {/* Módosítás gomb */}
         <Button variant="success" onClick={handleSubmit}>
           Módosítás
         </Button>
-
-        {/* Klónozás gomb */}
-        <Button variant="primary" onClick={handleClone}>
-          Klónozás
-        </Button>
-
-        {/* Mégse gomb */}
-        <Button variant="danger" onClick={handleCloseModal}>
+        <Button variant="secondary" onClick={handleCloseModal}>
           Mégse
         </Button>
       </Modal.Footer>

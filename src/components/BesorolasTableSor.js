@@ -39,11 +39,11 @@ function BesorolasTableSor(props) {
         </Button>
 
         {/* BesorolasEdit komponens megjelenítése, átadva csak a besorolasId-t */}
-        <BesorolasEdit
+        {/* <BesorolasEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
           besorolasId={props.elem.id} // Az elem id-jét adjuk át
-        />
+        /> */}
       </td>
 
       <td className="text-center">
