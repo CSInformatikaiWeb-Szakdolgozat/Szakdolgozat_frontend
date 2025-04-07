@@ -4,7 +4,8 @@ import AdatokContext from "../contexts/AdatokContext";
 import CikkEdit from "./forms/edit/CikkEdit";
 
 function CikkTablaSor(props) {
-  const { patchAdat, deletAdat,getAdat,setCikkLista } = useContext(AdatokContext);
+  const { deletAdat, getAdat, setCikkLista } = useContext(AdatokContext);
+
   const [isOn, setIsOn] = useState(props.elem.visibility_status);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -33,7 +34,6 @@ function CikkTablaSor(props) {
         </div>
       </td>
       <td className="text-center">{props.elem.page_link}</td>
-      
 
       <td className="text-center">
         {/* Gomb a modal megnyitásához */}
@@ -45,7 +45,7 @@ function CikkTablaSor(props) {
         <CikkEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
-          cikkId={props.elem.id} // Most csak a cikkId-t adjuk át
+          elemId={props.elem.id} // Ez kell, mert a CikkEdit ezt várja
         />
       </td>
 

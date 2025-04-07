@@ -4,8 +4,8 @@ import AdatokContext from "../contexts/AdatokContext";
 import MenuEdit from "./forms/edit/MenuEdit";
 
 function MenuTableSor(props) {
-  const {  deletAdat, getAdat, setMenuLista } =
-    useContext(AdatokContext);
+  const {  deletAdat, getAdat, setMenuLista } = useContext(AdatokContext);
+
   const [isOn, setIsOn] = useState(props.elem.status);
 
   const [showModal, setShowModal] = useState(false);

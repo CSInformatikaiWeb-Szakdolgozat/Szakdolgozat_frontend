@@ -4,7 +4,8 @@ import AdatokContext from "../../../contexts/AdatokContext";
 import Ckeditor from "../add/ckeditor/Ckeditor";
 
 function CikkEdit({ showModal, handleCloseModal, elemId }) {
-  const { patchAdat, getAdat, postAdat, setCikkLista, classLista } = useContext(AdatokContext);
+  const { patchAdat, getAdat, postAdat, setCikkLista, classLista } =
+    useContext(AdatokContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -27,8 +28,8 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
           setFormData({
             name: data.name || "",
             description: data.description || "",
-            partner: data.partner || "",
-            classification: data.classification || "",
+            partner: data.partner,
+            classification: data.classification,
             content: data.content || "",
             visibility_status: data.visibility_status || false,
             page_link: data.page_link || "",
@@ -36,16 +37,17 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
         }
       });
     }
-  }, [elemId, getAdat]);
+  }, [elemId]);
 
   // Űrlap mezők változásának kezelése
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: value, // Itt történik meg a módosítás
     }));
   };
+  
 
   // Checkbox változásának kezelése
   const handleCheckboxChange = (e) => {
@@ -103,10 +105,11 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
               <Form.Label>Név</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Cikk neve"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
+                placeholder="Enter name"
+                value={formData.name} // Itt jelenik meg az aktuális név
+                onChange={
+                  (e) => setFormData({ ...formData, name: e.target.value }) // Ha módosítják, frissítjük a formData-t
+                }
               />
             </Form.Group>
 
@@ -158,7 +161,10 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
               <Ckeditor
                 content={formData.content}
                 onChange={(newContent) =>
-                  setFormData((prevData) => ({ ...prevData, content: newContent }))
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    content: newContent,
+                  }))
                 }
               />
             </Form.Group>
@@ -187,10 +193,10 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="success" onClick={handleSubmit} disabled={loading}>
+        <Button variant="success" onClick={handleSubmit}>
           Módosítás
         </Button>
-        <Button variant="primary" onClick={handleClone} disabled={loading}>
+        <Button variant="primary" onClick={handleClone}>
           Klónozás
         </Button>
         <Button variant="danger" onClick={handleCloseModal}>
