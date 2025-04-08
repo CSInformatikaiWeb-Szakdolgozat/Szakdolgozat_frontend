@@ -1,8 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext.js";
 
-function EsesmenyAdd({ showModal, handleCloseModal, postAdat }) {
+function EsesmenyAdd({ showModal, handleCloseModal }) {
+  const { postAdat, setEventLista } = useContext(AdatokContext);
+
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
@@ -10,22 +12,21 @@ function EsesmenyAdd({ showModal, handleCloseModal, postAdat }) {
   const kuld = (event) => {
     event.preventDefault();
 
-    // A dátum formázása, hogy biztosan 'YYYY-MM-DD' formátumú string legyen
     const adat = {
       description,
       location,
-      date: new Date(date).toISOString().split('T')[0], // 'YYYY-MM-DD' formátum
+      date: new Date(date).toISOString().split("T")[0], // 'YYYY-MM-DD'
     };
 
-    console.log(adat); // Ellenőrzés
+    console.log(adat);
 
     postAdat("/api/event", adat)
       .then(() => {
-        handleCloseModal(); // Modal bezárása
+        setEventLista((prevLista) => [...prevLista, adat]);
+        handleCloseModal();
       })
       .catch((error) => {
-        console.error("Hiba az esemény hozzáadásakor:", error);
-        // Hibakezelés itt
+        console.error("Hiba történt az esemény hozzáadásakor:", error);
       });
   };
 
@@ -36,7 +37,6 @@ function EsesmenyAdd({ showModal, handleCloseModal, postAdat }) {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={kuld}>
-          {/* Leírás */}
           <Form.Group controlId="formDescription">
             <Form.Label>Leírás</Form.Label>
             <Form.Control
@@ -47,7 +47,6 @@ function EsesmenyAdd({ showModal, handleCloseModal, postAdat }) {
             />
           </Form.Group>
 
-          {/* Helyszín */}
           <Form.Group controlId="formLocation">
             <Form.Label>Helyszín</Form.Label>
             <Form.Control
@@ -58,7 +57,6 @@ function EsesmenyAdd({ showModal, handleCloseModal, postAdat }) {
             />
           </Form.Group>
 
-          {/* Dátum */}
           <Form.Group controlId="formDate">
             <Form.Label>Dátum</Form.Label>
             <Form.Control
