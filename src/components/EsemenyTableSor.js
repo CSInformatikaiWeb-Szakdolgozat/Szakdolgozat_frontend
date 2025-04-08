@@ -21,16 +21,6 @@ function EsemenyTableSor(props) {
       <td className="text-center">{props.elem.description}</td>
       <td className="text-center">{props.elem.location}</td>
       <td className="text-center">{props.elem.date}</td>
-      <td className="text-center">
-        <div>
-          <Button
-            variant={isOn ? "success" : "outline-danger"}
-            onClick={toggleSwitch}
-          >
-            {isOn ? "Megjelenítve" : "Nincs Megjelenítve"}
-          </Button>
-        </div>
-      </td>
 
       <td className="text-center">
         <Button variant="warning" onClick={handleShowModal}>
