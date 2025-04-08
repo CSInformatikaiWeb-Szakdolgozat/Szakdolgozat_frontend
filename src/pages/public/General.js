@@ -4,9 +4,10 @@ import { Container } from 'react-bootstrap'
 function General(props) {
   return (
     <Container>
-        dhjdfrejejhfge
         <h2>{props.elem.name}</h2>
-        {props.elem.content}
+        <div
+          dangerouslySetInnerHTML={{__html: props.elem.content}}
+        />
     </Container>
   )
 }
