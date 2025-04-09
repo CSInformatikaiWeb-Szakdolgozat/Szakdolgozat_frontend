@@ -45,7 +45,6 @@ function MenuTable() {
         <tbody>
           <>
             {menuLista.map((elem, index) => {
-              console.log("Belépett a ciklusba");
               return <MenuTableSor elem={elem} key={index} index={index} />;
             })}
           </>

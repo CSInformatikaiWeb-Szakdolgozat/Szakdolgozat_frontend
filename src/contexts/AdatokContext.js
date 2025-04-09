@@ -64,7 +64,7 @@ export const AdatokProvider = ({ children }) => {
       const response = await myAxios.delete(vegpont + "/" + id);
       console.log("adat:", response.data);
     } catch (err) {
-      console.log("Hiba történt az adat küldéskor!", err);
+      console.log("Hiba történt az adat törléskor!", err);
     }
   };
 

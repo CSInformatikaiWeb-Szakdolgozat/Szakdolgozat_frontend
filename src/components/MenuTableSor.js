@@ -51,6 +51,8 @@ function MenuTableSor(props) {
       <td className="text-center">
         <Button
           onClick={() => {
+            console.log("ID a törlés előtt:", props.elem.id); // Ellenőrizd, hogy az ID rendelkezésre áll-e
+
             deletAdat("/api/menu", props.elem.id);
             getAdat("/api/menus", setMenuLista);
           }}

@@ -26,7 +26,7 @@ function EsemenyEdit({ showModal, handleCloseModal, elemId }) {
         }
       });
     }
-  }, []);
+  }, [elemId]); // Itt hozzáadjuk az elemId-t a függőség listához
 
   const handleChange = (e) => {
     const { name, value } = e.target;
