@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
-import AdatokContext from "../contexts/AdatokContext";
+
 import EsemenyEdit from "./forms/edit/EsemenyEdit";
+import AdatokContext from "../contexts/AdatokContext";
 
 function EsemenyTableSor(props) {
-  const {  deletAdat, getAdat, setEsemenyLista } =
+  const {  deletAdat, getAdat, setEventLista } =
     useContext(AdatokContext);
 
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
@@ -38,7 +39,7 @@ function EsemenyTableSor(props) {
         <Button
           onClick={() => {
             deletAdat("/api/event", props.elem.id);
-            getAdat("/api/events", setEsemenyLista);
+            getAdat("/api/events", setEventLista);
           }}
           variant="danger"
         >
