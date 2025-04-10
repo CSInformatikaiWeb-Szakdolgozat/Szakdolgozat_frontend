@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import AdatokContext from '../../../contexts/AdatokContext';
+import { Button, Modal } from 'react-bootstrap';
+import { Form } from 'react-router-dom';
 
-function PartnerAdd() {
-  const { postAdat, menuLista, getAdat, setMenuLista } =
+function PartnerAdd({ showModal, handleCloseModal }) {
+  const { postAdat, partnerLista, getAdat, setPartnerLista } =
   useContext(AdatokContext);
 
 const [name, setName] = useState("");
@@ -54,7 +57,7 @@ const kuld = (event) => {
   postAdat("/api/menu", adat)
     .then(() => {
       // Hozzáadott menüpont frissítése a listában
-      setMenuLista((prevLista) => [...prevLista, adat]);  // Frissítjük a menüt
+      setPartnerLista((prevLista) => [...prevLista, adat]);  // Frissítjük a menüt
       handleCloseModal(); // Bezárja a modal-t a küldés után
     })
     .catch((error) => {

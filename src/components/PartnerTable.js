@@ -1,17 +1,30 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdatokContext from "../contexts/AdatokContext";
 import { Button, Table } from "react-bootstrap";
 import PartnerTableSor from "./PartnerTableSor";
+import PartnerAdd from "./forms/add/PartnerAdd";
 
 function PartnerTable() {
   const { partnerLista, setPartnerLista, getAdat } = useContext(AdatokContext);
   useEffect(() => {
     getAdat("/api/partners", setPartnerLista);
   }, []);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   return (
     <div>
       <div className="text-end">
-        <Button variant="success">Felvesz</Button>
+        {/* Gomb a modal megnyitásához */}
+        <Button variant="success" onClick={handleShowModal}>
+          Hozzáadás
+        </Button>
+
+        {/* PartnerAdd komponens megjelenítése, átadva a modal vezérlését */}
+        <PartnerAdd showModal={showModal} handleCloseModal={handleCloseModal} />
       </div>
 
       <Table striped bordered hover responsive>
