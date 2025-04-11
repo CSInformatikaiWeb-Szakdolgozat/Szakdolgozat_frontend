@@ -11,10 +11,6 @@ function CeginfoTable() {
   }, []);
   return (
     <div>
-      <div className="text-end">
-        <Button variant="success">Felvesz</Button>
-      </div>
-
       <Table striped bordered hover responsive>
         <thead className="text-center">
           <tr>

@@ -13,17 +13,16 @@ function CikkTablaSor(props) {
 
   const [showModal, setShowModal] = useState(false);
 
-  // A modal megjelenítéséhez szükséges funkciók
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
   return (
     <tr>
       <td className="text-center">{props.elem.name}</td>
-      <td className="text-center">{props.elem.description}</td>
-      <td className="text-center">{props.elem.partner}</td>
+      <td className="d-none d-sm-table-cell text-center">{props.elem.description}</td>
+      <td className="d-none d-md-table-cell text-center">{props.elem.partner}</td>
       <td className="text-center">{props.elem.classification}</td>
-      <td className="text-center">
+      <td className="d-none d-md-table-cell text-center">
         <div>
           <Button
             variant={isOn ? "success" : "outline-danger"}
@@ -33,15 +32,13 @@ function CikkTablaSor(props) {
           </Button>
         </div>
       </td>
-      <td className="text-center">{props.elem.page_link}</td>
+      <td className="d-none d-md-table-cell text-center">{props.elem.page_link}</td>
 
-      <td className="text-center">
-        {/* Gomb a modal megnyitásához */}
+      <td className="d-none d-lg-table-cell text-center">
         <Button variant="warning" onClick={handleShowModal}>
           Módosítás
         </Button>
 
-        {/* CikkEdit komponens megjelenítése, átadva csak a cikkId-t */}
         <CikkEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
@@ -49,7 +46,7 @@ function CikkTablaSor(props) {
         />
       </td>
 
-      <td className="text-center">
+      <td className="d-none d-lg-table-cell text-center">
         <Button
           onClick={() => {
             deletAdat("/api/article", props.elem.id);

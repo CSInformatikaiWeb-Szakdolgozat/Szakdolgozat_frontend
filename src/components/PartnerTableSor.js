@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import PartnerEdit from "./forms/edit/PartnerEdit";
 
@@ -38,7 +38,7 @@ function PartnerTableSor(props) {
         <PartnerEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
-          partnerId={props.elem.id} // Az elem id-jét adjuk át
+          elemId={props.elem.id} // Az elem id-jét adjuk át
         />
       </td>
 

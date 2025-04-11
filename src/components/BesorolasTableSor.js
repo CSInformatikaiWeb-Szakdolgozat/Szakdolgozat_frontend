@@ -20,11 +20,11 @@ function BesorolasTableSor(props) {
     <tr>
       {/* Besorolás adatai */}
       <td className="text-center">{props.elem.id}</td>
-      <td className="text-center">{props.elem.upper_classification}</td>
-      <td className="text-center">{props.elem.name}</td>
+      <td className="d-none d-sm-table-cell text-center">{props.elem.upper_classification}</td>
+      <td className="d-none d-md-table-cell text-center">{props.elem.name}</td>
 
       {/* Módosítás gomb */}
-      <td className="text-center">
+      <td className="d-none d-md-table-cell text-center">
         <Button variant="warning" onClick={handleShowModal}>
           Módosítás
         </Button>
@@ -38,7 +38,7 @@ function BesorolasTableSor(props) {
       </td>
 
       {/* Törlés gomb */}
-      <td className="text-center">
+      <td className="d-none d-md-table-cell text-center">
         <Button
           onClick={() => {
             deletAdat("/api/class", props.elem.id); // Besorolás törlés

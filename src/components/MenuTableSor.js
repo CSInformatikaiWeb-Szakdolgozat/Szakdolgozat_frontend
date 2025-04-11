@@ -4,8 +4,7 @@ import AdatokContext from "../contexts/AdatokContext";
 import MenuEdit from "./forms/edit/MenuEdit";
 
 function MenuTableSor(props) {
-  const {  deletAdat, getAdat, setMenuLista } = useContext(AdatokContext);
-
+  const { deletAdat, getAdat, setMenuLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.status);
 
   const [showModal, setShowModal] = useState(false);
@@ -35,24 +34,19 @@ function MenuTableSor(props) {
       </td>
 
       <td className="text-center">
-        {/* Gomb a modal megnyitásához */}
         <Button variant="warning" onClick={handleShowModal}>
           Módosítás
         </Button>
-
-        {/* MenuEdit komponens megjelenítése, átadva csak a menuId-t */}
         <MenuEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
-          menuId={props.elem.id} // Most csak a menuId-t adjuk át
+          menuId={props.elem.id}
         />
       </td>
 
       <td className="text-center">
         <Button
           onClick={() => {
-            console.log("ID a törlés előtt:", props.elem.id); // Ellenőrizd, hogy az ID rendelkezésre áll-e
-
             deletAdat("/api/menu", props.elem.id);
             getAdat("/api/menus", setMenuLista);
           }}

@@ -31,21 +31,19 @@ function CikkTable() {
         <thead className="text-center">
           <tr>
             <th>Név</th>
-            <th>Leírás</th>
-            <th>Partner</th>
+            <th className="d-none d-sm-table-cell">Leírás</th>
+            <th className="d-none d-md-table-cell">Partner</th>
             <th>Besorolás</th>
-            <th>Megjelenít</th>
-            <th>Link</th>
-            <th>Módosít</th>
-            <th>Törlés</th>
+            <th className="d-none d-md-table-cell">Megjelenít</th>
+            <th className="d-none d-md-table-cell">Link</th>
+            <th className="d-none d-lg-table-cell">Módosít</th>
+            <th className="d-none d-lg-table-cell">Törlés</th>
           </tr>
         </thead>
         <tbody>
-          <>
-            {cikkLista.map((elem, index) => {
-              return <CikkTablaSor elem={elem} key={index} index={index} />;
-            })}
-          </>
+          {cikkLista.map((elem, index) => {
+            return <CikkTablaSor elem={elem} key={index} index={index} />;
+          })}
         </tbody>
       </Table>
     </div>

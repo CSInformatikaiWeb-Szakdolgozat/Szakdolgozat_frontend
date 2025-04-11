@@ -62,3 +62,11 @@
   opacity: 1;
 }
 
+@media (max-width: 768px) {
+  .table {
+    font-size: 12px;  /* Csökkentsd a betűméretet mobilon */
+  }
+  .text-end {
+    text-align: center; /* Jobb oldalra igazítás mobilon */
+  }
+}

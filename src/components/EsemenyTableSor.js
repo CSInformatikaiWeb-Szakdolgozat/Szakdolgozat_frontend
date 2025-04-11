@@ -1,13 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
-
 import EsemenyEdit from "./forms/edit/EsemenyEdit";
 import AdatokContext from "../contexts/AdatokContext";
 
 function EsemenyTableSor(props) {
-  const {  deletAdat, getAdat, setEventLista } =
-    useContext(AdatokContext);
-
+  const { deletAdat, getAdat, setEventLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.megjelenit);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -27,11 +24,10 @@ function EsemenyTableSor(props) {
         <Button variant="warning" onClick={handleShowModal}>
           Módosítás
         </Button>
-
         <EsemenyEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
-          elemId={props.elem.id} // Az elem id-jét adjuk át
+          elemId={props.elem.id}
         />
       </td>
 

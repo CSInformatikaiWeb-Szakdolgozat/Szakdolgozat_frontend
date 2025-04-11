@@ -1,134 +1,92 @@
-import React, { useContext, useEffect, useState } from 'react'
-import AdatokContext from '../../../contexts/AdatokContext';
-import { Button, Modal } from 'react-bootstrap';
-import { Form } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
+import AdatokContext from "../../../contexts/AdatokContext";
 
 function PartnerAdd({ showModal, handleCloseModal }) {
-  const { postAdat, partnerLista, getAdat, setPartnerLista } =
-  useContext(AdatokContext);
+  const { postAdat, setPartnerLista } = useContext(AdatokContext);
 
-const [name, setName] = useState("");
-const [main_menu, setMainMenu] = useState("");
-const [link, setLink] = useState("");
-const [status, setStatus] = useState("");
-const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le vannak-e kérve az adatok
+  const [nev, setNev] = useState(""); // Partner név
+  const [weboldal, setWeboldal] = useState(""); // Weboldal
+  const [statusz, setStatusz] = useState(false); // Aktív státusz
+  const [partnerek, setPartnerek] = useState([]); // Partnerek lista
+  const [dataLoaded, setDataLoaded] = useState(false); // Adatok betöltése
 
-// Szűrés, hogy csak azok a menük jelenjenek meg, amelyek main_menu értéke null
-const filteredMenuList = menuLista.filter((menu) => menu.main_menu === null);
+  // Partnerek adatainak betöltése
+  useEffect(() => {
+    if (showModal && !dataLoaded) {
+      // Partnerek lekérése, ha modal megnyílik
+      setDataLoaded(true);
+    }
+  }, [showModal, dataLoaded]);
 
-// Menülista lekérése csak akkor, amikor a modal megjelenik és még nem lett lekérve
-useEffect(() => {
-  if (showModal && !dataLoaded) { // Ha a modal megjelenik és még nem lett lekérve az adat
-    getAdat("/api/menus", setMenuLista); // Menülista lekérése
-    setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
-  }
-}, [showModal, dataLoaded, getAdat, setMenuLista]); // Csak akkor frissül, amikor a modal látható
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-// Main menu kiválasztása és automatikusan új főmenü beállítása
-const handleMainMenuChange = (e) => {
-  const selectedValue = e.target.value;
-  if (selectedValue === "null") {
-    setMainMenu(null); // Ha az új főmenüt választja, a main_menu értéke null lesz
-  } else {
-    setMainMenu(selectedValue); // Ha egy meglévő főmenüt választ, annak id-jét beállítjuk
-  }
-};
+    // Adatok formázása a backend számára
+    let adat = {
+      name: nev, // Partner neve
+      page: weboldal, // Weboldal
+      status: statusz, // Aktív státusz
+    };
 
-const handleLinkChange = (e) => {
-  let newLink = e.target.value;
-  if (newLink && !newLink.startsWith("/")) {
-    newLink = "/" + newLink; // Ha nem kezdődik "/"-rel, hozzáadjuk
-  }
-  setLink(newLink);
-};
+    console.log(adat); // Ellenőrizzük az adatokat
 
-// Menü hozzáadásának kezelése
-const kuld = (event) => {
-  event.preventDefault();
-  let adat = {
-    name: name,
-    main_menu: main_menu,
-    link: link,
-    status: status,
+    // Adatok küldése a backendre
+    postAdat("/api/partner", adat)
+      .then(() => {
+        setPartnerLista((prevLista) => [...prevLista, adat]); // Új partner hozzáadása a listához
+        handleCloseModal(); // Modal bezárása
+      })
+      .catch((error) => {
+        console.error("Hiba történt a partner hozzáadásakor:", error);
+        // Hibakezelés itt, pl. alert vagy validálás
+      });
   };
-  console.log(adat); // Logoljuk a küldés előtt
 
-  // Küldjük az adatokat
-  postAdat("/api/menu", adat)
-    .then(() => {
-      // Hozzáadott menüpont frissítése a listában
-      setPartnerLista((prevLista) => [...prevLista, adat]);  // Frissítjük a menüt
-      handleCloseModal(); // Bezárja a modal-t a küldés után
-    })
-    .catch((error) => {
-      console.error("Hiba történt a menü hozzáadásakor:", error);
-    });
-};
+  return (
+    <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>Új Partner Hozzáadása</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formNev">
+            <Form.Label>Név</Form.Label>
+            <Form.Control
+              type="text"
+              value={nev}
+              onChange={(e) => setNev(e.target.value)}
+              required
+            />
+          </Form.Group>
 
-return (
-  <Modal show={showModal} onHide={handleCloseModal}>
-    <Modal.Header closeButton>
-      <Modal.Title>Form Küldése</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <Form onSubmit={kuld}>
-        <Form.Group controlId="formName">
-          <Form.Label>Menü név</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
+          <Form.Group controlId="formWeboldal">
+            <Form.Label>Weboldal</Form.Label>
+            <Form.Control
+              type="text"
+              value={weboldal}
+              onChange={(e) => setWeboldal(e.target.value)}
+              required
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formMainMenu">
-          <Form.Label>Főmenü pont</Form.Label>
-          <Form.Control
-            as="select"
-            value={main_menu === null ? "null" : main_menu} // Ha null, akkor az új főmenü lesz kiválasztva
-            onChange={handleMainMenuChange}
-          >
-            <option>-- Válassz főmenüt --</option>
-            <option value="null">Új főmenü</option>{" "}
-            {/* null érték lehetőség új főmenü esetén */}
-            {filteredMenuList.map((menu) => (
-              <option key={menu.id} value={menu.id}>
-                {" "}
-                {/* A főmenü id-jére hivatkozunk */}
-                {menu.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
+          <Form.Group controlId="formStatusz">
+            <Form.Label>Aktív</Form.Label>
+            <Form.Check
+              type="checkbox"
+              label="Aktív partner"
+              checked={statusz}
+              onChange={(e) => setStatusz(e.target.checked)}
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formLink">
-          <Form.Label>Link</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter link (pl. /menuoldal)"
-            value={link}
-            onChange={handleLinkChange} // Link változtatás kezelése
-          />
-        </Form.Group>
-
-        <Form.Group controlId="formStatus">
-          <Form.Label>Status</Form.Label>
-          <Form.Check
-            type="checkbox"
-            label="Aktív"
-            checked={status}
-            onChange={(e) => setStatus(e.target.checked)} // Checkbox állapot módosítása
-          />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Küld
-        </Button>
-      </Form>
-    </Modal.Body>
-  </Modal>
-);
+          <Button variant="success" type="submit">
+            Hozzáadás
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
 }
 
 export default PartnerAdd;

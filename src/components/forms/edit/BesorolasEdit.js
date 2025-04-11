@@ -24,8 +24,15 @@ function BesorolasEdit({ showModal, handleCloseModal, elemId }) {
             name: data.name || "",
             upper_classification: data.upper_classification || "",
           });
+        } else {
+          console.log("Nincs adat a megadott elemId-hoz.");
         }
       });
+    } else {
+      setFormData({
+        name: "",
+        upper_classification: "",
+      }); // Ha nincs elemId, alapértelmezett üres adatok
     }
 
     // Felsőbb besorolások betöltése a select elemhez
@@ -51,7 +58,8 @@ function BesorolasEdit({ showModal, handleCloseModal, elemId }) {
 
     try {
       setLoading(true); // Klónozás kezdete
-      await postAdat("/api/class", clonedData);
+      const response = await postAdat("/api/class", clonedData);
+      console.log("Klónozott adat válasz:", response); // Naplózza a választ
       getAdat("/api/classes", setClassesLista); // Cikk lista frissítése
       handleCloseModal(); // Modal bezárása
     } catch (error) {
@@ -66,7 +74,10 @@ function BesorolasEdit({ showModal, handleCloseModal, elemId }) {
     event.preventDefault();
 
     // Ellenőrzés, hogy ne küldjünk üres adatokat
-    if (!formData.name) {
+    if (
+      formData.name === "" ||
+      formData.upper_classification === null
+    ){
       console.log("Hiányzó mezők, nem küldünk adatot.");
       return;
     }
@@ -107,7 +118,11 @@ function BesorolasEdit({ showModal, handleCloseModal, elemId }) {
               <Form.Control
                 as="select"
                 name="classification"
-                value={formData.classification}
+                value={
+                  formData.besorolas === null
+                    ? ""
+                    : formData.upper_classification
+                }
                 onChange={handleInputChange}
               >
                 <option value="">-- Válassz felső besorolást --</option>

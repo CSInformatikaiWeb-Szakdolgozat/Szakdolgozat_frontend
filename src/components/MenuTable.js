@@ -2,30 +2,27 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import MenuTableSor from "./MenuTableSor";
-import MenuAdd from "./forms/add/MenuAdd"; // Importáljuk a menuAdd komponenst
+import MenuAdd from "./forms/add/MenuAdd";
 
 function MenuTable() {
+  const { menuLista, setMenuLista, getAdat } = useContext(AdatokContext);
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  const { menuLista, setMenuLista, getAdat } = useContext(AdatokContext);
   useEffect(() => {
-    if (menuLista.length === 0) { // Csak akkor kérjünk le adatokat, ha nincs már adat
+    if (menuLista.length === 0) {
       getAdat("/api/menus", setMenuLista);
     }
-  }, [menuLista, getAdat]);  // Ha a menuLista változik, csak akkor frissítsük
-  
+  }, [menuLista, getAdat]);
+
   return (
     <div>
       <div className="text-end">
-        {/* Gomb a modal megnyitásához */}
         <Button variant="success" onClick={handleShowModal}>
           Hozzáadás
         </Button>
-
-        {/* MenuAdd komponens megjelenítése, átadva a modal vezérlését */}
         <MenuAdd showModal={showModal} handleCloseModal={handleCloseModal} />
       </div>
 
@@ -43,11 +40,9 @@ function MenuTable() {
           </tr>
         </thead>
         <tbody>
-          <>
-            {menuLista.map((elem, index) => {
-              return <MenuTableSor elem={elem} key={index} index={index} />;
-            })}
-          </>
+          {menuLista.map((elem, index) => (
+            <MenuTableSor elem={elem} key={index} index={index} />
+          ))}
         </tbody>
       </Table>
     </div>

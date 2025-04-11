@@ -1,14 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import CeginfoEdit from "./forms/edit/CegInfoEdit";
 
 function CeginfoTableSor(props) {
- 
-
   const [showModal, setShowModal] = useState(false);
-  
-    const handleShowModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   return (
     <tr>
@@ -28,16 +26,13 @@ function CeginfoTableSor(props) {
       <td className="text-center">{props.elem.price_offer_email}</td>
       <td className="text-center">{props.elem.google_map}</td>
       <td className="text-center">
-        {/* Gomb a modal megnyitásához */}
         <Button variant="warning" onClick={handleShowModal}>
           Módosítás
         </Button>
-
-        {/* CeginfoEdit komponens megjelenítése, átadva csak a companyId-t */}
         <CeginfoEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
-          companyId={props.elem.id} // Az elem id-jét adjuk át
+          companyId={props.elem.id}
         />
       </td>
     </tr>

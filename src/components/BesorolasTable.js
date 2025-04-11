@@ -31,10 +31,10 @@ function BesorolasTable() {
         <thead className="text-center">
           <tr>
             <th>Id</th>
-            <th>Felső besorolás</th>
-            <th>Neve</th>
-            <th>Módosít</th>
-            <th>Törlés</th>
+            <th className="d-none d-sm-table-cell">Felső besorolás</th>
+            <th className="d-none d-md-table-cell">Neve</th>
+            <th className="d-none d-md-table-cell">Módosít</th>
+            <th className="d-none d-md-table-cell">Törlés</th>
           </tr>
         </thead>
         <tbody>
