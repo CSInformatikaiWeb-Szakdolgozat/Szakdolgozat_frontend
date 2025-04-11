@@ -24,7 +24,7 @@ function NavigacioTeszt() {
             width={100}
             className="img-fluid"
             alt="Logo"
-          ></img>
+          />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse

@@ -4,7 +4,7 @@ import AdatokContext from "../contexts/AdatokContext";
 import PartnerEdit from "./forms/edit/PartnerEdit";
 
 function PartnerTableSor(props) {
-  const { patchAdat, deletAdat, getAdat, setPartnerLista } = useContext(AdatokContext);
+  const { deletAdat, getAdat, setPartnerLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.status);
   const toggleSwitch = () => {
     setIsOn(!isOn);
