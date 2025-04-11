@@ -3,9 +3,8 @@ import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import BesorolasEdit from "./forms/edit/BesorolasEdit";
 
-
 function BesorolasTableSor(props) {
-  const { patchAdat, deletAdat,getAdat,setClassesLista } = useContext(AdatokContext);
+  const { patchAdat, deletAdat, getAdat, setClassLista } = useContext(AdatokContext);
   const [isOn, setIsOn] = useState(props.elem.status);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -13,44 +12,37 @@ function BesorolasTableSor(props) {
 
   const [showModal, setShowModal] = useState(false);
 
+  // A modal megnyitásához és bezárásához szükséges funkciók
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
   return (
     <tr>
+      {/* Besorolás adatai */}
       <td className="text-center">{props.elem.id}</td>
       <td className="text-center">{props.elem.upper_classification}</td>
       <td className="text-center">{props.elem.name}</td>
+
+      {/* Módosítás gomb */}
       <td className="text-center">
-        <div>
-          <Button
-            variant={isOn ? "outline-success" : "outline-danger"}
-            onClick={toggleSwitch}
-          >
-            {isOn ? "Megjelenítve" : "Nincs Megjelenítve"}
-          </Button>
-        </div>
-      </td>
-      
-      <td className="text-center">
-        {/* Gomb a modal megnyitásához */}
         <Button variant="warning" onClick={handleShowModal}>
           Módosítás
         </Button>
 
-        {/* BesorolasEdit komponens megjelenítése, átadva csak a besorolasId-t */}
-        {/* <BesorolasEdit
+        {/* BesorolasEdit komponens megjelenítése, átadva a besorolás ID-t */}
+        <BesorolasEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
-          besorolasId={props.elem.id} // Az elem id-jét adjuk át
-        /> */}
+          elemId={props.elem.id} // Az elem ID-jét adjuk át
+        />
       </td>
 
+      {/* Törlés gomb */}
       <td className="text-center">
         <Button
           onClick={() => {
-            deletAdat("/api/class", props.elem.id);
-            getAdat("/api/classes", setClassesLista);
+            deletAdat("/api/class", props.elem.id); // Besorolás törlés
+            getAdat("/api/classes", setClassLista); // Besorolások frissítése
           }}
           variant="danger"
         >

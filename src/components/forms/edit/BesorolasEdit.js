@@ -3,116 +3,135 @@ import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
 function BesorolasEdit({ showModal, handleCloseModal, elemId }) {
-  const { patchAdat, getAdat, postAdat, setClassesLista, classesLista } = useContext(AdatokContext);
+  const { patchAdat, getAdat, postAdat, setClassesLista } =
+    useContext(AdatokContext);
+
   const [formData, setFormData] = useState({
     name: "",
-    upper_classification: "", // Felső osztályozás, amit a legördülő menüből választanak
-    status: false,
+    upper_classification: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [classLista, setClassLista] = useState([]); // Felsőbb besorolások listája
 
+  // Besorolás adatainak betöltése, ha elemId van
   useEffect(() => {
     if (elemId) {
+      setLoading(true); // Betöltés kezdete
       getAdat(`/api/class/${elemId}`, (data) => {
-        setFormData({
-          name: data.name,
-          upper_classification: data.upper_classification,
-          status: data.status,
-        });
+        setLoading(false); // Betöltés befejezése
+        if (data) {
+          setFormData({
+            name: data.name || "",
+            upper_classification: data.upper_classification || "",
+          });
+        }
       });
     }
 
-    // Frissítjük az osztályok listáját
-    getAdat("/api/classes", setClassesLista);
-  }, [elemId, getAdat, setClassesLista]);
+    // Felsőbb besorolások betöltése a select elemhez
+    getAdat("/api/classes", (data) => {
+      setClassLista(
+        data.filter((besorolas) => besorolas.upper_classification !== null)
+      ); // Csak a valid besorolások
+    });
+  }, [elemId]); // Csak akkor fut le, ha elemId változik
 
-  // Szűrés, hogy csak azok az osztályozások jelenjenek meg, amelyeknek null az upper_classification értéke
-  const filteredClasses = classesLista.filter(classification => classification.upper_classification === null);
+  // Űrlap mezők változásának kezelése
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // Itt történik meg a módosítás
+    }));
+  };
 
   // Klónozás kezelése
   const handleClone = async () => {
-    const clonedData = { ...formData }; // Klónozzuk a jelenlegi adatokat
-    clonedData.name = `${formData.name} (klónozva)`; // Klónozott elemhez új nevet adunk
+    const clonedData = { ...formData, name: `${formData.name} (klónozva)` };
 
     try {
-      // POST kérés a klónozott adat mentéséhez
+      setLoading(true); // Klónozás kezdete
       await postAdat("/api/class", clonedData);
-      // Frissítjük az osztálylistát, hogy az új rekord is megjelenjen
-      getAdat("/api/classes", setClassesLista);
-      handleCloseModal(); // Bezárja a modált
+      getAdat("/api/classes", setClassesLista); // Cikk lista frissítése
+      handleCloseModal(); // Modal bezárása
     } catch (error) {
       console.error("Hiba történt a klónozás közben:", error);
+    } finally {
+      setLoading(false); // Klónozás befejezése
     }
   };
 
+  // Űrlap beküldése
   const handleSubmit = (event) => {
     event.preventDefault();
-    patchAdat(`/api/class`, elemId, formData); // Küldd el az adatokat a backendnek
-    getAdat("/api/classes", setClassesLista); // Frissítse az osztálylistát
-    handleCloseModal();
+
+    // Ellenőrzés, hogy ne küldjünk üres adatokat
+    if (!formData.name) {
+      console.log("Hiányzó mezők, nem küldünk adatot.");
+      return;
+    }
+
+    setLoading(true); // Betöltés kezdete
+    patchAdat(`/api/class/${elemId}`, formData)
+      .then(() => {
+        getAdat("/api/classes", setClassesLista); // Besorolások lista frissítése
+        handleCloseModal(); // Modal bezárása
+      })
+      .finally(() => setLoading(false)); // Betöltés befejezése
   };
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal}>
+    <Modal show={showModal} onHide={handleCloseModal} size="xl">
       <Modal.Header closeButton>
-        <Modal.Title>Szerkesztés</Modal.Title>
+        <Modal.Title>Besorolás szerkesztése</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formName">
-            <Form.Label>Név</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Név"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-          </Form.Group>
+        {loading ? (
+          <div>Betöltés...</div> // Betöltési üzenet
+        ) : (
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formName">
+              <Form.Label>Név</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                value={formData.name} // Itt jelenik meg az aktuális név
+                onChange={
+                  (e) => setFormData({ ...formData, name: e.target.value }) // Ha módosítják, frissítjük a formData-t
+                }
+              />
+            </Form.Group>
 
-          {/* Felső osztályozás legördülő menü */}
-          <Form.Group controlId="formClassification">
-            <Form.Label>Felső osztályozás</Form.Label>
-            <Form.Control
-              as="select"
-              value={formData.upper_classification}
-              onChange={(e) =>
-                setFormData({ ...formData, upper_classification: e.target.value })
-              }
-            >
-              <option value="">-- Válassz felső osztályozást --</option>
-              {filteredClasses && filteredClasses.map((classification) => (
-                <option key={classification.id} value={classification.id}>
-                  {classification.name}
-                </option>
-              ))}
-            </Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="formStatus">
-            <Form.Label>Status</Form.Label>
-            <Form.Check
-              type="checkbox"
-              label="Aktív"
-              checked={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
-            />
-          </Form.Group>
-          
-        </Form>
+            <Form.Group controlId="formClass">
+              <Form.Label>Besorolás</Form.Label>
+              <Form.Control
+                as="select"
+                name="classification"
+                value={formData.classification}
+                onChange={handleInputChange}
+              >
+                <option value="">-- Válassz felső besorolást --</option>
+                {classLista.length > 0 ? (
+                  classLista.map((besorolas) => (
+                    <option key={besorolas.id} value={besorolas.id}>
+                      {besorolas.name}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>Nincs besorolás</option>
+                )}
+              </Form.Control>
+            </Form.Group>
+          </Form>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        {/* Módosítás gomb */}
         <Button variant="success" onClick={handleSubmit}>
           Módosítás
         </Button>
-
-        {/* Klónozás gomb */}
         <Button variant="primary" onClick={handleClone}>
           Klónozás
         </Button>
-
-        {/* Mégse gomb */}
         <Button variant="danger" onClick={handleCloseModal}>
           Mégse
         </Button>

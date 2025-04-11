@@ -1,131 +1,99 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
+import AdatokContext from "../../../contexts/AdatokContext";
 
-function BesorolasAdd() {
-  const { postAdat, menuLista, getAdat, setMenuLista } =
-  useContext(AdatokContext);
+function BesorolasAdd({ showModal, handleCloseModal }) {
+  const { postAdat, getAdat, setClassLista, classLista } = useContext(AdatokContext);
 
-const [name, setName] = useState("");
-const [main_menu, setMainMenu] = useState("");
-const [link, setLink] = useState("");
-const [status, setStatus] = useState("");
-const [dataLoaded, setDataLoaded] = useState(false); // Nyomon követjük, hogy le vannak-e kérve az adatok
+  const [nev, setNev] = useState(""); // Besorolás név
+  const [upperClassification, setUpperClassification] = useState(""); // Felsőbb besorolás
+  const [dataLoaded, setDataLoaded] = useState(false); // Adatok betöltése
 
-// Szűrés, hogy csak azok a menük jelenjenek meg, amelyek main_menu értéke null
-const filteredMenuList = menuLista.filter((menu) => menu.main_menu === null);
+  // Szűrés, hogy csak azok a besorolások jelenjenek meg, amelyek upper_classification értéke null
+  const filteredBesorolasList = classLista.filter((besorolas) => besorolas.upper_classification !== null);
 
-// Menülista lekérése csak akkor, amikor a modal megjelenik és még nem lett lekérve
-useEffect(() => {
-  if (showModal && !dataLoaded) { // Ha a modal megjelenik és még nem lett lekérve az adat
-    getAdat("/api/menus", setMenuLista); // Menülista lekérése
-    setDataLoaded(true); // Jelöljük, hogy az adatok le lettek kérve
-  }
-}, [showModal, dataLoaded, getAdat, setMenuLista]); // Csak akkor frissül, amikor a modal látható
+  // Felsőbb besorolások lekérése csak akkor, amikor a modal megjelenik és még nem lett lekérve
+  useEffect(() => {
+    if (showModal && !dataLoaded) {
+      getAdat("/api/classes", (data) => {
+        setClassLista(data); // Menülista lekérése
+      });
+      setDataLoaded(true); // Adatok le lettek kérve
+    }
+  }, [showModal, dataLoaded]);
 
-// Main menu kiválasztása és automatikusan új főmenü beállítása
-const handleMainMenuChange = (e) => {
-  const selectedValue = e.target.value;
-  if (selectedValue === "null") {
-    setMainMenu(null); // Ha az új főmenüt választja, a main_menu értéke null lesz
-  } else {
-    setMainMenu(selectedValue); // Ha egy meglévő főmenüt választ, annak id-jét beállítjuk
-  }
-};
-
-const handleLinkChange = (e) => {
-  let newLink = e.target.value;
-  if (newLink && !newLink.startsWith("/")) {
-    newLink = "/" + newLink; // Ha nem kezdődik "/"-rel, hozzáadjuk
-  }
-  setLink(newLink);
-};
-
-// Menü hozzáadásának kezelése
-const kuld = (event) => {
-  event.preventDefault();
-  let adat = {
-    name: name,
-    main_menu: main_menu,
-    link: link,
-    status: status,
+  // Upper Classification változtatása
+  const handleUpperClassificationChange = (e) => {
+    setUpperClassification(e.target.value);
   };
-  console.log(adat); // Logoljuk a küldés előtt
 
-  // Küldjük az adatokat
-  postAdat("/api/menu", adat)
-    .then(() => {
-      // Hozzáadott menüpont frissítése a listában
-      setMenuLista((prevLista) => [...prevLista, adat]);  // Frissítjük a menüt
-      handleCloseModal(); // Bezárja a modal-t a küldés után
-    })
-    .catch((error) => {
-      console.error("Hiba történt a menü hozzáadásakor:", error);
-    });
-};
+  // Menü hozzáadásának kezelése
+  const kuld = (event) => {
+    event.preventDefault();
 
-return (
-  <Modal show={showModal} onHide={handleCloseModal}>
-    <Modal.Header closeButton>
-      <Modal.Title>Form Küldése</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <Form onSubmit={kuld}>
-        <Form.Group controlId="formName">
-          <Form.Label>Menü név</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
+    // Ha minden validációs szabály teljesül, akkor készítjük el az adatokat
+    let adat = {
+      name: nev,
+      upper_classification: upperClassification === "new" ? null : upperClassification, // Ha "Új főbesorolás"-t választanak, akkor null-ra állítjuk
+    };
 
-        <Form.Group controlId="formMainMenu">
-          <Form.Label>Főmenü pont</Form.Label>
-          <Form.Control
-            as="select"
-            value={main_menu === null ? "null" : main_menu} // Ha null, akkor az új főmenü lesz kiválasztva
-            onChange={handleMainMenuChange}
-          >
-            <option>-- Válassz főmenüt --</option>
-            <option value="null">Új főmenü</option>{" "}
-            {/* null érték lehetőség új főmenü esetén */}
-            {filteredMenuList.map((menu) => (
-              <option key={menu.id} value={menu.id}>
-                {" "}
-                {/* A főmenü id-jére hivatkozunk */}
-                {menu.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
+    // Küldjük az adatokat
+    postAdat("/api/class", adat)
+      .then(() => {
+        setClassLista((prevLista) => [...prevLista, adat]); // Hozzáadott besorolás frissítése a listában
+        handleCloseModal(); // Modal bezárása
+      })
+      .catch((error) => {
+        console.error("Hiba történt a besorolás hozzáadásakor:", error);
+      });
+  };
 
-        <Form.Group controlId="formLink">
-          <Form.Label>Link</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter link (pl. /menuoldal)"
-            value={link}
-            onChange={handleLinkChange} // Link változtatás kezelése
-          />
-        </Form.Group>
+  return (
+    <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>Új Besorolás Hozzáadása</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={kuld}>
+          <Form.Group controlId="formNev">
+            <Form.Label>Besorolás neve</Form.Label>
+            <Form.Control
+              type="text"
+              value={nev}
+              onChange={(e) => setNev(e.target.value)}
+              required
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formStatus">
-          <Form.Label>Status</Form.Label>
-          <Form.Check
-            type="checkbox"
-            label="Aktív"
-            checked={status}
-            onChange={(e) => setStatus(e.target.checked)} // Checkbox állapot módosítása
-          />
-        </Form.Group>
+          {/* Felsőbb besorolás választás lenyíló menü */}
+          <Form.Group controlId="formUpperClassification">
+            <Form.Label>Felsőbb Besorolás</Form.Label>
+            <Form.Control
+              as="select"
+              value={upperClassification}
+              onChange={handleUpperClassificationChange}
+            >
+              <option value="">-- Válassz felsőbb besorolást --</option>
+              <option value="new">Új főbesorolás</option> {/* Ezt választhatják */}
+              {filteredBesorolasList.length > 0 ? (
+                filteredBesorolasList.map((besorolas) => (
+                  <option key={besorolas.id} value={besorolas.id}>
+                    {besorolas.name} {/* Felsőbb besorolás neve */}
+                  </option>
+                ))
+              ) : (
+                <option disabled>Besorolások betöltése...</option>
+              )}
+            </Form.Control>
+          </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Küld
-        </Button>
-      </Form>
-    </Modal.Body>
-  </Modal>
-);
+          <Button variant="primary" type="submit">
+            Küld
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
 }
 
-export default BesorolasAdd
+export default BesorolasAdd;

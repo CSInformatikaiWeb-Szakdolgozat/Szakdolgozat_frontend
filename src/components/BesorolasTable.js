@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import BesorolasTableSor from "./BesorolasTableSor";
+import BesorolasAdd from "./forms/add/BesorolasAdd";
 
 function BesorolasTable() {
   const { classLista, setClassLista, getAdat } = useContext(AdatokContext);
@@ -9,10 +10,21 @@ function BesorolasTable() {
     getAdat("/api/classes", setClassLista);
   }, []);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   return (
     <div>
       <div className="text-end">
-        <Button variant="success">Felvesz</Button>
+        {/* Gomb a modal megnyitásához */}
+        <Button variant="success" onClick={handleShowModal}>
+          Hozzáadás
+        </Button>
+
+        {/* BesorolasAdd komponens megjelenítése, átadva a modal vezérlését */}
+        <BesorolasAdd showModal={showModal} handleCloseModal={handleCloseModal} />
       </div>
 
       <Table striped bordered hover responsive>
@@ -26,14 +38,9 @@ function BesorolasTable() {
           </tr>
         </thead>
         <tbody>
-          <>
-            {classLista.map((elem, index) => {
-              console.log("belépet a ciklusba");
-              return (
-                <BesorolasTableSor elem={elem} key={index} index={index} />
-              );
-            })}
-          </>
+          {classLista.map((elem, index) => {
+            return <BesorolasTableSor elem={elem} key={index} index={index} />;
+          })}
         </tbody>
       </Table>
     </div>
