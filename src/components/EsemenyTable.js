@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Container, Row, Col } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import EsemenyTableSor from "./EsemenyTableSor";
 import EsemenyAdd from "./forms/add/EsemenyAdd";
@@ -16,31 +16,38 @@ function EsemenyTable() {
   }, []);
 
   return (
-    <div>
-      <div className="text-end">
-        <Button variant="success" onClick={handleShowModal}>
-          Hozzáadás
-        </Button>
-        <EsemenyAdd showModal={showModal} handleCloseModal={handleCloseModal} />
-      </div>
+    <Container className="mt-4">
+      <Row className="mb-3">
+        <Col className="text-end">
+          {/* Gomb a modal megnyitásához */}
+          <Button variant="success" onClick={handleShowModal}>
+            Hozzáadás
+          </Button>
+          {/* EsemenyAdd komponens megjelenítése, átadva a modal vezérlését */}
+          <EsemenyAdd showModal={showModal} handleCloseModal={handleCloseModal} />
+        </Col>
+      </Row>
 
+      {/* Események táblázata */}
       <Table striped bordered hover responsive>
         <thead className="text-center">
           <tr>
             <th>Leírás</th>
             <th>Helyszín</th>
             <th>Időpont</th>
-            <th>Módosít</th>
-            <th>Törlés</th>
+            <th className="d-none d-lg-table-cell">Módosít</th>
+            <th className="d-none d-lg-table-cell">Törlés</th>
           </tr>
         </thead>
         <tbody>
           {eventLista.map((elem, index) => (
-            <EsemenyTableSor elem={elem} key={index} index={index} />
+            <tr key={index}>
+              <EsemenyTableSor elem={elem} index={index} />
+            </tr>
           ))}
         </tbody>
       </Table>
-    </div>
+    </Container>
   );
 }
 

@@ -6,13 +6,15 @@ import CeginfoTableSor from "./CeginfoTableSor";
 function CeginfoTable() {
   const { companyInfoLista, setCompanyInfoLista, getAdat } =
     useContext(AdatokContext);
+
   useEffect(() => {
     getAdat("/api/companyinfos", setCompanyInfoLista);
   }, []);
+
   return (
     <div>
       <Table striped bordered hover responsive>
-        <thead className="text-center">
+        <thead>
           <tr>
             <th>Cég neve</th>
             <th>Cégvezető</th>
@@ -33,12 +35,11 @@ function CeginfoTable() {
           </tr>
         </thead>
         <tbody>
-          <>
-            {companyInfoLista.map((elem, index) => {
-              console.log("belépet a ciklusba");
-              return <CeginfoTableSor elem={elem} key={index} index={index} />;
-            })}
-          </>
+          {companyInfoLista.map((elem) => (
+            <tr key={elem.id}>
+              <CeginfoTableSor elem={elem} />
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

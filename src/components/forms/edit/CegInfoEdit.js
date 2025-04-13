@@ -27,46 +27,51 @@ function CeginfoEdit({ showModal, handleCloseModal, elemId }) {
   useEffect(() => {
     if (elemId) {
       setLoading(true);
-      getAdat(`/api/company/${elemId}`, (data) => {
+      getAdat(`/api/companyinfo/${elemId}`, (data) => {  // <-- EZ LETT JAVÍTVA
         setLoading(false);
         if (data) {
-          setFormData(data);
+          setFormData({
+            company_name: data.company_name || "",
+            company_manager: data.company_manager || "",
+            cm_email: data.cm_email || "",
+            cm_telefon: data.cm_telefon || "",
+            premise: data.premise || "",
+            mailing_address: data.mailing_address || "",
+            head_office: data.head_office || "",
+            tax_number: data.tax_number || "",
+            trade_register: data.trade_register || "",
+            availability_email: data.availability_email || "",
+            availability_phone: data.availability_phone || "",
+            report_email: data.report_email || "",
+            report_phone: data.report_phone || "",
+            price_offer_email: data.price_offer_email || "",
+            google_map: data.google_map || "",
+          });
         }
       });
     }
   }, [elemId]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
+  
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     if (!formData.company_name || !formData.company_manager) {
       console.log("Hiányzó mezők!");
       return;
     }
-
+  
     setLoading(true);
-    patchAdat(`/api/company/${elemId}`, formData)
+    patchAdat(`/api/companyinfo/${elemId}`, formData)  // <-- EZ LETT JAVÍTVA
       .then(() => {
-        setCeginfoLista((prevList) =>
-          prevList.map((item) =>
-            item.id === elemId ? { ...item, ...formData } : item
-          )
-        );
+        getAdat("/api/companyinfos", setCeginfoLista);
         handleCloseModal();
       })
       .finally(() => setLoading(false));
   };
+  
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal}>
+    <Modal show={showModal} onHide={handleCloseModal} size="xl">
       <Modal.Header closeButton>
         <Modal.Title>Cég Információ Szerkesztése</Modal.Title>
       </Modal.Header>
@@ -75,157 +80,39 @@ function CeginfoEdit({ showModal, handleCloseModal, elemId }) {
           <div>Betöltés...</div>
         ) : (
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formCompanyName">
-              <Form.Label>Cég Név</Form.Label>
-              <Form.Control
-                type="text"
-                name="company_name"
-                value={formData.company_name}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+            {[
+              ["Cég Név", "company_name"],
+              ["Cég Vezető", "company_manager"],
+              ["Cég Vezető Email", "cm_email", "email"],
+              ["Cég Vezető Telefonszám", "cm_telefon"],
+              ["Telephely", "premise"],
+              ["Postai Cím", "mailing_address"],
+              ["Székhely", "head_office"],
+              ["Adószám", "tax_number"],
+              ["Cégbírósági Nyilvántartás", "trade_register"],
+              ["Elérhetőségi Email", "availability_email", "email"],
+              ["Elérhetőségi Telefonszám", "availability_phone"],
+              ["Jelentési Email", "report_email", "email"],
+              ["Jelentési Telefonszám", "report_phone"],
+              ["Árajánlat Kérő Email", "price_offer_email", "email"],
+              ["Google Map Link", "google_map"],
+            ].map(([label, name, type = "text"]) => (
+              <Form.Group key={name} controlId={`form-${name}`}>
+                <Form.Label>{label}</Form.Label>
+                <Form.Control
+                  type={type}
+                  name={name}
+                  value={formData[name]}
+                  onChange={(e) =>
+                    setFormData({ ...formData, [name]: e.target.value })
+                  }
+                />
+              </Form.Group>
+            ))}
 
-            <Form.Group controlId="formCompanyManager">
-              <Form.Label>Cég Vezető</Form.Label>
-              <Form.Control
-                type="text"
-                name="company_manager"
-                value={formData.company_manager}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formCmEmail">
-              <Form.Label>Cég Vezető Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="cm_email"
-                value={formData.cm_email}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formCmTelefon">
-              <Form.Label>Cég Vezető Telefonszám</Form.Label>
-              <Form.Control
-                type="text"
-                name="cm_telefon"
-                value={formData.cm_telefon}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formPremise">
-              <Form.Label>Telephely</Form.Label>
-              <Form.Control
-                type="text"
-                name="premise"
-                value={formData.premise}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formMailingAddress">
-              <Form.Label>Postai Cím</Form.Label>
-              <Form.Control
-                type="text"
-                name="mailing_address"
-                value={formData.mailing_address}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formHeadOffice">
-              <Form.Label>Székhely</Form.Label>
-              <Form.Control
-                type="text"
-                name="head_office"
-                value={formData.head_office}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formTaxNumber">
-              <Form.Label>Adószám</Form.Label>
-              <Form.Control
-                type="text"
-                name="tax_number"
-                value={formData.tax_number}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formTradeRegister">
-              <Form.Label>Cégbírósági Nyilvántartás</Form.Label>
-              <Form.Control
-                type="text"
-                name="trade_register"
-                value={formData.trade_register}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formAvailabilityEmail">
-              <Form.Label>Elérhetőségi Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="availability_email"
-                value={formData.availability_email}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formAvailabilityPhone">
-              <Form.Label>Elérhetőségi Telefonszám</Form.Label>
-              <Form.Control
-                type="text"
-                name="availability_phone"
-                value={formData.availability_phone}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formReportEmail">
-              <Form.Label>Jelentési Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="report_email"
-                value={formData.report_email}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formReportPhone">
-              <Form.Label>Jelentési Telefonszám</Form.Label>
-              <Form.Control
-                type="text"
-                name="report_phone"
-                value={formData.report_phone}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formPriceOfferEmail">
-              <Form.Label>Árajánlat Kérő Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="price_offer_email"
-                value={formData.price_offer_email}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formGoogleMap">
-              <Form.Label>Google Map Link</Form.Label>
-              <Form.Control
-                type="text"
-                name="google_map"
-                value={formData.google_map}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Button variant="success" type="submit">Mentés</Button>
+            <Button variant="success" type="submit">
+              Mentés
+            </Button>
           </Form>
         )}
       </Modal.Body>

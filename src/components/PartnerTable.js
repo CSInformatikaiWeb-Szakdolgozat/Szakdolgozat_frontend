@@ -28,7 +28,10 @@ function PartnerTable() {
           </Button>
 
           {/* PartnerAdd komponens megjelenítése, átadva a modal vezérlését */}
-          <PartnerAdd showModal={showModal} handleCloseModal={handleCloseModal} />
+          <PartnerAdd
+            showModal={showModal}
+            handleCloseModal={handleCloseModal}
+          />
         </Col>
       </Row>
 
@@ -45,11 +48,11 @@ function PartnerTable() {
               </tr>
             </thead>
             <tbody>
-              <>
-                {partnerLista.map((elem, index) => {
-                  return <PartnerTableSor elem={elem} key={index} index={index} />;
-                })}
-              </>
+            {partnerLista.map((elem, index) => (
+            <tr key={index}>
+              <PartnerTableSor elem={elem} index={index} />
+            </tr>
+          ))}
             </tbody>
           </Table>
         </Col>

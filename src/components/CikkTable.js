@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import useAdatokContext from "../contexts/AdatokContext";
+import { Button, Table, Container, Row, Col } from "react-bootstrap"; // Container és Row hozzáadása
 import CikkTablaSor from "./CikkTableSor";
-import { Button, Table } from "react-bootstrap";
 import CikkAdd from "./forms/add/CikkAdd";
+import AdatokContext from "../contexts/AdatokContext";
 
 function CikkTable() {
-  const { cikkLista, setCikkLista, getAdat } = useContext(useAdatokContext);
+  const { cikkLista, setCikkLista, getAdat } = useContext(AdatokContext);
+
   useEffect(() => {
     getAdat("/api/articles", setCikkLista);
   }, []);
@@ -16,37 +17,41 @@ function CikkTable() {
   const handleCloseModal = () => setShowModal(false);
 
   return (
-    <div>
-      <div className="text-end">
-        {/* Gomb a modal megnyitásához */}
-        <Button variant="success" onClick={handleShowModal}>
-          Hozzáadás
-        </Button>
+    <Container className="mt-4">
+      <Row className="mb-3">
+        <Col className="text-end">
+          {/* Gomb a modal megnyitásához */}
+          <Button variant="success" onClick={handleShowModal}>
+            Hozzáadás
+          </Button>
+          {/* CikkAdd komponens megjelenítése, átadva a modal vezérlését */}
+          <CikkAdd showModal={showModal} handleCloseModal={handleCloseModal} />
+        </Col>
+      </Row>
 
-        {/* CikkAdd komponens megjelenítése, átadva a modal vezérlését */}
-        <CikkAdd showModal={showModal} handleCloseModal={handleCloseModal} />
-      </div>
-
+      {/* Cikkek táblázata */}
       <Table striped bordered hover responsive>
         <thead className="text-center">
           <tr>
             <th>Név</th>
-            <th className="d-none d-sm-table-cell">Leírás</th>
-            <th className="d-none d-md-table-cell">Partner</th>
+            <th>Leírás</th>
+            <th>Partner</th>
             <th>Besorolás</th>
-            <th className="d-none d-md-table-cell">Megjelenít</th>
-            <th className="d-none d-md-table-cell">Link</th>
-            <th className="d-none d-lg-table-cell">Módosít</th>
-            <th className="d-none d-lg-table-cell">Törlés</th>
+            <th>Megjelenít</th>
+            <th>Link</th>
+            <th>Módosít</th>
+            <th>Törlés</th>
           </tr>
         </thead>
         <tbody>
-          {cikkLista.map((elem, index) => {
-            return <CikkTablaSor elem={elem} key={index} index={index} />;
-          })}
+          {cikkLista.map((elem) => (
+            <tr key={elem.id}>
+              <CikkTablaSor elem={elem} />
+            </tr>
+          ))}
         </tbody>
       </Table>
-    </div>
+    </Container>
   );
 }
 

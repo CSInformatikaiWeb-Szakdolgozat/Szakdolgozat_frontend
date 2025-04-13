@@ -15,7 +15,7 @@ function EsemenyTableSor(props) {
   const handleCloseModal = () => setShowModal(false);
 
   return (
-    <tr>
+    <>
       <td className="text-center">{props.elem.description}</td>
       <td className="text-center">{props.elem.location}</td>
       <td className="text-center">{props.elem.date}</td>
@@ -42,7 +42,7 @@ function EsemenyTableSor(props) {
           Törlés
         </Button>
       </td>
-    </tr>
+    </>
   );
 }
 

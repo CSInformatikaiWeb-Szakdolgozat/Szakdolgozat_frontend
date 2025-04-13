@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import AdatokContext from "../contexts/AdatokContext";
 import PartnerEdit from "./forms/edit/PartnerEdit";
 
@@ -15,7 +15,7 @@ function PartnerTableSor(props) {
   const handleCloseModal = () => setShowModal(false);
 
   return (
-    <tr>
+    <>
       <td className="text-center">{props.elem.name}</td>
       <td className="text-center">{props.elem.page}</td>
       <td className="text-center">
@@ -53,7 +53,7 @@ function PartnerTableSor(props) {
           Törlés
         </Button>
       </td>
-    </tr>
+    </>
   );
 }
 

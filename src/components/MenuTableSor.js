@@ -16,7 +16,7 @@ function MenuTableSor(props) {
   };
 
   return (
-    <tr>
+    <>
       <td className="text-center">{props.elem.id}</td>
       <td className="text-center">{props.elem.name}</td>
       <td className="text-center">{props.elem.main_menu}</td>
@@ -55,7 +55,7 @@ function MenuTableSor(props) {
           Törlés
         </Button>
       </td>
-    </tr>
+    </>
   );
 }
 
