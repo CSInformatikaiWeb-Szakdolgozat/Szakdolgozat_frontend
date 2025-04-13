@@ -24,6 +24,7 @@ import Rendezvenyek from "./pages/public/Rendezvenyek";
 import { useContext, useEffect } from "react";
 import AdatokContext from "./contexts/AdatokContext";
 import General from "./pages/public/General";
+import GyujtoOldal from "./pages/public/GyujtoOldal";
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -66,9 +67,9 @@ function App() {
               )
             })
           }
+
+          <Route path="/lenovo_rack_szerverek" element={<GyujtoOldal />} />
         </Route>
-        
-        
         
       )}
 
