@@ -1,10 +1,7 @@
 import React from 'react'
-
-function AdminLayout() {
-  return (
-    <div>AdminLayout</div>
-  )
-}
+import useAuthContext from '../contexts/AuthContext';
+import AdminNavigacio from '../pages/admin/AdminNavigacio';
+import { Navigate, Outlet } from 'react-router-dom';
 
 export default function AdminLayout() {
     const { user } = useAuthContext();

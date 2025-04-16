@@ -25,6 +25,7 @@ import { useContext, useEffect } from "react";
 import AdatokContext from "./contexts/AdatokContext";
 import General from "./pages/public/General";
 import GyujtoOldal from "./pages/public/GyujtoOldal";
+import AdminLayout from "./layouts/AdminLayout"
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -74,7 +75,17 @@ function App() {
       )}
 
       {/* Admin és User ugyanazon útvonalon */}
-      {user && (
+      {user && user.role === 1 &&(
+        <Route element={<AdminLayout />}>
+          <Route path="/cikkoldal" element={<CikkTable />} />
+          <Route path="/ceginfooldal" element={<CeginfoTable />} />
+          <Route path="/menuoldal" element={<MenuTable />} />
+          <Route path="/esemenyekoldal" element={<EsemenyTable />} />
+          <Route path="/besorolasoldal" element={<BesorolasTable />} />
+          <Route path="/partneroldal" element={<PartnerTable />} />
+        </Route>
+      )}; 
+      {user && user.role === 2&&(
         <Route element={<EditorLayout />}>
           <Route path="/cikkoldal" element={<CikkTable />} />
           <Route path="/ceginfooldal" element={<CeginfoTable />} />
@@ -84,6 +95,7 @@ function App() {
           <Route path="/partneroldal" element={<PartnerTable />} />
         </Route>
       )}
+
     </Routes>
   );
 }
