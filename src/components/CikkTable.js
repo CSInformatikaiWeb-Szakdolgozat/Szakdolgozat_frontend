@@ -44,9 +44,9 @@ function CikkTable() {
           </tr>
         </thead>
         <tbody>
-          {cikkLista.map((elem) => (
-            <tr key={elem.id}>
-              <CikkTablaSor elem={elem} />
+          {cikkLista.map((elem,index) => (
+            <tr key={index}>
+              <CikkTablaSor elem={elem} index={index}/>
             </tr>
           ))}
         </tbody>
