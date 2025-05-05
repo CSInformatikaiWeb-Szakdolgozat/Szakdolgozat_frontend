@@ -1,10 +1,15 @@
 import React from "react";
+import { Col, Container, Row } from "react-bootstrap";
 
 function NoPage() {
   return (
-    <div>
-      <h1>Nem található az oldal</h1>
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <h1>Nem található az oldal</h1>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
