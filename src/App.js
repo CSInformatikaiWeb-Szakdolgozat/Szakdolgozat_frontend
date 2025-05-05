@@ -25,29 +25,31 @@ import { useContext, useEffect } from "react";
 import AdatokContext from "./contexts/AdatokContext";
 import General from "./pages/public/General";
 import GyujtoOldal from "./pages/public/GyujtoOldal";
-import AdminLayout from "./layouts/AdminLayout"
+import AdminLayout from "./layouts/AdminLayout";
+import UserTable from "./pages/admin/UserTabla";
+import { Col, Container, Row } from "react-bootstrap";
 
 function App() {
   const { user, loading } = useAuthContext();
-  const {cikkLista, setCikkLista, getAdat } = useContext(AdatokContext);
+  const { cikkLista, setCikkLista, getAdat } = useContext(AdatokContext);
 
   useEffect(() => {
-      getAdat("/api/articles", setCikkLista);
+    getAdat("/api/articles", setCikkLista);
   }, []);
 
   if (loading) {
     return (
-      <div className="loading-body">
-        <div className="center-loader">Az oldal betöltése folyamatban...</div>
-      </div>
+      <Container className="loading-body">
+        <Row>
+          <Col className="center-loader">Az oldal betöltése folyamatban...</Col>
+        </Row>
+      </Container>
     );
   }
   return (
     <Routes>
       <Route path="*" element={<NoPage />} />
-
       <Route path="admin" element={<Bejelentkezes />} />
-
       {/* Vendég layout */}
       {!user && (
         <Route element={<VendegLayout />}>
@@ -55,27 +57,32 @@ function App() {
           <Route path="/bemutato" element={<Cegbemutato />} />
           <Route path="/kapcsolat" element={<Kapcsolat />} />
           <Route path="/virtualizacio" element={<Virtulazitacio />} />
-          <Route path="/szerverkonszolidacio" element={<Szerverkonszolidacio />} />
-          <Route path="/tarolokonszolidacio" element={<TaroloKonszolidacio />}/>
-          <Route path="/megoldasok" element={<Megoldasok />}/>
+          <Route
+            path="/szerverkonszolidacio"
+            element={<Szerverkonszolidacio />}
+          />
+          <Route
+            path="/tarolokonszolidacio"
+            element={<TaroloKonszolidacio />}
+          />
+          <Route path="/megoldasok" element={<Megoldasok />} />
           <Route path="/rendezvenyek" element={<Rendezvenyek />} />
           <Route path="/letoltesek" element={<Letoltes />} />
-          
-          {
-            cikkLista.map((elem, index) => {
-              return (
-                <Route path={elem.page_link} element={<General elem={elem} key={index} index={index} />} />
-              )
-            })
-          }
+
+          {cikkLista.map((elem, index) => {
+            return (
+              <Route
+                path={elem.page_link}
+                element={<General elem={elem} key={index} index={index} />}
+              />
+            );
+          })}
 
           <Route path="/lenovo_rack_szerverek" element={<GyujtoOldal />} />
         </Route>
-        
       )}
-
       {/* Admin és User ugyanazon útvonalon */}
-      {user && user.role === 1 &&(
+      {user && user.role === 1 && (
         <Route element={<AdminLayout />}>
           <Route path="/cikkoldal" element={<CikkTable />} />
           <Route path="/ceginfooldal" element={<CeginfoTable />} />
@@ -83,9 +90,11 @@ function App() {
           <Route path="/esemenyekoldal" element={<EsemenyTable />} />
           <Route path="/besorolasoldal" element={<BesorolasTable />} />
           <Route path="/partneroldal" element={<PartnerTable />} />
+          <Route path="/useroldal" element={<UserTable />} />
         </Route>
-      )}; 
-      {user && user.role === 2&&(
+      )}
+      ;
+      {user && user.role === 2 && (
         <Route element={<EditorLayout />}>
           <Route path="/cikkoldal" element={<CikkTable />} />
           <Route path="/ceginfooldal" element={<CeginfoTable />} />
@@ -95,7 +104,6 @@ function App() {
           <Route path="/partneroldal" element={<PartnerTable />} />
         </Route>
       )}
-
     </Routes>
   );
 }

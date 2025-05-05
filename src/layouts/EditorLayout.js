@@ -1,10 +1,7 @@
 import React from "react";
-
-import { Navigate, Outlet } from "react-router-dom";
-
 import useAuthContext from "../contexts/AuthContext";
 import EditorNavigacio from "../pages/editor/EditorNavigacio";
-
+import { Navigate, Outlet } from "react-router-dom";
 
 export default function EditorLayout() {
     const { user } = useAuthContext();
