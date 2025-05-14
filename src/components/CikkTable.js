@@ -37,6 +37,7 @@ function CikkTable() {
             <th>Leírás</th>
             <th>Partner</th>
             <th>Besorolás</th>
+             <th>Tartalom</th>
             <th>Megjelenít</th>
             <th>Link</th>
             <th>Módosít</th>

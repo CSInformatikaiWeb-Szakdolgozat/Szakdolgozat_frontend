@@ -22,6 +22,7 @@ function CikkTablaSor(props) {
       <td className="text-center">{props.elem.description}</td>
       <td className="text-center">{props.elem.partner}</td>
       <td className="text-center">{props.elem.classification}</td>
+       <td className="text-center">{props.elem.content}</td>
       <td className="text-center">
         <div>
           <Button
