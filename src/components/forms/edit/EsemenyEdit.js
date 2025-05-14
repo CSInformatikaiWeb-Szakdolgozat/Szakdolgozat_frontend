@@ -18,7 +18,11 @@ function EsemenyekEdit({ showModal, handleCloseModal, elemId }) {
       getAdat(`/api/event/${elemId}`, (data) => {
         setLoading(false);
         if (data) {
-          setFormData(data);
+          setFormData({
+            description: data.description || "",
+            location: data.location || "",
+            date: data.date || "",
+          });
         }
       });
     }
@@ -34,15 +38,11 @@ function EsemenyekEdit({ showModal, handleCloseModal, elemId }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+ if (!formData.description || !formData.date||!formData.date) return;
     setLoading(true);
     patchAdat(`/api/event/${elemId}`, formData)
       .then(() => {
-        setEsemenyLista((prevList) =>
-          prevList.map((item) =>
-            item.id === elemId ? { ...item, ...formData } : item
-          )
-        );
+        getAdat("/api/events", setEsemenyLista);
         handleCloseModal();
       })
       .finally(() => setLoading(false));

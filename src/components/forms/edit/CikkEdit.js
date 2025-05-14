@@ -30,7 +30,7 @@ function CikkEdit({ showModal, handleCloseModal, elemId }) {
             description: data.description || "",
             partner: data.partner,
             classification: data.classification,
-            content: data.content || "",
+            content: data.content,
             visibility_status: data.visibility_status || false,
             page_link: data.page_link || "",
           });

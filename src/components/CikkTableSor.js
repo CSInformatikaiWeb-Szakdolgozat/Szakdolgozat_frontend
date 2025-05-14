@@ -42,7 +42,7 @@ function CikkTablaSor(props) {
         <CikkEdit
           showModal={showModal}
           handleCloseModal={handleCloseModal}
-          elemId={props.elem.id} // Ez kell, mert a CikkEdit ezt várja
+          elemId={props.elem.id}
         />
       </td>
 

@@ -3,8 +3,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import AdatokContext from "../../../contexts/AdatokContext";
 
 function MenuEdit({ showModal, handleCloseModal, menuId }) {
-  const { menuLista, getAdat, setMenuLista, patchAdat, postAdat } =
-    useContext(AdatokContext);
+  const { menuLista, getAdat, setMenuLista, patchAdat, postAdat } = useContext(AdatokContext);
 
   const [formData, setFormData] = useState({
     name: "",
